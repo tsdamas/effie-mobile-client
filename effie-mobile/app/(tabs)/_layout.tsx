@@ -5,14 +5,26 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 export default function TabLayout() {
     return (
         <Tabs>
-            <Tabs.Screen name="index" options={{ title: 'Chat',
-                tabBarIcon: ({ color, focused }) => (
-                    <Ionicons name={focused ? 'chatbubbles-sharp' : 'chatbubbles-outline'} color={color} size={24} />
-                ),
-             }} />
-            <Tabs.Screen name="user" options={{ title: 'User Profile', tabBarIcon: ({ color, focused }) => (
-                    <Ionicons name={focused ? 'person-sharp' : 'person-outline'} color={color} size={24} />
-                ), }} />
+            <Tabs.Screen name="index" 
+                options={{ 
+                    title: 'Chat',
+                    tabBarIcon: ({ color, focused }) => (
+                        <Ionicons name={focused ? 'chatbubbles-sharp' : 'chatbubbles-outline'}
+                            color={color} size={24} 
+                        />
+                    ),
+                }} 
+            />
+            <Tabs.Screen name="user" 
+                options={{ 
+                    title: 'User Profile',
+                    tabBarIcon: ({ color, focused }) => (
+                        <Ionicons name={focused ? 'person-sharp' : 'person-outline'}
+                            color={color} size={24}
+                        />
+                    ),
+                }} 
+            />
         </Tabs>
     );
 }
