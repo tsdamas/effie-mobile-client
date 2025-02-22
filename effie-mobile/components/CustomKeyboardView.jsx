@@ -1,9 +1,9 @@
-import { View, Text, KeyboardAvoidingView, ScrollView, Platform } from 'react-native'
-import React, { Children } from 'react'
+import { KeyboardAvoidingView, ScrollView, Platform } from 'react-native'
+import React from 'react'
 
 const ios = Platform.OS == 'ios';
 
-export default function CustomKeyboard() {
+export default function CustomKeyboardView({ children }) {
   return (
     <KeyboardAvoidingView
         behavior={ios? 'padding': 'height'}
@@ -15,11 +15,11 @@ export default function CustomKeyboard() {
             showsVerticalScrollIndicator={false}
         >
             {
-                Children
+                children
             }
         </ScrollView>
     </KeyboardAvoidingView>
-  )
+  );
 }
 
 const styles = {
