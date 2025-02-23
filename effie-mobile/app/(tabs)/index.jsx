@@ -6,15 +6,23 @@
  * 
  */
 
+import React, { useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import CustomKeyboardView from "../../components/CustomKeyboardView";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import MessageList from "@/components/MessageList";
+import SendBox from "@/components/SendBox";
+
 
 export default function Index() {
-  return (
+  
+  const [messages, setMessages] = useState("Messages list will be implemented next!");
 
+  return (
     <CustomKeyboardView>
       <Text style={styles.text}>Effie chat comming soon!</Text>
+      <MessageList messages={messages}/>
+      <SendBox />
     </CustomKeyboardView>
      
   );
