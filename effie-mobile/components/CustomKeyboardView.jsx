@@ -1,4 +1,5 @@
-import { KeyboardAvoidingView, ScrollView, Platform } from 'react-native'
+import { KeyboardAvoidingView, ScrollView, Platform, StyleSheet } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react'
 
 const ios = Platform.OS == 'ios';
@@ -7,23 +8,35 @@ export default function CustomKeyboardView({ children }) {
   return (
     <KeyboardAvoidingView
         behavior={ios? 'padding': 'height'}
-        style={styles.flexify}
+        style={styles.background}
     >
-        <ScrollView
-            style={styles.flexify}
-            bounces={false}
-            showsVerticalScrollIndicator={false}
+        <LinearGradient
+            colors={['#FFFFFF', '#006748']}
+            style={styles.background}
         >
-            {
-                children
-            }
-        </ScrollView>
+             <ScrollView
+                style={styles.transparentBg}
+                bounces={false}
+                showsVerticalScrollIndicator={false}
+            >
+                {children}
+            </ScrollView>        
+        </LinearGradient>
+           
     </KeyboardAvoidingView>
   );
 }
 
-const styles = {
-    flexify: {
+const styles = StyleSheet.create({
+    background: {
+        // position: 'absolute',
+        // left: 0,
+        // right: 0,
+        // top: 0,
         flex: 1,
     },
-}
+    transparentBg: {
+        flexGrow: 1,
+        backgroundColor: 'transparent',
+    },
+});
