@@ -15,7 +15,7 @@ export default function CustomKeyboardView({ children }) {
             style={styles.background}
         >
              <ScrollView
-                style={styles.transparentBg}
+                contentContainerStyle={styles.scrollContent}
                 bounces={false}
                 showsVerticalScrollIndicator={false}
             >
@@ -35,8 +35,12 @@ const styles = StyleSheet.create({
         // top: 0,
         flex: 1,
     },
-    transparentBg: {
+    scrollContent: {
         flexGrow: 1,
         backgroundColor: 'transparent',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 });

@@ -6,15 +6,24 @@
  * 
  */
 
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import CustomKeyboardView from "../../components/CustomKeyboardView";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default function Index() {
   return (
 
     <CustomKeyboardView>
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text style={styles.text}>Effie chat comming soon!</Text>
     </CustomKeyboardView>
      
   );
 }
+
+const styles = StyleSheet.create({
+  text: {
+    color: 'black',
+    fontSize: hp(5),
+    fontWeight: 'bold'
+  }
+});
