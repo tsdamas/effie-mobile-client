@@ -6,15 +6,32 @@
  * 
  */
 
-import { Text, View } from "react-native";
+import React, { useState } from "react";
+import { Text, View, StyleSheet } from "react-native";
 import CustomKeyboardView from "../../components/CustomKeyboardView";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import MessageList from "@/components/MessageList";
+import SendBox from "@/components/SendBox";
+
 
 export default function Index() {
-  return (
+  
+  const [messages, setMessages] = useState("Messages list will be implemented next!");
 
+  return (
     <CustomKeyboardView>
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text style={styles.text}>Effie chat comming soon!</Text>
+      <MessageList messages={messages}/>
+      <SendBox />
     </CustomKeyboardView>
      
   );
 }
+
+const styles = StyleSheet.create({
+  text: {
+    color: 'black',
+    fontSize: hp(5),
+    fontWeight: 'bold'
+  }
+});
