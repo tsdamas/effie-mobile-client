@@ -45,10 +45,8 @@ export default function RootLayout() {
   return (
     <Drawer.Navigator drawerContent={(props) => <CustomDrawer {...props} />}>
       {/* Main Tabs Layout */}
-      <Drawer.Screen name="Tabs" component={TabLayout} options={{ headerShown: false }} />
-      
-      {/* Settings Screen */}
-      <Drawer.Screen name="Settings" component={SettingsScreen} />
+      <Drawer.Screen name="Tabs - (Back to chat)" component={TabLayout} options={{ headerShown: false }} />
+
     </Drawer.Navigator>
   );
 }
