@@ -27,10 +27,23 @@ const CustomDrawer = (props: any) => {
 
         {/* User Info Section at the bottom */}
         <View style={styles.userInfo}>
-            {/* Placeholder profile picture (Replace with a real image URL) */}
-            <Image source={{ uri: "https://cdn-icons-png.flaticon.com/512/17/17004.png" }} style={styles.avatar} />
-            <Text style={styles.userName}>User Name</Text>
-        </View>
+          {/* Profile Picture */}
+          <Image 
+            source={{ uri: "https://cdn-icons-png.flaticon.com/512/17/17004.png" }} 
+            style={styles.avatar} 
+          />
+
+          {/* User Name */}
+          <Text style={styles.userName}>User Name</Text>
+
+          {/* Settings Button (Right Side) */}
+          <TouchableOpacity 
+            onPress={() => props.navigation.navigate("Settings")} // Navigate to Settings Screen
+            style={styles.settingsButton}
+          >
+            <Ionicons name="settings-outline" size={24} color="black" />
+          </TouchableOpacity>
+</View>
     </DrawerContentScrollView>
   );
 };
@@ -69,24 +82,31 @@ searchContainer: {
   },
 
   userInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: "row",  // Arrange elements in a row (horizontal)
+    alignItems: "center",  // Align elements vertically
+    justifyContent: "space-between", // Push items apart (Avatar on left, Settings on right)
     padding: 15,
     borderTopWidth: 1,
     borderColor: "#ddd",
   },
-
+  
   avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
+    width: 40,  // Set avatar width
+    height: 40, // Set avatar height
+    borderRadius: 20, // Make it circular
   },
-
+  
   userName: {
-    fontSize: 16,
-    fontWeight: "bold",
+    flex: 1,  // Allow text to take up space and push settings button to the right
+    fontSize: 16, // Adjust font size
+    fontWeight: "bold", // Make the text bold
+    marginLeft: 10,  // Add space between avatar and name
   },
+  
+  settingsButton: {
+    padding: 10,  // Increase touchable area for better UX
+  },
+  
 
   newChatButton: {
   marginLeft: 10, // Add spacing from the search bar

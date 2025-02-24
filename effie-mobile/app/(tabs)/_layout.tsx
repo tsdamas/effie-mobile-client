@@ -4,6 +4,7 @@ import { Tabs } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { TouchableOpacity } from "react-native";                         // Clickable button that we use to open the side menu
 import CustomDrawer from "@/components/CustomDrawer";
+import SettingsScreen from "../Settings";                                // Import Settings Screen
 
 const Drawer = createDrawerNavigator();     // Create a drawer navigator that will be used to manage the side menu
 
@@ -42,9 +43,12 @@ function TabLayout({ navigation }: any) {
 
 export default function RootLayout() {
   return (
-    //<Drawer.Navigator>
     <Drawer.Navigator drawerContent={(props) => <CustomDrawer {...props} />}>
+      {/* Main Tabs Layout */}
       <Drawer.Screen name="Tabs" component={TabLayout} options={{ headerShown: false }} />
+      
+      {/* Settings Screen */}
+      <Drawer.Screen name="Settings" component={SettingsScreen} />
     </Drawer.Navigator>
   );
 }
