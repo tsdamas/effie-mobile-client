@@ -1,25 +1,35 @@
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Button from './Button';
-
+import VoiceMode from '../assets/VoiceMode.js';
 
 export default function SendBox() {
+  //set default voice mode to false
+  const [isVoiceMode, setIsVoiceMode] = useState(false);
+
   return (
     <View style={styles.sendBoxContainer}>
-      <TextInput
-        style={styles.input} 
-        placeholder="Write what is on your mind" 
-        placeholderTextColor="#888" 
-      />
-      <Button iconName="send" style={styles.sendButton}>
-        {/* <Ionicons name="send" size={24} color="#006748" /> */}
-      </Button>
-      <Button iconName="mic" style={styles.micButton}>
-       {/* <Ionicons name="mic" size={24} color="#006748" /> */}
-      </Button>
-    </View>
+      {isVoiceMode ? (
+        //changes chatbox to voice mode box
+        <VoiceMode onCancel={() => setIsVoiceMode(false)} />
+      ) : (
+        <>
+          <TextInput
+            style={styles.input}
+            placeholder="Write what is on your mind"
+            placeholderTextColor="#888"
+          />
+          <Button iconName="send" style={styles.sendButton} />
+          <Button 
+            iconName="mic" 
+            style={styles.micButton}
+            onPress={() => setIsVoiceMode(true)}
+          />
+        </>
+    )}
+  </View>
   );
 }
 
