@@ -4,16 +4,20 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 import Button from './Button';
 
+
 export default function SendBox() {
   return (
     <View style={styles.sendBoxContainer}>
       <TextInput
         style={styles.input} 
-        placeholder="Type a message..." 
+        placeholder="Write what is on your mind" 
         placeholderTextColor="#888" 
       />
       <Button iconName="send" style={styles.sendButton}>
         {/* <Ionicons name="send" size={24} color="#006748" /> */}
+      </Button>
+      <Button iconName="mic" style={styles.micButton}>
+       {/* <Ionicons name="mic" size={24} color="#006748" /> */}
       </Button>
     </View>
   );
@@ -26,9 +30,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    width: wp(95),
+    width: wp(80),
     height: hp(7),
-    paddingHorizontal: wp(2),
+    paddingHorizontal: wp(0.2),
     paddingVertical: hp(1.5),
     backgroundColor: 'white', 
     borderRadius: 15,
@@ -48,11 +52,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sendButton: {
-    borderRadius: 50,
+    borderRadius: 30,
     width: hp(5),
     height: hp(5),
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: wp(4),
+  },
+  micButton: {
+    borderRadius: 30,
+    width: hp(5),
+    height: hp(5),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: wp(2), 
   },
 });
