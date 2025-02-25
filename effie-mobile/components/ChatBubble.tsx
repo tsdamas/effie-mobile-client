@@ -1,1 +1,0 @@
-//UI for incoming and outgoing messages
