@@ -1,14 +1,27 @@
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Button from './Button';
 import VoiceMode from '../assets/VoiceMode.js';
 
-export default function SendBox() {
+export default function SendBox( {onSendMessage}) {
   //set default voice mode to false
   const [isVoiceMode, setIsVoiceMode] = useState(false);
+  const [text, setText] = useState('');
+  const inputRef = useRef(null);
 
+  //send button pressed, reset text field
+  const handleSend = () => {
+    if (text.trim()) {
+     // console.log('Sending message:', text);
+      onSendMessage(text);
+      setText('');
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }
+  };
   return (
     <View style={styles.sendBoxContainer}>
       {isVoiceMode ? (
@@ -17,11 +30,21 @@ export default function SendBox() {
       ) : (
         <>
           <TextInput
+            ref={inputRef}
             style={styles.input}
-            placeholder="Write what is on your mind"
+            placeholder="What is on your mind?"
             placeholderTextColor="#888"
+            value={text}
+            onChangeText={setText}
+            //below lines are for hitting enter, wont work on mobile
+            onSubmitEditing={handleSend} 
+            returnKeyType="send"
           />
-          <Button iconName="send" style={styles.sendButton} />
+          <Button 
+            iconName="send" 
+            style={styles.sendButton}
+            onPress={handleSend}
+          />
           <Button 
             iconName="mic" 
             style={styles.micButton}
