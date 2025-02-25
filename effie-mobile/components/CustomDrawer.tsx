@@ -6,19 +6,24 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 const CustomDrawer = (props: any) => {
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
-      
-        <View style={styles.searchWrapper}>
-            {/* Search Bar */}
-            <View style={styles.searchContainer}>
-                <Ionicons name="search" size={20} color="#999" />
-                <Text style={styles.searchText}>Search</Text>
-            </View>
 
-            {/* Button to Start a New Chat */}
-            <TouchableOpacity onPress={() => {}} style={styles.newChatButton}>
-                <Ionicons name="create-outline" size={24} color="black" />
-            </TouchableOpacity>
+      {/* Drawer Title */}
+      <View style={styles.titleContainer}>
+        <Text style={styles.drawerTitle}>Effie</Text>
+      </View>
+      
+      <View style={styles.searchWrapper}> 
+        {/* Search Bar */}
+        <View style={styles.searchContainer}>
+          <Ionicons name="search" size={20} color="#999" />
+          <Text style={styles.searchText}>Search</Text>
         </View>
+
+        {/* Button to Start a New Chat */}
+        <TouchableOpacity onPress={() => {}} style={styles.newChatButton}>
+          <Ionicons name="create-outline" size={24} color="black" />
+        </TouchableOpacity>
+       </View>
 
         {/* Default Drawer Items */}
         <View style={styles.drawerItems}>
@@ -53,6 +58,17 @@ export default CustomDrawer;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+
+  titleContainer: {
+    padding: 15,         // Add space around the title
+    alignItems: "center", // Center the title
+  },
+  
+  drawerTitle: {
+    fontSize: 20,        // Adjust font size
+    fontWeight: "bold",  // Make the title bold
+    color: "#333",       // Darker text for visibility
   },
 
   searchWrapper: {
