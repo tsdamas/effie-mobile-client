@@ -10,10 +10,10 @@ export default function CustomKeyboardView({ children }) {
         behavior={ios? 'padding': 'height'}
         style={styles.background}
     >
-        <LinearGradient
+        {/* <LinearGradient
             colors={['#FFFFFF', '#006748']}
             style={styles.background}
-        >
+        > */}
              <ScrollView
                 contentContainerStyle={styles.scrollContent}
                 bounces={false}
@@ -21,7 +21,7 @@ export default function CustomKeyboardView({ children }) {
             >
                 {children}
             </ScrollView>        
-        </LinearGradient>
+        {/* </LinearGradient> */}
            
     </KeyboardAvoidingView>
   );

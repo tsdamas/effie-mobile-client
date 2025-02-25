@@ -1,7 +1,8 @@
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Ionicons } from '@expo/vector-icons';
+
+import Button from './Button';
 
 export default function SendBox() {
   return (
@@ -11,9 +12,9 @@ export default function SendBox() {
         placeholder="Type a message..." 
         placeholderTextColor="#888" 
       />
-      <TouchableOpacity style={styles.sendButton}>
+      <Button iconName="send" style={styles.sendButton}>
         {/* <Ionicons name="send" size={24} color="#006748" /> */}
-      </TouchableOpacity>
+      </Button>
     </View>
   );
 }
@@ -52,6 +53,6 @@ const styles = StyleSheet.create({
     height: hp(5),
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: wp(2),
+    marginLeft: wp(4),
   },
 });
