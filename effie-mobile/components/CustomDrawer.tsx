@@ -30,6 +30,28 @@ const CustomDrawer = (props: any) => {
             <DrawerItemList {...props} />
         </View>
 
+        {/* 🔹 Chat Labels Section */}
+        <View style={styles.chatList}>
+          <Text style={styles.sectionTitle}>Recent Chats</Text>
+
+          {/* 🔹 List of Chat Labels */}
+          <TouchableOpacity onPress={() => {}} style={styles.chatItem}>
+            <Ionicons name="chatbubble-outline" size={20} color="black" />
+            <Text style={styles.chatText}>Chat 1</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => {}} style={styles.chatItem}>
+            <Ionicons name="chatbubble-outline" size={20} color="black" />
+            <Text style={styles.chatText}>Chat 2</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => {}} style={styles.chatItem}>
+            <Ionicons name="chatbubble-outline" size={20} color="black" />
+            <Text style={styles.chatText}>Chat 3</Text>
+          </TouchableOpacity>
+        </View>
+
+
         {/* User Info Section at the bottom */}
         <View style={styles.userInfo}>
           {/* Profile Picture */}
@@ -48,7 +70,7 @@ const CustomDrawer = (props: any) => {
           >
             <Ionicons name="settings-outline" size={24} color="black" />
           </TouchableOpacity>
-</View>
+      </View>
     </DrawerContentScrollView>
   );
 };
@@ -66,8 +88,8 @@ const styles = StyleSheet.create({
   },
   
   drawerTitle: {
-    fontSize: 20,        // Adjust font size
-    fontWeight: "bold",  // Make the title bold
+    fontSize: 20,        
+    fontWeight: "bold",  
     color: "#333",       // Darker text for visibility
   },
 
@@ -78,14 +100,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,      // Space below
   },
 
-searchContainer: {
-  flex: 1,               // Take up remaining space
-  flexDirection: "row",  
-  alignItems: "center",
-  backgroundColor: "#f0f0f0",
-  borderRadius: 8,
-  padding: 10,
-},
+  searchContainer: {
+    flex: 1,               // Take up remaining space
+    flexDirection: "row",  
+    alignItems: "center",
+    backgroundColor: "#f0f0f0",
+    borderRadius: 8,
+    padding: 10,
+  },
 
   searchText: {
     marginLeft: 10,
@@ -95,6 +117,30 @@ searchContainer: {
 
   drawerItems: {
     flex: 1,
+  },
+
+  chatList: {
+    marginTop: 10,        // Add spacing above the list
+    paddingHorizontal: 15, // Side padding for alignment
+  },
+  
+  sectionTitle: {
+    fontSize: 16,        
+    fontWeight: "bold",  
+    marginBottom: 5,     // Space between title and first item
+    color: "#333",
+  },
+  
+  chatItem: {
+    flexDirection: "row",  // Align icon and text in a row
+    alignItems: "center",  // Center vertically
+    paddingVertical: 10,   // Add vertical padding for better spacing
+  },
+  
+  chatText: {
+    fontSize: 14,   
+    marginLeft: 10, // Space between icon and text
+    color: "#000",
   },
 
   userInfo: {
@@ -107,15 +153,15 @@ searchContainer: {
   },
   
   avatar: {
-    width: 40,  // Set avatar width
-    height: 40, // Set avatar height
+    width: 40,  
+    height: 40, 
     borderRadius: 20, // Make it circular
   },
   
   userName: {
     flex: 1,  // Allow text to take up space and push settings button to the right
-    fontSize: 16, // Adjust font size
-    fontWeight: "bold", // Make the text bold
+    fontSize: 16, 
+    fontWeight: "bold", 
     marginLeft: 10,  // Add space between avatar and name
   },
   
