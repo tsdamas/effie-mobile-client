@@ -11,36 +11,35 @@ const blurhash =
 export default function ChatHeader() {
     const {top} = useSafeAreaInsets();
     return (
+
         <View style={styles.header(top)}>
-            <View>
-                <Text style={styles.headerText}>Effie Mobile</Text>
-            </View>
-            {/* user profile picture */}
-            <View>
-                <Image
+            <Text style={styles.headerText}>Effie Mobile</Text>
+    
+        {/* user profile picture */}
+        <View style={{paddingRight: wp(2)}}>
+            <Image
                     style={styles.userPicture}
                     source="https://picsum.photos/seed/696/3000/2000"
                     placeholder={{ blurhash }}
                     contentFit="cover"
                     transition={500}
                 />
-            </View>
+        </View>
             
         </View>
+
     );
 }
 
 const styles = StyleSheet.create({
     header: top => ({
         paddingTop: ios? top : top+10,
-        paddingLeft: wp(1),
-        paddingRight: wp(1),
         paddingBottom: hp(1.5),
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 5 },
-        shadowOpacity: 0.25,
-        shadowRadius: 5,
-        elevation: 5, // For Android
+        // shadowColor: 'black',
+        // shadowOffset: { width: 0, height: 5 },
+        // shadowOpacity: 0.25,
+        // shadowRadius: 5,
+        // elevation: 5, // For Android
         borderBottomLeftRadius: 10, 
         borderBottomRightRadius: 10, 
         overflow: 'hidden', 
@@ -54,10 +53,12 @@ const styles = StyleSheet.create({
         fontSize: hp(3),
         color: '#006748',
         fontWeight: 'bold',
+        paddingLeft: wp(2),
     },
     userPicture: {
         height: hp(4.3),
         aspectRatio: 1,
         borderRadius: 100,
+        // paddingRight: wp(2),
     },
 });
