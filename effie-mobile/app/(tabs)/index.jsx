@@ -16,19 +16,25 @@ import SendBox from "@/components/SendBox";
 
 export default function Index() {
   
-  const [messages, setMessages] = useState("Messages list will be implemented next!");
+  const [messages, setMessages] = useState([]);
+  const handleSendMessage = (msg) => {
+    setMessages([...messages, msg]);
+  };
 
   return (
-    <CustomKeyboardView>
-      <Text style={styles.text}>Effie chat comming soon!</Text>
-      <MessageList messages={messages}/>
-      <SendBox />
+    <CustomKeyboardView style={styles.container}>
+      <Text style={styles.text}>How can I help you?</Text>
+      <MessageList messages={messages} />
+      <SendBox onSendMessage={handleSendMessage} />
     </CustomKeyboardView>
-     
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   text: {
     color: 'black',
     fontSize: hp(5),

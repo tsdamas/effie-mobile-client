@@ -1,21 +1,58 @@
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Button from './Button';
+import VoiceMode from '../assets/VoiceMode.js';
 
-export default function SendBox() {
+export default function SendBox( {onSendMessage}) {
+  //set default voice mode to false
+  const [isVoiceMode, setIsVoiceMode] = useState(false);
+  const [text, setText] = useState('');
+  const inputRef = useRef(null);
+
+  //send button pressed, reset text field
+  const handleSend = () => {
+    if (text.trim()) {
+     // console.log('Sending message:', text);
+      onSendMessage(text);
+      setText('');
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }
+  };
   return (
     <View style={styles.sendBoxContainer}>
-      <TextInput
-        style={styles.input} 
-        placeholder="Type a message..." 
-        placeholderTextColor="#888" 
-      />
-      <Button iconName="send" style={styles.sendButton}>
-        {/* <Ionicons name="send" size={24} color="#006748" /> */}
-      </Button>
-    </View>
+      {isVoiceMode ? (
+        //changes chatbox to voice mode box
+        <VoiceMode onCancel={() => setIsVoiceMode(false)} />
+      ) : (
+        <>
+          <TextInput
+            ref={inputRef}
+            style={styles.input}
+            placeholder="What is on your mind?"
+            placeholderTextColor="#888"
+            value={text}
+            onChangeText={setText}
+            //below lines are for hitting enter, wont work on mobile
+            onSubmitEditing={handleSend} 
+            returnKeyType="send"
+          />
+          <Button 
+            iconName="send" 
+            style={styles.sendButton}
+            onPress={handleSend}
+          />
+          <Button 
+            iconName="mic" 
+            style={styles.micButton}
+            onPress={() => setIsVoiceMode(true)}
+          />
+        </>
+    )}
+  </View>
   );
 }
 
@@ -26,9 +63,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    width: wp(95),
+    width: wp(80),
     height: hp(7),
-    paddingHorizontal: wp(2),
+    paddingHorizontal: wp(0.2),
     paddingVertical: hp(1.5),
     backgroundColor: 'white', 
     borderRadius: 15,
@@ -48,11 +85,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sendButton: {
-    borderRadius: 50,
+    borderRadius: 30,
     width: hp(5),
     height: hp(5),
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: wp(4),
+  },
+  micButton: {
+    borderRadius: 30,
+    width: hp(5),
+    height: hp(5),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: wp(2), 
   },
 });
