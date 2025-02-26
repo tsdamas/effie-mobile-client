@@ -58,9 +58,9 @@ export default function SendBox( {onSendMessage}) {
 
 const styles = StyleSheet.create({
   sendBoxContainer: {
-    position: 'absolute',
+    position: 'relative',
     bottom: hp(1.2), 
-    flex: 1,
+    //flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     width: wp(80),

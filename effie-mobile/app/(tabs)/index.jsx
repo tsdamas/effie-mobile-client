@@ -7,24 +7,40 @@
  */
 
 import React, { useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, ScrollView } from "react-native";
 import CustomKeyboardView from "../../components/CustomKeyboardView";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import MessageList from "@/components/MessageList";
 import SendBox from "@/components/SendBox";
+import { getChunkedResponse } from "@/assets/StreamService"; 
 
 
 export default function Index() {
-  
   const [messages, setMessages] = useState([]);
-  const handleSendMessage = (msg) => {
-    setMessages([...messages, msg]);
+  
+  const handleSendMessage = (userText) => {
+    setMessages((prev) => [
+      ...prev,
+      { role: "user", content: userText },
+      { role: "assistant", content: "" } 
+    ]);
+
+    getChunkedResponse(userText, (partialText) => {
+      setMessages((prev) => {
+        const updated = [...prev];
+        //Update the last message (assistant's response) with the partial text
+        updated[updated.length - 1] = { role: "assistant", content: partialText };
+        return updated;
+      });
+    });
   };
 
   return (
     <CustomKeyboardView style={styles.container}>
       <Text style={styles.text}>How can I help you?</Text>
-      <MessageList messages={messages} />
+      <ScrollView style={styles.chatContainer}>
+        <MessageList messages={messages} />
+      </ScrollView>
       <SendBox onSendMessage={handleSendMessage} />
     </CustomKeyboardView>
   );
@@ -39,5 +55,10 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: hp(5),
     fontWeight: 'bold'
-  }
+  },
+  chatContainer: {
+    flex: 1,
+    width: '80%',          
+    
+  },
 });
