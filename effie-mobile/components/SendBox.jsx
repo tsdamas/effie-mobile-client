@@ -25,8 +25,13 @@ export default function SendBox( {onSendMessage}) {
   return (
     <View style={styles.sendBoxContainer}>
       {isVoiceMode ? (
-        //changes chatbox to voice mode box
-        <VoiceMode onCancel={() => setIsVoiceMode(false)} />
+        <VoiceMode 
+          onCancel={() => setIsVoiceMode(false)} 
+          onSpeechResult={(message) => {
+            setText(message);
+            setIsVoiceMode(false);
+          }}
+        />
       ) : (
         <>
           <TextInput

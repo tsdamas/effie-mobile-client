@@ -3,7 +3,8 @@
  * @param {string} question - The user's question or message.
  * @param {function} onChunk - A callback fired whenever we receive a new chunk of text.
  */
-export async function getChunkedResponse(question, onChunk) {
+
+export async function getChunkedResponse(question, onComplete) {
     try {
         const payload = {
             history: [
@@ -25,42 +26,31 @@ export async function getChunkedResponse(question, onChunk) {
                 }
             ],
             question,
-            client_code: "INSERT_CLIENT_CODE",
-            domain_name: "INSERT_DOMAIN_NAME",
-          };
-      
+            client_code: "",
+            domain_name: "",
+        };
+
         //  console.log("Sending payload:", payload);
 
 
-      const response = await fetch('INSERT_URL', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-  
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      //"response.body" is a ReadableStream
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder('utf-8');
-  
-      let partial = '';
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break; //finished reading all chunks
-        //decode the current chunk
-        const chunkText = decoder.decode(value, { stream: true });
-        partial += chunkText;
-        //pass the accumulated text to our callback
-        onChunk(partial);
-      }
+        const response = await fetch('', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        //read response as text (no blobs)
+        const textData = await response.text();
+        onComplete(textData);
+
     } catch (err) {
-      console.error('Error fetching stream:', err);
+        console.error('Error fetching stream:', err);
     }
-  }
-  
+}
+
