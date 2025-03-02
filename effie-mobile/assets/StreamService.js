@@ -19,7 +19,7 @@ export async function getChunkedResponse(question, history, onComplete) {
     };
     console.log("Payload being sent:", JSON.stringify(payload, null, 2));
 
-    const response = await fetch('https://diosol.com/ml/effie-mistral/chat_gguf', {
+    const response = await fetch('url', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
