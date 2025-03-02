@@ -2,8 +2,8 @@ import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { useState, useRef } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import Button from './Button';
-import VoiceMode from '../assets/VoiceMode.js';
+import ButtonIcon from './ButtonIcon';
+import VoiceMode from '../services/VoiceMode.js';
 
 export default function SendBox( {onSendMessage}) {
   //set default voice mode to false
@@ -40,12 +40,12 @@ export default function SendBox( {onSendMessage}) {
             onSubmitEditing={handleSend} 
             returnKeyType="send"
           />
-          <Button 
+          <ButtonIcon 
             iconName="send" 
             style={styles.sendButton}
             onPress={handleSend}
           />
-          <Button 
+          <ButtonIcon 
             iconName="mic" 
             style={styles.micButton}
             onPress={() => setIsVoiceMode(true)}

@@ -1,10 +1,18 @@
-import { Stack } from "expo-router";
+import { Drawer } from 'expo-router/drawer';
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import CustomDrawer from '@/components/CustomDrawer';
+import ChatScreen from './index';
+import SettingsScreen from './Settings';
+import UserScreen from './user';
+
+const DrawerNavigator = createDrawerNavigator();
 
 export default function RootLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="+not-found" />
-    </Stack>
-  ); 
+    <DrawerNavigator.Navigator drawerContent={(props) => <CustomDrawer {...props} />}>
+      <DrawerNavigator.Screen name="Chat" component={ChatScreen} options={{ headerShown: true }} />
+      <DrawerNavigator.Screen name="Settings" component={SettingsScreen} />
+      <DrawerNavigator.Screen name="User Profile" component={UserScreen} />
+    </DrawerNavigator.Navigator>
+  );
 }

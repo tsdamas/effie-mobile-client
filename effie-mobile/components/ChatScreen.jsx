@@ -1,35 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
-import MessageList from './MessageList';
-import SendBox from './SendBox';
-import { addMessageListener, removeMessageListener } from '../assets/MessageEvents.js'; 
+/**
+ * This file seems to be deprecated.
+ */
 
-export default function ChatScreen() {
-  const [messages, setMessages] = useState([]);
+// import React, { useState, useEffect } from 'react';
+// import { View, StyleSheet } from 'react-native';
+// import MessageList from './MessageList';
+// import SendBox from './SendBox';
+// import { addMessageListener, removeMessageListener } from '../services/MessageEvents.js'; 
 
-  useEffect(() => {
-    const listener = (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    };
+// export default function ChatScreen() {
+//   const [messages, setMessages] = useState([]);
 
-    addMessageListener(listener);
+//   useEffect(() => {
+//     const listener = (message) => {
+//       setMessages((prevMessages) => [...prevMessages, message]);
+//     };
 
-    return () => {
-      removeMessageListener(listener);
-    };
-  }, []);
+//     addMessageListener(listener);
 
-  return (
-    <View style={styles.container}>
-      <MessageList messages={messages} />
-      <SendBox />
-    </View>
-  );
-}
+//     return () => {
+//       removeMessageListener(listener);
+//     };
+//   }, []);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-});
+//   return (
+//     <View style={styles.container}>
+//       <MessageList messages={messages} />
+//       <SendBox />
+//     </View>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//   },
+// });

@@ -1,3 +1,5 @@
+// import { fetch, base64 } from "react-native-blob-util";
+
 /**
  * Sends a POST request with the user's question and reads the response in chunks.
  * @param {string} question - The user's question or message.
@@ -5,7 +7,8 @@
  */
 export async function getChunkedResponse(question, onChunk) {
     try {
-        const payload = {
+      const baseUrl =  "http://127.0.0.1:8000";
+      const payload = {
             history: [
                 {
                     "role": "user",
@@ -25,14 +28,42 @@ export async function getChunkedResponse(question, onChunk) {
                 }
             ],
             question,
-            client_code: "INSERT_CLIENT_CODE",
-            domain_name: "INSERT_DOMAIN_NAME",
+            client_code: "gAAAAABnvXpVnm4xDWR18JTBQSPr3qjUKcmUK3ntm4AMzWG9QGgLwLJboPSm-m_BiXKYdZhfyOZ0oeDNDmB0Bz7cF70zA6OsL89XA076aMhocTeeewyLmnLvGuV3WDMTH2Wq3CYSj1Qs",
+            domain_name: "effie.cx"
+           
           };
       
         //  console.log("Sending payload:", payload);
+    //     let partialResponse = "";
 
+    //     const response = await fetch(
+    //       "POST",
+    //       `${baseUrl}/chat`,
+    //       { "Content-Type": "application/json" },
+    //       JSON.stringify(payload)
+    //     );
+    
+    //     // ✅ Read the response stream
+    //     response.readStream(
+    //       "utf8",
+    //       4096, // Chunk size (adjust if needed)
+    //       (chunk) => {
+    //         partialResponse += chunk;
+    //         onChunk(partialResponse); // Pass new data to the callback
+    //       },
+    //       (error) => {
+    //         console.error("Stream error:", error);
+    //       },
+    //       () => {
+    //         console.log("Streaming completed.");
+    //       }
+    //     );
+    //   } catch (err) {
+    //     console.error("Error fetching stream:", err);
+    //   }
+    // }
 
-      const response = await fetch('INSERT_URL', {
+      const response = await fetch(`${baseUrl}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

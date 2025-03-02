@@ -8,11 +8,11 @@
 
 import React, { useState } from "react";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
-import CustomKeyboardView from "../../components/CustomKeyboardView";
+import CustomKeyboardView from "@/components/CustomKeyboardView";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import MessageList from "@/components/MessageList";
 import SendBox from "@/components/SendBox";
-import { getChunkedResponse } from "@/assets/StreamService"; 
+import { getChunkedResponse } from "@/services/StreamService"; 
 
 
 export default function Index() {
