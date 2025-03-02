@@ -42,13 +42,17 @@ export default function SendBox( {onSendMessage}) {
           />
           <ButtonIcon 
             iconName="send" 
-            style={styles.sendButton}
+            btnStyle={styles.sendButton}
             onPress={handleSend}
+            btnSize={24}
+            btnColor="#006748"
           />
           <ButtonIcon 
             iconName="mic" 
-            style={styles.micButton}
+            btnStyle={styles.micButton}
             onPress={() => setIsVoiceMode(true)}
+            btnSize={24}
+            btnColor="#006748"
           />
         </>
     )}

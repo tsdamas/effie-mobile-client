@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 export default function ButtonIcon({ iconName, onPress, btnSize, btnStyle, btnColor }) {
   // DEFAULTS
 
-const defaultButtonSize = 24;
+const defaultButtonSize = 54;
 const defaultButtonColor = "black";
 const defaultOnPress = () => {}
 
@@ -26,12 +26,14 @@ btnSize = btnSize == 'undefined' ? defaultButtonSize : btnSize;
 //Default styles for Button Icon
 const styles = StyleSheet.create({
   button_default: {
-    padding: 10,
-    borderRadius: 8,
-    elevation: 5, // For Android shadow
-    shadowColor: '#000', // For iOS shadow
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
+    // padding: 10,
+    // borderRadius: 8,
+    // elevation: 5, // For Android shadow
+    // shadowColor: '#000', // For iOS shadow
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.3,
+    // shadowRadius: 3,
+
+    backgroundColor: 'red',
   }
 });
