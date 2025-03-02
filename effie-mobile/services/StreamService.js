@@ -1,40 +1,7 @@
-// import { fetch, base64 } from "react-native-blob-util";
 
-/**
- * Sends a POST request with the user's question and reads the response in chunks.
- * @param {string} question - The user's question or message.
- * @param {function} onChunk - A callback fired whenever we receive a new chunk of text.
- */
-export async function getChunkedResponse(question, onChunk) {
-    try {
-      const baseUrl =  "http://127.0.0.1:8000";
-      const payload = {
-            history: [
-                {
-                    "role": "user",
-                    "content": "hi"
-                },
-                {
-                    "role": "assistant",
-                    "content": " Hello! How can I help you today?"
-                },
-                {
-                    "role": "user",
-                    "content": "I need some information about your clinic"
-                },
-                {
-                    "role": "assistant",
-                    "content": "Sure! Can you please specify what kind of information you're looking for? Are you interested in our services, our medical team, our equipment and technology, or our location and hours of operation?"
-                }
-            ],
-            question,
-            client_code: "gAAAAABnvXpVnm4xDWR18JTBQSPr3qjUKcmUK3ntm4AMzWG9QGgLwLJboPSm-m_BiXKYdZhfyOZ0oeDNDmB0Bz7cF70zA6OsL89XA076aMhocTeeewyLmnLvGuV3WDMTH2Wq3CYSj1Qs",
-            domain_name: "effie.cx"
-           
-          };
-      
-        //  console.log("Sending payload:", payload);
-    //     let partialResponse = "";
+/*
+ // if you need Blob constructor
+// or just rely on the built-in fetch blob() in modern React Native
 
     //     const response = await fetch(
     //       "POST",
@@ -63,35 +30,43 @@ export async function getChunkedResponse(question, onChunk) {
     //   }
     // }
 
-      const response = await fetch(`${baseUrl}/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-  
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      //"response.body" is a ReadableStream
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder('utf-8');
-  
-      let partial = '';
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break; //finished reading all chunks
-        //decode the current chunk
-        const chunkText = decoder.decode(value, { stream: true });
-        partial += chunkText;
-        //pass the accumulated text to our callback
-        onChunk(partial);
-      }
-    } catch (err) {
-      console.error('Error fetching stream:', err);
+ 
+Sends a POST request and reads the response as a Blob, then as text.
+If you only need the full text, you won't get chunk streaming, but
+this stays compatible with Expo's managed workflow.
+*/
+export async function getChunkedResponse(question, history, onComplete) {
+  try {
+    const payload = {
+      history: history.length > 0 ? history : [{ role: "user", content: question }],
+      question,
+      client_code: "CLIENT_CODE",
+      domain_name: "DOMAIN_NAME",
+    };
+    console.log("Payload being sent:", JSON.stringify(payload, null, 2));
+
+    const response = await fetch('url', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+
+    if (!response.ok) {
+      throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
     }
+
+    const blobData = await response.blob();
+
+    // Convert the Blob to text via a Response wrapper
+    const textData = await new Response(blobData).text();
+    
+    // Then do something with textData
+    onComplete(textData);
+
+  } catch (err) {
+    console.error('Error fetching data:', err);
   }
-  
+}
+
+
