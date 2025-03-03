@@ -86,7 +86,7 @@ import { getChunkedResponse } from "@/services/StreamService";
 
 export default function LoadingPage() {
   return (
-    <View>
+    <View style={styles.container}>
       <ActivityIndicator size="large" color="gray" />
     </View>
   )
@@ -95,6 +95,8 @@ export default function LoadingPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#fff',
   },
   chatContainer: {

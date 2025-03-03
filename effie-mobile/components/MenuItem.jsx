@@ -4,17 +4,18 @@ import React from 'react'
 import ButtonIcon from './ButtonIcon'
 
 
-export default function MenuItem({ iconName, onPress, btnSize, btnStyle, btnColor, text }) {
-  
+export default function MenuItem({ iconName, onPress, btnSize, btnStyle, btnColor, text, textStyle, menuItemStyle }) {
+  textStyle = textStyle == 'undefined' ? styles.text_label : textStyle;
+  menuItemStyle = menuItemStyle == 'undefined' ? styles.menu_item : menuItemStyle;
   return (
-    <TouchableOpacity style={styles.menu_item} onPress={onPress}>
+    <TouchableOpacity style={menuItemStyle} onPress={onPress}>
       <ButtonIcon
           btnStyle={btnStyle}
           btnSize={btnSize}
           btnColor={btnColor}
           iconName={iconName}
       />
-      <Text style={styles.text_label}>
+      <Text style={textStyle}>
         {text}
       </Text>
     </TouchableOpacity>
