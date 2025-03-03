@@ -15,9 +15,11 @@ export default function MenuItem({ iconName, onPress, btnSize, btnStyle, btnColo
           btnColor={btnColor}
           iconName={iconName}
       />
-      <Text style={textStyle}>
-        {text}
-      </Text>
+      <View style={styles.textContainer}>
+        <Text style={textStyle}>
+          {text}
+        </Text>
+      </View>
     </TouchableOpacity>
   )
 }
@@ -28,9 +30,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 10,
   },
+  textContainer: {
+    flexShrink: 1,  // Allows shrinking if needed
+    flexGrow: 1,    // Allows expansion if needed
+    marginLeft: 10, // Spacing between icon and text
+  },
   text_label: {
     fontSize: 14,
-    marginLeft: 10,
     color: "#000",
   }
 
