@@ -1,16 +1,39 @@
-import { View, Text, StyleSheet } from 'react-native';
+// VoiceMode.js
 import React, { useState, useEffect } from 'react';
-import Voice from '@react-native-community/voice';
+import * as FileSystem from 'expo-file-system';
+import { View, Text, StyleSheet, PermissionsAndroid } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { PermissionsAndroid } from 'react-native';
 
 import Button from '../components/Button';
+import { startRecording, stopRecording, fileToBase64, convertM4AToWav } from './AudioRecorder';
+import { sendToSTTApi } from './STT.js';
 
-export default function VoiceMode({ onCancel }) {
+export default function VoiceMode({ onCancel, onSpeechResult }) {
   const [dots, setDots] = useState('');
-  const [isListening, setIsListening] = useState(false);
-  const [speechText, setSpeechText] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
+  const [speechText, setSpeechText] = useState('Listening...');
 
+  // Start recording on mount
+  useEffect(() => {
+    (async () => {
+      const granted = await requestMicrophonePermission();
+      if (!granted) {
+        console.log('Microphone permission denied');
+        onCancel();
+        return;
+      }
+
+      // Attempt to start recording
+      const started = await startRecording();
+      if (started) {
+        setIsRecording(true);
+      } else {
+        onCancel();
+      }
+    })();
+  }, []);
+
+  // Ask for microphone permission
   async function requestMicrophonePermission() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -23,7 +46,6 @@ export default function VoiceMode({ onCancel }) {
           buttonPositive: 'OK',
         }
       );
-  
       return granted === PermissionsAndroid.RESULTS.GRANTED;
     } catch (err) {
       console.warn(err);
@@ -31,98 +53,67 @@ export default function VoiceMode({ onCancel }) {
     }
   }
 
-//   useEffect(() => {
-//     let count = 1;
-//     const interval = setInterval(() => {
-//       setDots('\u2022'.repeat(count)); // bullets (later change to voice waves when picking up voice signals)
-//       count = (count % 7) + 1; // Cycle between 1 to 7 dots
-//     }, 500);
-
-//     return () => clearInterval(interval);    //clear bullets
-//   }, []);
-
-  // Initialize voice recognition event listeners
-  useEffect(() => {
-    if (!Voice) return;
-
-    Voice.onSpeechResults = (event) => {
-        console.log("Speech results:", event.value); //DEBUGGER FOR SPEECH OUTPUT
-      setSpeechText(event.value[0]); //Get the recognized text
-    };
-    
-    Voice.onSpeechEnd = () => {
-      setIsListening(false);
-    };
-
-    return () => {
-        Voice.destroy()
-          .then(() => {
-            if (Voice && Voice.removeAllListeners) {
-              Voice.removeAllListeners();
-            }
-          })
-          .catch((error) => console.error(error));
-      };
-  }, []);
-  
-  useEffect(() => {
-    startListening();
-  }, []);
-
-  // Starting voice recognition
-  const startListening = async () => {
-    if (!Voice) return;
-  
-    const hasPermission = await requestMicrophonePermission();
-    if (hasPermission) {
-      try {
-        setIsListening(true);
-        setSpeechText('');
-        await Voice.start('en-US');
-      } catch (error) {
-        console.error('Voice recognition error:', error);
-      }
-    } else {
-      console.log('Microphone permission denied');
-    }
-  };
-
-  // Stopping voice recognition
-  const stopListening = async () => {
-    try {
-        if (!Voice) return;
-
-      await Voice.stop();
-      setIsListening(false);
-    } catch (error) {
-      console.error('Error stopping voice:', error);
-    }
-  };
-
-  // When send button is pressed, send speech text to chat
-  const handleSend = () => {
-    if (!speechText.trim()) {
-        //console.warn('No speech recognized'); 
-      } else {
-        onSpeechResult(speechText);
-      }
-      // Always close voice mode anyway
+  // Stop recording, convert to base64, send to STT API
+  const handleSend = async () => {
+    console.log("handleSend triggered");
+    if (!isRecording) {
       onCancel();
+      return;
+    }
+    setIsRecording(false);
+
+    const m4aUri = await stopRecording();
+    if (!m4aUri) {
+      onCancel();
+      return;
+    }
+
+    setSpeechText('Processing...');
+
+    const outputWavUri = FileSystem.documentDirectory + 'converted.wav';
+    // Convert M4A to WAV (Float32)
+    const wavUri = await convertM4AToWav(m4aUri, outputWavUri);
+    if (!wavUri) {
+      console.log('Conversion to WAV failed');
+      onCancel();
+      return;
+    }
+
+    // Convert file to base64
+    const base64Data = await fileToBase64(wavUri);
+    if (!base64Data) {
+      console.log('Failed to read WAV as base64');
+      onCancel();
+      return;
+    }
+
+    // Send to STT server
+    const transcript = await sendToSTTApi(base64Data, 44100);
+    if (transcript) {
+      setSpeechText(transcript);
+      // Pass the recognized text back to parent
+      onSpeechResult(transcript);
+    } else {
+      console.log('No transcript received');
+    }
+
+    // Finally, close voice mode
+    onCancel();
   };
 
   const handleCancel = async () => {
-    if (isListening) {
-      await stopListening();
+    if (isRecording) {
+      await stopRecording();
+      setIsRecording(false);
     }
-    onCancel(); // Only call `onCancel` AFTER stopping voice
+    onCancel();
   };
 
   return (
     <View style={styles.container}>
       <Button iconName="trash" style={styles.trashButton} onPress={handleCancel} />
-      {/* Speech text or animated dots */}
       <Text style={styles.text}>
-        {isListening ? dots : speechText || 'Listening...'}
+        {isRecording ? dots : speechText || 'Processing...'}
       </Text>
       <Button iconName="send" style={styles.sendButton} onPress={handleSend} />
     </View>
@@ -130,27 +121,27 @@ export default function VoiceMode({ onCancel }) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: '#f0f0f0',
-        borderRadius: 15,
-        paddingHorizontal: wp(1),
-        width: wp(80),
-        height: hp(5),
-      },
-      trashButton: {
-        marginRight: wp(3),
-      },
-      text: {
-        flex: 1,
-        textAlign: 'center',
-        fontSize: hp(2),
-        color: '#555',
-      },
-      sendButton: {
-        marginLeft: wp(3),
-      },
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#f0f0f0',
+    borderRadius: 15,
+    paddingHorizontal: wp(1),
+    width: wp(80),
+    height: hp(5),
+  },
+  trashButton: {
+    marginRight: wp(3),
+  },
+  text: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: hp(2),
+    color: '#555',
+  },
+  sendButton: {
+    marginLeft: wp(3),
+  },
 });

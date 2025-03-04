@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
   sendBoxContainer: {
     position: 'relative',
     bottom: hp(1.2), 
-    //flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     width: wp(80),
