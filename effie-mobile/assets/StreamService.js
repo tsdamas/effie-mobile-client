@@ -1,56 +1,30 @@
-/**
- * Sends a POST request with the user's question and reads the response in chunks.
- * @param {string} question - The user's question or message.
- * @param {function} onChunk - A callback fired whenever we receive a new chunk of text.
- */
 
-export async function getChunkedResponse(question, onComplete) {
-    try {
-        const payload = {
-            history: [
-                {
-                    "role": "user",
-                    "content": "hi"
-                },
-                {
-                    "role": "assistant",
-                    "content": " Hello! How can I help you today?"
-                },
-                {
-                    "role": "user",
-                    "content": "I need some information about your clinic"
-                },
-                {
-                    "role": "assistant",
-                    "content": "Sure! Can you please specify what kind of information you're looking for? Are you interested in our services, our medical team, our equipment and technology, or our location and hours of operation?"
-                }
-            ],
-            question,
-            client_code: "",
-            domain_name: "",
-        };
+export async function getChunkedResponse(question, history, onComplete) {
+  try {
+    const payload = {
+      history: history.length > 0 ? history : [{ role: "user", content: question }],
+      question,
+      client_code: "CLIENT_CODE",
+      domain_name: "DOMAIN_NAME",
+    };
+    console.log("Payload being sent:", JSON.stringify(payload, null, 2));
 
-        //  console.log("Sending payload:", payload);
+    const response = await fetch('url', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
 
 
-        const response = await fetch('', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        //read response as text (no blobs)
-        const textData = await response.text();
-        onComplete(textData);
-
-    } catch (err) {
-        console.error('Error fetching stream:', err);
+    if (!response.ok) {
+      throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
     }
+
+    const textData = await response.text();
+
+  } catch (err) {
+    console.error('Error fetching data:', err);
+  }
 }
+
 
