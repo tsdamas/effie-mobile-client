@@ -1,3 +1,5 @@
+// SendBox.jsx
+
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { useState, useRef } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
