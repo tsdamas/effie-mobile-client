@@ -1,31 +1,35 @@
 import { View, Text, StyleSheet, StatusBar, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import MenuItem from '@/components/MenuItem';
 import { Colors } from '@/assets/styles/colors';
 import InputField from '@/components/InputField';
 import ButtonIcon from '@/components/ButtonIcon';
-import { Ionicons } from '@expo/vector-icons';
 
 export default function SignIn() {
 
-    const [loginOption, setLoginOption] = useState("");
+    // const [loginOption, setLoginOption] = useState("none");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleLoginOption = (opt) => {
-        setLoginOption(opt);
+        // setLoginOption(opt);
+        console.log(opt);
     }
 
     return (
         <View style={styles.sign_in_container}>
+            {/* {console.log(loginOption)} */}
             <StatusBar style="dark" />
             {/* Log in text */}
             <View style={styles.sign_in_container}>
                 <Text style={styles.header}>Login to your account</Text>
             </View>
             <View style={styles.login_buttons_container}>
-            {loginOption=="" ? (
+            {
+            // loginOption=="none"
+            (2+2 == 5)
+             ? (
                
             <>
                     <MenuItem
@@ -80,7 +84,9 @@ export default function SignIn() {
                     placeholder="Enter your password"
                     secureTextEntry={true}
                 />
-                <TouchableOpacity style={styles.login_button}>
+                <TouchableOpacity 
+                onPress={handleLoginOption("none")}
+                style={styles.login_button}>
                     <Text style={styles.login_label}>
                         Login
                     </Text>
