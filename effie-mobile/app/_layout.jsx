@@ -1,6 +1,7 @@
 
 import { AuthContextProvider, useAuth } from "@/context/authContext";
 import { Slot, useRouter, useSegments } from "expo-router";
+import { replace } from "expo-router/build/global-state/routing";
 import { useEffect } from "react";
 
 
@@ -11,7 +12,11 @@ const MainLayout = () => {
 
   useEffect(() => {
     //Check if user is Authenticated or not
-    if (typeof isAuthenticated=='undefined') return;
+    if (typeof isAuthenticated=='undefined') {
+      router.replace("/");
+      return;
+    }
+     
 
     const inApp = segments[0] =="app";
 

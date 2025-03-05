@@ -1,22 +1,33 @@
-import { View, Text, StyleSheet, StatusBar, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import MenuItem from '@/components/MenuItem';
 import { Colors } from '@/assets/styles/colors';
 import InputField from '@/components/InputField';
 import ButtonIcon from '@/components/ButtonIcon';
+import { useAuth } from '@/context/authContext';
+
 
 export default function SignIn() {
 
-    // const [loginOption, setLoginOption] = useState("none");
+    const [loginOption, setLoginOption] = useState("none");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleLoginOption = (opt) => {
-        // setLoginOption(opt);
+    const {login} = useAuth();
+
+    const switchLoginOption = (opt) => {
+        setLoginOption(opt);
+        // console.log(email);
+        // console.log(password);
         console.log(opt);
     }
 
+    const handleLogin = async () =>{
+        login(email, password);
+
+    }
+console.log(Platform.OS);
     return (
         <View style={styles.sign_in_container}>
             {/* {console.log(loginOption)} */}
@@ -26,79 +37,76 @@ export default function SignIn() {
                 <Text style={styles.header}>Login to your account</Text>
             </View>
             <View style={styles.login_buttons_container}>
-            {
-            // loginOption=="none"
-            (2+2 == 5)
-             ? (
-               
-            <>
-                    <MenuItem
-                        iconName="logo-apple"
-                        onPress={handleLoginOption("apple")}
-                        btnSize={28}
-                        btnColor='white'
-                        text="Continue with Apple"
-                        textStyle={styles.login_label}
-                        menuItemStyle={styles.login_button}
-                    />
+                {loginOption=="none" ? (   
+                    <>
+                        <MenuItem
+                            iconName="logo-apple"
+                            onPress={() => switchLoginOption("apple")}
+                            btnSize={28}
+                            btnColor='white'
+                            text="Continue with Apple"
+                            textStyle={styles.login_label}
+                            menuItemStyle={styles.login_button}
+                        />
 
-                    <MenuItem
-                        iconName="logo-google"
-                        onPress={handleLoginOption("google")}
-                        btnSize={28}
-                        btnColor='white'
-                        text="Continue with Google"
-                        textStyle={styles.login_label}
-                        menuItemStyle={styles.login_button}
-                    />
+                        <MenuItem
+                            iconName="logo-google"
+                            onPress={() => switchLoginOption("google")}
+                            btnSize={28}
+                            btnColor='white'
+                            text="Continue with Google"
+                            textStyle={styles.login_label}
+                            menuItemStyle={styles.login_button}
+                        />
 
-                    <MenuItem
-                        iconName="mail"
-                        onPress={handleLoginOption("email")}
-                        btnSize={28}
-                        btnColor='white'
-                        text="Continue with Email"
-                        textStyle={styles.login_label}
-                        menuItemStyle={styles.login_button}
-                    />
-                    <Text style={styles.already_label}>
-                        Don't have an account? Sign Up
-                    </Text>
+                        <MenuItem
+                            iconName="mail"
+                            onPress={() => switchLoginOption("email")}
+                            btnSize={28}
+                            btnColor='white'
+                            text="Continue with Email"
+                            textStyle={styles.login_label}
+                            menuItemStyle={styles.login_button}
+                        />
+                        <Text style={styles.already_label}>
+                            Don't have an account? Sign Up
+                        </Text>
                     </>
               
-            ):
-            (
-                <>
-                <InputField 
-                    label="Email"
-                    value={email}
-                    onChangeText={setEmail}
-                    placeholder="Enter your email"
-                    keyboardType="email-address"
-                />
-
-                <InputField 
-                    label="Password"
-                    value={password}
-                    onChangeText={setPassword}
-                    placeholder="Enter your password"
-                    secureTextEntry={true}
-                />
-                <TouchableOpacity 
-                onPress={handleLoginOption("none")}
-                style={styles.login_button}>
-                    <Text style={styles.login_label}>
-                        Login
-                    </Text>
-                    <ButtonIcon
-                        iconName="arrow-forward"
-                        btnColor="white"
-                        btnSize={28}
+                ):
+                (
+                    <>
+                    <InputField 
+                        label="Email"
+                        value={email}
+                        onChangeText={setEmail}
+                        placeholder="Enter your email"
+                        keyboardType="email-address"
                     />
-                </TouchableOpacity>
-                </>
+
+                    <InputField 
+                        label="Password"
+                        value={password}
+                        onChangeText={setPassword}
+                        placeholder="Enter your password"
+                        secureTextEntry={true}
+                    />
+                    <TouchableOpacity 
+                    onPress={() => handleLogin()}
+                    style={styles.login_button}>
+                        <Text style={styles.login_label}>
+                            Login
+                        </Text>
+                        <ButtonIcon
+                            iconName="arrow-forward"
+                            btnColor="white"
+                            btnSize={28}
+                            onPress={() => handleLogin()}
+                        />
+                    </TouchableOpacity>
+                    </>
                
-            )}
+                )}
             </View>
             
         
@@ -109,9 +117,12 @@ export default function SignIn() {
 const styles = StyleSheet.create({
     sign_in_container: {
         flex: 1,
-        alignItems: 'center',
+        alignItems: 'stretch', 
         justifyContent: 'center',
         flexDirection: 'column',
+        width: (Platform.OS !== 'web' ? "100%" : "auto"),
+        paddingHorizontal: wp(5), 
+        marginHorizontal: 'auto'
     },
     header: {
         fontWeight: 'bold',

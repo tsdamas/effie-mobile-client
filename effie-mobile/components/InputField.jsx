@@ -29,7 +29,7 @@ export default function InputField({
 // Default styles
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    width: "100%", // Ensure the container takes full width
     marginBottom: 16,
   },
   label: {
@@ -46,5 +46,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     fontSize: 16,
     backgroundColor: "#fff",
+    width: "100%", // Ensure it stretches
+    alignSelf: "stretch", // Makes sure it follows parent's width
   }
 });
+

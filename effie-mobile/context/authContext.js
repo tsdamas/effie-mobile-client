@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { Alert } from "react-native";
 
 export const AuthContext = createContext();
 
@@ -9,18 +10,27 @@ export const AuthContextProvider = ({children}) => {
     useEffect(() => {
         //onAuthStateChanged
 
-        setTimeout(() => {
-            setIsAuthenticated(true);
-        }, 5000);
-
         // setTimeout(() => {
-        //     setIsAuthenticated(false);
+        //     setIsAuthenticated(true);
         // }, 5000);
+
+        setTimeout(() => {
+            setIsAuthenticated(false);
+        }, 1000);
     }, []);
 
-    const login = async (email, password) => {
+     const login = async (email, password) => {
         try {
-
+            if(email == 'customer@effie.com' && password == 'letmein') {
+                setIsAuthenticated(undefined);
+                setTimeout(() => {
+                    setIsAuthenticated(true);
+                }, 4000);
+            } else {
+                let msg = "Wrong credentials";
+                Alert.alert(msg);
+                return
+            }
         } catch(error) {
 
         }
