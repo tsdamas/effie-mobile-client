@@ -7,12 +7,13 @@
  */
 
 import React, { useState, useRef, useEffect } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
-import CustomKeyboardView from "../../components/CustomKeyboardView";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { Text, View, StyleSheet, ScrollView, FlatList } from "react-native";
+import CustomKeyboardView from "@/components/CustomKeyboardView";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import MessageList from "@/components/MessageList";
 import SendBox from "@/components/SendBox";
-import { getChunkedResponse } from "../../assets/StreamService";
+import { getChunkedResponse } from "@/assets/StreamService"; 
+
 
 export default function Index() {
   const [messages, setMessages] = useState([]);

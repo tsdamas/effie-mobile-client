@@ -5,7 +5,7 @@ import * as FileSystem from 'expo-file-system';
 // 1) Send TTS request, get WAV bytes, save locally, return local URI
 export async function fetchTTS(query, voice) {
     try {
-        const TTS_URL = 'URL'; // Replace with actual endpoint
+        const TTS_URL = ''; //replace with actual endpoint
 
         const response = await fetch(TTS_URL, {
             method: 'POST',
@@ -22,7 +22,7 @@ export async function fetchTTS(query, voice) {
         //console.log('TTS Content-Type:', response.headers.get('Content-Type'));
 
         const fullPath = await response.json();
-        console.log('TTS JSON data (string path):', fullPath);
+        //console.log('TTS JSON data (string path):', fullPath);
         if (!fullPath) {
             throw new Error('No audioPath in TTS response.');
         }
@@ -39,12 +39,12 @@ export async function fetchTTS(query, voice) {
         }
 
         //replace with server URL
-        const remoteUrl = 'URL' + filePath;
+        const remoteUrl = ' ' + filePath;
 
         //downloading URI
         const localUri = FileSystem.documentDirectory + 'ttsOutput.wav';
         const { uri } = await FileSystem.downloadAsync(remoteUrl, localUri);
-        console.log('Downloaded WAV to:', uri);
+        //console.log('Downloaded WAV to:', uri);
 
         return uri;
 

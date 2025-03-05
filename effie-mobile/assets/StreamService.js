@@ -1,30 +1,30 @@
 
 export async function getChunkedResponse(question, history, onComplete) {
-  try {
-    const payload = {
-      history: history.length > 0 ? history : [{ role: "user", content: question }],
-      question,
-      client_code: "CLIENT_CODE",
-      domain_name: "DOMAIN_NAME",
-    };
-    console.log("Payload being sent:", JSON.stringify(payload, null, 2));
+    try {
+        const payload = {
+            history: history.length > 0 ? history : [{ role: "user", content: question }],
+            question,
+            client_code: " ", //INSERT CODE
+            domain_name: " ", //INSERT NAME
+        };
+        //console.log("Payload being sent:", JSON.stringify(payload, null, 2));
 
-    const response = await fetch('url', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+        const response = await fetch('', { //INSERT URL
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+        });
 
+        if (!response.ok) {
+            throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
+        }
 
-    if (!response.ok) {
-      throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
+        const textData = await response.text();
+        onComplete(textData);
+
+    } catch (err) {
+        console.error('Error fetching data:', err);
     }
-
-    const textData = await response.text();
-
-  } catch (err) {
-    console.error('Error fetching data:', err);
-  }
 }
 
 
