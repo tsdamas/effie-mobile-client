@@ -1,6 +1,14 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
+/*      The MessageList component is a chat message display component that shows a list of messages,
+         where each message is rendered in a chat bubble. The chat bubbles are styled differently 
+         based on whether the message is from the user or from the AI, ensuring clear communication 
+         in a chat interface.
+*/
+
+//import { View, Text, StyleSheet } from 'react-native'
+import { View } from 'react-native';
+import React from 'react';
 import ChatBubble from './ChatBubble';
+import styles from './MessageListStyles';
 
 export default function MessageList({ messages }) {
   return (
@@ -18,21 +26,4 @@ export default function MessageList({ messages }) {
       ))}
     </View>
   );
-}
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-  },
-  bubbleContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    marginVertical: 4,
-  },
-  userContainer: {
-    justifyContent: 'flex-end',
-  },
-  aiContainer: {
-    justifyContent: 'flex-start',
-  },
-});
+};

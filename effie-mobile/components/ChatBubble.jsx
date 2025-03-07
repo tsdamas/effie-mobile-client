@@ -1,6 +1,9 @@
 //UI for incoming and outgoing messages
+
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+//import { View, Text, StyleSheet } from 'react-native'
+import { View, Text } from 'react-native';
+import styles from './ChatBubbleStyles';        // Importing styles
 
 export default function ChatBubble({ message, role }) {
   const isUser = role === 'user';
@@ -10,18 +13,4 @@ export default function ChatBubble({ message, role }) {
       <Text style={styles.text}>{message}</Text>
     </View>
   );
-}
-const styles = StyleSheet.create({
-  bubble: {
-    maxWidth: '80%',
-    padding: 10,
-    borderRadius: 10,
-    backgroundColor: '#e4e4e4',
-  },
-  text: {
-    fontSize: 16,
-    color: 'black',
-    textAlign: 'left',
-    flexWrap: 'wrap',
-  },
-});
+};

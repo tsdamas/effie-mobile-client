@@ -1,10 +1,12 @@
-import { View, Text, Platform, StyleSheet, TouchableOpacity } from 'react-native'
+//import { View, Text, Platform, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, Platform } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import ButtonIcon from './ButtonIcon';
+import styles from './ChatHeaderStyles';        // Import Styles
 
 const ios = Platform.OS == 'ios';
 const blurhash =
@@ -28,8 +30,23 @@ const blurhash =
             <Text style={styles.headerText}>Effie Mobile</Text>
 
            
-            <View style={{ paddingRight: wp(2) }}>
+            <View style={styles.userPictureWrapper}>
                 <Image
+                style={styles.userPicture}
+                source="https://picsum.photos/seed/696/3000/2000"
+                placeholder={{ blurhash }}
+                contentFit="cover"
+                transition={500}
+                />
+      </View>
+
+        </View>
+    );
+};
+
+/*          Save this part of the code just in case    
+            <View style={{ paddingRight: wp(2) }}>
+               <Image
                     style={styles.userPicture}
                     source="https://picsum.photos/seed/696/3000/2000"
                     placeholder={{ blurhash }}
@@ -37,37 +54,5 @@ const blurhash =
                     transition={500}
                 />
             </View>
-
-        </View>
-    );
-}
-
-const styles = StyleSheet.create({
-    header: (top) => ({
-        paddingTop: ios ? top : top + 10,
-        paddingBottom: hp(1.5),
-        borderBottomLeftRadius: 10, 
-        borderBottomRightRadius: 10, 
-        overflow: 'hidden', 
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    }),
-    menuButton: {
-        paddingLeft: wp(2),  
-        paddingRight: wp(2),
-        // marginRight: wp(2), 
-    },
-    headerText: {
-        fontSize: hp(3),
-        color: '#006748',
-        fontWeight: 'bold',
-        flex: 1, 
-    },
-    userPicture: {
-        height: hp(4.3),
-        aspectRatio: 1,
-        borderRadius: 100,
-    },
-});
+            
+*/
