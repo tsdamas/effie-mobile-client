@@ -5,8 +5,12 @@ import ButtonIcon from "./ButtonIcon";
 import MenuItem from "./MenuItem";
 import { Ionicons } from "@expo/vector-icons";
 import { conversationList } from "@/services/GetConversations";
+import { useAuth } from '@/context/authContext';
+import { widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 const CustomDrawer = (props) => {
+
+  const {logout} = useAuth();
 
   const createConversationList = () => {
     return conversationList.map((conversation, index) => (
@@ -17,9 +21,14 @@ const CustomDrawer = (props) => {
         btnColor="black"
         iconName="chatbubble-outline"
         text={conversation.title}
+        menuItemStyle={styles.menuItem}
       />
     ));
-  } 
+  }
+  
+  const handleLogout = () => {
+    logout();
+  }
 
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
@@ -82,8 +91,19 @@ const CustomDrawer = (props) => {
           btnSize={20}
           btnColor="black"
         />
-        
       </View>
+       {/* 🔴 Logout Button */}
+       <MenuItem 
+          onPress={handleLogout}
+          btnStyle={styles.logoutButton}
+          iconName="log-out"
+          btnSize={20}
+          btnColor="white"
+          text="Logout"
+          menuItemStyle={styles.menuItem}
+          textStyle={styles.userName}
+        />
+        
     </DrawerContentScrollView>
   );
 };
@@ -162,5 +182,17 @@ const styles = StyleSheet.create({
   },
   settingsButton: {
     padding: 5,
+  },
+  logoutButton: {
+    marginLeft: 15,
+    padding: 8,
+    backgroundColor: "red",
+    borderRadius: 8,
+    width: wp(2),
+  },
+  menuItem: {
+    flexDirection: 'row', // Ensure the items are aligned horizontally
+    alignItems: 'center', // Align items vertically centered
+    paddingVertical: 10,
   },
 });

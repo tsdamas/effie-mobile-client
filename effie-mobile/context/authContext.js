@@ -37,7 +37,13 @@ export const AuthContextProvider = ({children}) => {
     }
     const logout = async () => {
         try {
-
+            setIsAuthenticated(undefined);
+            setTimeout(() => {
+                setIsAuthenticated(false);
+            }, 2000);
+            let msg = "Logout succesfully";
+            Alert.alert(msg);
+                
         } catch(error) {
 
         }
