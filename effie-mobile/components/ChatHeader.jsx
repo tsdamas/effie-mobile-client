@@ -1,29 +1,33 @@
 import { View, Text, Platform, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
+import ButtonIcon from './ButtonIcon';
 
 const ios = Platform.OS == 'ios';
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
-  export default function ChatHeader({ navigation }) {  // ✅ Receive navigation prop
+  export default function ChatHeader() { 
+    const navigation = useNavigation();
     const { top } = useSafeAreaInsets();
 
     return (
         <View style={styles.header(top)}>
             
-            {/* Hamburger Menu on the Left */}
-            <TouchableOpacity onPress={() => navigation.openDrawer()} style={styles.menuButton}>
-                <Ionicons name="menu" size={28} color="black" />
-            </TouchableOpacity>
-
-            {/* App Title */}
+            <ButtonIcon 
+                onPress={() => navigation.openDrawer()}
+                iconName="menu"
+                btnSize={28}
+                btnColor="black"
+                btnStyle={styles.menuButton}
+            />
+         
             <Text style={styles.headerText}>Effie Mobile</Text>
 
-            {/* User Profile Picture on the Right */}
+           
             <View style={{ paddingRight: wp(2) }}>
                 <Image
                     style={styles.userPicture}
@@ -51,14 +55,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     }),
     menuButton: {
-        paddingLeft: wp(2),  // Space from the left
-        paddingRight: wp(2), // Space between menu and title
+        paddingLeft: wp(2),  
+        paddingRight: wp(2),
+        // marginRight: wp(2), 
     },
     headerText: {
         fontSize: hp(3),
         color: '#006748',
         fontWeight: 'bold',
-        flex: 1, // Makes the title take available space
+        flex: 1, 
     },
     userPicture: {
         height: hp(4.3),

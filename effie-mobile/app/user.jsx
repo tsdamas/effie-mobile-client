@@ -2,7 +2,7 @@
 
 import { Text, View } from "react-native";
 
-export default function User() {
+export default function UserScreen() {
   return (
     <View
       style={{

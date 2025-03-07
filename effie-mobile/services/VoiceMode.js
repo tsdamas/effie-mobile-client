@@ -1,6 +1,6 @@
 import { View, TextInput, StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import Button from '../components/Button';
+import ButtonIcon from '../components/ButtonIcon';
 
 export default function VoiceMode({ onCancel }) {
   const [dots, setDots] = useState('');
@@ -17,7 +17,7 @@ export default function VoiceMode({ onCancel }) {
 
   return (
     <>
-        <Button 
+        <ButtonIcon 
         iconName="trash" 
         style={styles.cancelButton} 
         onPress={onCancel} 
@@ -27,7 +27,7 @@ export default function VoiceMode({ onCancel }) {
         value={dots} 
         editable={false} 
       />
-      <Button 
+      <ButtonIcon 
         iconName="send" 
         style={styles.cancelButton} 
         onPress={onCancel}
