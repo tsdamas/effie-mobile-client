@@ -1,12 +1,22 @@
+/*     The CustomDrawer is a customizable side navigation menu that includes features like search,
+        new conversation creation, recent chats, and user information access. It helps users navigate 
+        through the app in a clean and organized manner. */
+
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
-import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
+// import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
+//import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
+import { DrawerContentScrollView } from "@react-navigation/drawer";
 import ButtonIcon from "./ButtonIcon";
 import MenuItem from "./MenuItem";
 import { Ionicons } from "@expo/vector-icons";
 import { conversationList } from "@/services/GetConversations";
+<<<<<<< HEAD
 import { useAuth } from '@/context/authContext';
 import { widthPercentageToDP as wp} from "react-native-responsive-screen";
+=======
+import styles from './CustomDrawerStyles';
+>>>>>>> Juliana/Feature/FrontEnd
 
 const CustomDrawer = (props) => {
 
@@ -67,7 +77,7 @@ const CustomDrawer = (props) => {
         { createConversationList() }
       </View>
 
-      {/* 👤 User Info and page navitgation Buttons */}
+      {/* User Info and page navitgation Buttons */}
       <View style={styles.userInfo}>
         <TouchableOpacity
           onPress={() => props.navigation.navigate("User Profile")}
@@ -75,7 +85,7 @@ const CustomDrawer = (props) => {
         >
           <Image source={{ uri: "https://cdn-icons-png.flaticon.com/512/17/17004.png" }} style={styles.avatar} />
           
-          <Text style={styles.userName}>Juliana Nina</Text>
+          <Text style={styles.userName}>User Name</Text>
         </TouchableOpacity>
         <ButtonIcon 
           onPress={() => props.navigation.navigate("Settings")}
@@ -196,3 +206,4 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
 });
+export default CustomDrawer;

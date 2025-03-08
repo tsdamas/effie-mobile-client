@@ -41,30 +41,24 @@ const styles = StyleSheet.create({
     },
 });
 
-// import { KeyboardAvoidingView, View, Platform, StyleSheet } from 'react-native';
-// import React from 'react';
+/* MAYBE THE NEXT CODE, BUT NO FOR NOW --- need to do that with Andres (juliana)
+import React from 'react';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import styles from './CustomKeyboardViewStyles'; // Importing styles from CustomKeyboardViewStyles.js
 
-// const ios = Platform.OS === 'ios';
+export default function CustomKeyboardView() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.headerText}>Custom Keyboard</Text>
+      
+      <View style={styles.inputWrapper}>
+        <TextInput style={styles.input} placeholder="Type something..." />
+      </View>
 
-// export default function CustomKeyboardView({ children }) {
-//   return (
-//     <KeyboardAvoidingView
-//       behavior={ios ? 'padding' : 'height'}
-//       style={styles.background}
-//     >
-//       <View style={styles.content}>{children}</View>
-//     </KeyboardAvoidingView>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   background: {
-//     flex: 1,
-//   },
-//   content: {
-//     flexGrow: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     width: '100%',
-//   },
-// });
+      <TouchableOpacity style={styles.button} onPress={() => console.log('Button pressed')}>
+        <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+*/
