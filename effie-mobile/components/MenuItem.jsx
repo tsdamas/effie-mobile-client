@@ -1,6 +1,11 @@
+
 //Icons + label for tab menu or hidden hamburger menu
 
 //import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import ButtonIcon from './ButtonIcon';
+import styles from './MenuItemStyles';
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import ButtonIcon from './ButtonIcon'
