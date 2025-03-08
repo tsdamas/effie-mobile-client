@@ -7,15 +7,14 @@
  */
 
 import React, { useState, useRef, useEffect } from "react";
-import { Text, View, StyleSheet, ScrollView, FlatList } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import CustomKeyboardView from "@/components/CustomKeyboardView";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import MessageList from "@/components/MessageList";
 import SendBox from "@/components/SendBox";
-import { getChunkedResponse } from "@/assets/StreamService"; 
+import { getChunkedResponse } from "@/services/StreamService";
 
-
-export default function Index() {
+export default function ChatScreen() {
   const [messages, setMessages] = useState([]);
   const flatListRef = useRef(null);
   
@@ -73,24 +72,33 @@ export default function Index() {
 
   return (
     <CustomKeyboardView style={styles.container}>
-      <FlatList
-        ref={flatListRef}
-        data={messages}
-        renderItem={({ item }) => <MessageList messages={[item]} />}
-        keyExtractor={(item, index) => index.toString()}
-        contentContainerStyle={styles.chatContainer}
-      />
-      <SendBox onSendMessage={handleSendMessage} />
+      <View style={styles.innerContainer}>
+        <FlatList
+          ref={flatListRef}
+          data={messages}
+          renderItem={({ item }) => <MessageList messages={[item]} />}
+          keyExtractor={(item, index) => index.toString()}
+          contentContainerStyle={styles.chatContainer}
+          showsVerticalScrollIndicator={false}
+        />
+        <SendBox onSendMessage={handleSendMessage} />
+      </View>
     </CustomKeyboardView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
+  innerContainer: {
+    flex: 1,  // Ensures the content takes up full height but does not overflow
+    justifyContent: "flex-end",  // Ensures SendBox stays at the bottom
+  },
   chatContainer: {
+    flexGrow: 1, // Allows FlatList to shrink and not push SendBox off the screen
     paddingBottom: hp(2),
   },
 });

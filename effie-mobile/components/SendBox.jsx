@@ -1,11 +1,11 @@
-// SendBox.jsx
-
-import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+//import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TextInput } from 'react-native';
 import React, { useState, useRef } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import Button from './Button';
-import VoiceMode from '../assets/VoiceMode.js';
+import ButtonIcon from './ButtonIcon';
+import VoiceMode from '../services/VoiceMode.js';
+import styles from './SendBoxStyles';
 
 export default function SendBox( {onSendMessage}) {
   //set default voice mode to false
@@ -47,63 +47,22 @@ export default function SendBox( {onSendMessage}) {
             onSubmitEditing={handleSend} 
             returnKeyType="send"
           />
-          <Button 
+          <ButtonIcon 
             iconName="send" 
-            style={styles.sendButton}
+            btnStyle={styles.sendButton}
             onPress={handleSend}
+            btnSize={24}
+            btnColor="#006748"
           />
-          <Button 
+          <ButtonIcon 
             iconName="mic" 
-            style={styles.micButton}
+            btnStyle={styles.micButton}
             onPress={() => setIsVoiceMode(true)}
+            btnSize={24}
+            btnColor="#006748"
           />
         </>
     )}
   </View>
   );
-}
-
-const styles = StyleSheet.create({
-  sendBoxContainer: {
-    position: 'relative',
-    bottom: hp(1.2), 
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: wp(80),
-    height: hp(7),
-    paddingHorizontal: wp(0.2),
-    paddingVertical: hp(1.5),
-    backgroundColor: 'white', 
-    borderRadius: 15,
-    shadowColor: '#000', 
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5, 
-  },
-  input: {
-    height: hp(6),
-    backgroundColor: '#f0f0f0',
-    borderRadius: 20,
-    paddingHorizontal: wp(2),
-    fontSize: hp(2),
-    color: 'black',
-    flex: 1,
-  },
-  sendButton: {
-    borderRadius: 30,
-    width: hp(5),
-    height: hp(5),
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: wp(4),
-  },
-  micButton: {
-    borderRadius: 30,
-    width: hp(5),
-    height: hp(5),
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: wp(2), 
-  },
-});
+};

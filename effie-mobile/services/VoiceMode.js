@@ -1,12 +1,9 @@
 // VoiceMode.js
 import React, { useState, useEffect } from 'react';
 import * as FileSystem from 'expo-file-system';
-import { View, Text, StyleSheet, PermissionsAndroid } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
-import Button from '../components/Button';
 import { startRecording, stopRecording, fileToBase64, convertM4AToWav } from './AudioRecorder';
 import { sendToSTTApi } from './STT.js';
+import ButtonIcon from '../components/ButtonIcon';
 
 export default function VoiceMode({ onCancel, onSpeechResult }) {
   const [dots, setDots] = useState('');
@@ -90,13 +87,23 @@ export default function VoiceMode({ onCancel, onSpeechResult }) {
   };
 
   return (
-    <View style={styles.container}>
-      <Button iconName="trash" style={styles.trashButton} onPress={handleCancel} />
-      <Text style={styles.text}>
-        {isRecording ? dots : speechText || 'Processing...'}
-      </Text>
-      <Button iconName="send" style={styles.sendButton} onPress={handleSend} />
-    </View>
+    <>
+        <ButtonIcon 
+        iconName="trash" 
+        style={styles.cancelButton} 
+        onPress={onCancel} 
+      />
+      <TextInput 
+        style={[styles.input, styles.centeredText]} 
+        value={dots} 
+        editable={false} 
+      />
+      <ButtonIcon 
+        iconName="send" 
+        style={styles.cancelButton} 
+        onPress={onCancel}
+      />
+    </>
   );
 }
 
