@@ -2,10 +2,6 @@
 //Icons + label for tab menu or hidden hamburger menu
 
 //import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import ButtonIcon from './ButtonIcon';
-import styles from './MenuItemStyles';
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import ButtonIcon from './ButtonIcon'
@@ -41,19 +37,19 @@ export default function MenuItem({
 }
 
 // Default styles for Menu Item
-const styles = StyleSheet.create({
-  menu_item: {
-    flexDirection: 'row', // Ensure the items are aligned horizontally
-    alignItems: 'center', // Align items vertically centered
-    paddingVertical: 10,
-  },
-  textContainer: {
-    marginLeft: 10, // Space between the icon and text
-    flex: 1, // Allow text to take remaining space
-  },
-  text_label: {
-    fontSize: 14,
-    color: '#000',
-    lineHeight: 20, // Adjust line height to align with the icon
-  },
-});
+// const styles = StyleSheet.create({
+//   menu_item: {
+//     flexDirection: 'row', // Ensure the items are aligned horizontally
+//     alignItems: 'center', // Align items vertically centered
+//     paddingVertical: 10,
+//   },
+//   textContainer: {
+//     marginLeft: 10, // Space between the icon and text
+//     flex: 1, // Allow text to take remaining space
+//   },
+//   text_label: {
+//     fontSize: 14,
+//     color: '#000',
+//     lineHeight: 20, // Adjust line height to align with the icon
+//   },
+// });

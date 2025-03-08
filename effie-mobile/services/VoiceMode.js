@@ -1,8 +1,8 @@
 // VoiceMode.js
 import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import { startRecording, stopRecording, fileToBase64, convertM4AToWav } from '../assets/AudioRecorder';
-import { sendToSTTApi } from '../assets//STT.js';
+import { startRecording, stopRecording, fileToBase64, convertM4AToWav } from './AudioRecorder';
+import { sendToSTTApi } from './STT.js';
 import ButtonIcon from '../components/ButtonIcon';
 import {
   widthPercentageToDP as wp,

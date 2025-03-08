@@ -1,5 +1,5 @@
 //UI for incoming and outgoing messages
-import { textToSpeech } from '../assets/TTSPayload.js';
+import { textToSpeech } from '../services/TTSPayload.js';
 import React from 'react'
 //import { View, Text, StyleSheet } from 'react-native'
 import { View, Text } from 'react-native';
