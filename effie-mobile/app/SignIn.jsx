@@ -6,6 +6,8 @@ import { Colors } from '@/assets/styles/colors';
 import InputField from '@/components/InputField';
 import ButtonIcon from '@/components/ButtonIcon';
 import { useAuth } from '@/context/authContext';
+import signInWithGoogle from '@/services/GoogleSignin';
+import * as SecureStore from 'expo-secure-store';
 
 
 export default function SignIn() {
@@ -27,6 +29,37 @@ export default function SignIn() {
         login(email, password);
 
     }
+
+    const handleGoogleSignIn = async () => {
+        try {
+
+          const userInfo = await signInWithGoogle();
+          const { idToken, user } = userInfo;
+          const { givenName, familyName, email } = user;
+    
+          // Send the idToken to your backend for verification and further processing
+          const response = await fetch("https://localhost.com/auth/google", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token: idToken }),
+          });
+    
+          const data = await response.json();
+    
+          if (data.access_token) {
+            // Store JWT and user information securely
+            await SecureStore.setItemAsync("jwt_token", data.access_token);
+            await SecureStore.setItemAsync("user_email", email);
+            await SecureStore.setItemAsync("user_first_name", givenName);
+            await SecureStore.setItemAsync("user_last_name", familyName);
+            console.log("JWT and user information stored securely");
+          }
+        } catch (error) {
+          console.error("Google Sign-In Failed:", error);
+        }
+      };
+
+
 console.log(Platform.OS);
     return (
         <View style={styles.sign_in_container}>
@@ -51,7 +84,7 @@ console.log(Platform.OS);
 
                         <MenuItem
                             iconName="logo-google"
-                            onPress={() => switchLoginOption("google")}
+                            onPress={handleGoogleSignIn}
                             btnSize={28}
                             btnColor='white'
                             text="Continue with Google"
