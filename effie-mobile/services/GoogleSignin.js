@@ -1,12 +1,14 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import Constants from 'expo-constants';
 
 GoogleSignin.configure({
-  webClientId: process.env.GOOGLE_SIGNIN_CLIENT_ID, // Google OAuth Client ID
+  webClientId: "GOOGLE_CLIENT_ID", // Google OAuth Client ID
   offlineAccess: true,
   scopes: ['profile', 'email']
 });
-
-export default async function GoogleSignIn() {
+// console.log("Google Client ID:", process.env.GOOGLE_SIGNIN_CLIENT_ID);
+// console.log(typeof GoogleSignin.hasPlayServices); 
+export default async function signInWithGoogle() {
   try {
     await GoogleSignin.hasPlayServices();
     const user = await GoogleSignin.signIn();

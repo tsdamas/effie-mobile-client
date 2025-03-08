@@ -6,7 +6,7 @@ import { Colors } from '@/assets/styles/colors';
 import InputField from '@/components/InputField';
 import ButtonIcon from '@/components/ButtonIcon';
 import { useAuth } from '@/context/authContext';
-import GoogleSignIn from '@/components/GoogleSignIn';
+import signInWithGoogle from '@/services/GoogleSignin';
 import * as SecureStore from 'expo-secure-store';
 
 
@@ -32,13 +32,13 @@ export default function SignIn() {
 
     const handleGoogleSignIn = async () => {
         try {
-          await GoogleSignin.hasPlayServices();
-          const userInfo = await GoogleSignin.signIn();
+
+          const userInfo = await signInWithGoogle();
           const { idToken, user } = userInfo;
           const { givenName, familyName, email } = user;
     
           // Send the idToken to your backend for verification and further processing
-          const response = await fetch("https://your-auth-service.com/auth/google", {
+          const response = await fetch("https://localhost.com/auth/google", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ token: idToken }),

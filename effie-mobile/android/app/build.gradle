@@ -94,7 +94,7 @@ android {
         versionCode 1
         versionName "1.0.0"
         manifestPlaceholders = [
-        googleAuthWebClientId: "CLIENT_ID"
+        googleAuthWebClientId: "GOOGLE_CLIENT_ID"
         ]
     }
     signingConfigs {
