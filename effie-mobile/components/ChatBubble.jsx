@@ -1,8 +1,8 @@
 //UI for incoming and outgoing messages
 import { textToSpeech } from '../services/TTSPayload.js';
-import React from 'react'
+import React, { useState } from 'react'
 //import { View, Text, StyleSheet } from 'react-native'
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator  } from 'react-native';
 import styles from './ChatBubbleStyles';        // Importing styles
 
 export default function ChatBubble({ message, role }) {

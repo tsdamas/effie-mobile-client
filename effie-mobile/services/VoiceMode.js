@@ -8,6 +8,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
+import { TextInput } from 'react-native-gesture-handler';
 
 
 export default function VoiceMode({ onCancel, onSpeechResult }) {
