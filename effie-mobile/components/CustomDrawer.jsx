@@ -11,12 +11,8 @@ import ButtonIcon from "./ButtonIcon";
 import MenuItem from "./MenuItem";
 import { Ionicons } from "@expo/vector-icons";
 import { conversationList } from "@/services/GetConversations";
-<<<<<<< HEAD
 import { useAuth } from '@/context/authContext';
 import { widthPercentageToDP as wp} from "react-native-responsive-screen";
-=======
-import styles from './CustomDrawerStyles';
->>>>>>> Juliana/Feature/FrontEnd
 
 const CustomDrawer = (props) => {
 
@@ -206,4 +202,4 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
 });
-export default CustomDrawer;
+// export default CustomDrawer;
