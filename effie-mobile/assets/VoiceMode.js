@@ -33,26 +33,6 @@ export default function VoiceMode({ onCancel, onSpeechResult }) {
     })();
   }, []);
 
-  // Ask for microphone permission
-  async function requestMicrophonePermission() {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-        {
-          title: 'Microphone Permission',
-          message: 'This app needs access to your microphone for voice recognition.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        }
-      );
-      return granted === PermissionsAndroid.RESULTS.GRANTED;
-    } catch (err) {
-      console.warn(err);
-      return false;
-    }
-  }
-
   // Stop recording, convert to base64, send to STT API
   const handleSend = async () => {
     console.log("handleSend triggered");

@@ -29,8 +29,8 @@ export async function sendToSTTApi(base64Audio, samplingRate = 44100) {
         console.log('Raw STT API response:', rawResponse);
         const result = JSON.parse(rawResponse);
         console.log('Parsed STT API result:', result);
-        const result2 = await response.json();
-        console.log('result 2', result2);
+        //const result2 = await response.json();
+        //console.log('result 2', result2);
 
         // Adjust if API returns a different field for the transcript
         return result.transcript || null;
