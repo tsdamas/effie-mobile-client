@@ -58,164 +58,166 @@ export default function SignIn() {
 
     };
 
+    const handleGoogleSignIn = async () => {
+        try {
+    
+            const userInfo = await signInWithGoogle();
+            const { idToken, user } = userInfo;
+            const { givenName, familyName, email } = user;
+    
+            // Send the idToken to your backend for verification and further processing
+            const response = await fetch("https://localhost.com/auth/google", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: idToken }),
+            });
+    
+            const data = await response.json();
+    
+            if (data.access_token) {
+                // Store JWT and user information securely
+                await SecureStore.setItemAsync("jwt_token", data.access_token);
+                await SecureStore.setItemAsync("user_email", email);
+                await SecureStore.setItemAsync("user_first_name", givenName);
+                await SecureStore.setItemAsync("user_last_name", familyName);
+                console.log("JWT and user information stored securely");
+            }
+        } catch (error) {
+            console.error("Google Sign-In Failed:", error);
+        }
+    };
+    
+    
+    //console.log(Platform.OS);
+    return (
+        <View style={styles.sign_in_container}>
+            <StatusBar style="dark" />
+            {!showForgotPassword ? (
+                <>
+                    {/* ----- LOGIN UI ----- */}
+                    <Text style={styles.header}>Login to your account</Text>
+    
+                    <View style={styles.login_buttons_container}>
+                        {loginOption === "none" ? (
+                            <>
+                                <MenuItem
+                                    iconName="logo-apple"
+                                    onPress={() => switchLoginOption("apple")}
+                                    btnSize={28}
+                                    btnColor="white"
+                                    text="Continue with Apple"
+                                    textStyle={styles.login_label}
+                                    menuItemStyle={styles.login_button}
+                                />
+                                <MenuItem
+                                    iconName="logo-google"
+                                    onPress={handleGoogleSignIn}
+                                    btnSize={28}
+                                    btnColor='white'
+                                    text="Continue with Google"
+                                    textStyle={styles.login_label}
+                                    menuItemStyle={styles.login_button}
+                                />
+                                <MenuItem
+                                    iconName="mail"
+                                    onPress={() => switchLoginOption("email")}
+                                    btnSize={28}
+                                    btnColor="white"
+                                    text="Continue with Email"
+                                    textStyle={styles.login_label}
+                                    menuItemStyle={styles.login_button}
+                                />
+                                <Text style={styles.already_label}>
+                                    Don't have an account? Sign Up
+                                </Text>
+                            </>
+                        ) : (
+                            <>
+                                <View style={styles.inputContainer}>
+                                    <InputField
+                                        label="Email"
+                                        value={email}
+                                        onChangeText={setEmail}
+                                        placeholder="Enter your email"
+                                        keyboardType="email-address"
+                                    />
+                                    <InputField
+                                        label="Password"
+                                        value={password}
+                                        onChangeText={setPassword}
+                                        placeholder="Enter your password"
+                                        secureTextEntry={true}
+                                    />
+                                </View>
+    
+                                <TouchableOpacity
+                                    onPress={handleLogin}
+                                    style={styles.login_button}
+                                >
+                                    <Text style={styles.login_label}>Login</Text>
+                                    <ButtonIcon
+                                        iconName="arrow-forward"
+                                        btnColor="white"
+                                        btnSize={28}
+                                        onPress={handleLogin}
+                                    />
+                                </TouchableOpacity>
+    
+                                {/* Forgot password button */}
+                                <TouchableOpacity
+                                    onPress={() => setShowForgotPassword(true)}
+                                    style={styles.forgotButton}
+                                >
+                                    <Text style={styles.forgotText}>Forgot Password?</Text>
+                                </TouchableOpacity>
+                            </>
+                        )}
+                    </View>
+                </>
+            ) : (
+                <>
+                    {/* ----- FORGOT PASSWORD UI ----- */}
+                    <Text style={styles.header}>Reset your password</Text>
+                    <Text style={styles.description}>
+                        Enter your Email address and we will send you instructions on how to reset your password.
+                    </Text>
+    
+                    <View style={styles.inputContainer}>
+                        {/* Show error message if present */}
+                        {errorMessage ? (
+                            <Text style={styles.errorText}>{errorMessage}</Text>
+                        ) : null}
+    
+                        <InputField
+                            label="Email address*"
+                            value={email}
+                            onChangeText={setEmail}
+                            placeholder="Email address"
+                            keyboardType="email-address"
+                        />
+                    </View>
+    
+                    <TouchableOpacity
+                        style={styles.login_button}
+                        onPress={handleSendInstructions}
+                    >
+                        <Text style={styles.login_label}>Continue</Text>
+                    </TouchableOpacity>
+    
+                    <TouchableOpacity
+                        onPress={() => setShowForgotPassword(false)}
+                        style={styles.backToLoginButton}
+                    >
+                        <Text style={styles.backText}>Back to Login</Text>
+                    </TouchableOpacity>
+                </>
+            )}
+        </View >
+    );
+
 }
 
-const handleGoogleSignIn = async () => {
-    try {
 
-        const userInfo = await signInWithGoogle();
-        const { idToken, user } = userInfo;
-        const { givenName, familyName, email } = user;
-
-        // Send the idToken to your backend for verification and further processing
-        const response = await fetch("https://localhost.com/auth/google", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token: idToken }),
-        });
-
-        const data = await response.json();
-
-        if (data.access_token) {
-            // Store JWT and user information securely
-            await SecureStore.setItemAsync("jwt_token", data.access_token);
-            await SecureStore.setItemAsync("user_email", email);
-            await SecureStore.setItemAsync("user_first_name", givenName);
-            await SecureStore.setItemAsync("user_last_name", familyName);
-            console.log("JWT and user information stored securely");
-        }
-    } catch (error) {
-        console.error("Google Sign-In Failed:", error);
-    }
-};
-
-
-console.log(Platform.OS);
-return (
-    <View style={styles.sign_in_container}>
-        <StatusBar style="dark" />
-        {!showForgotPassword ? (
-            <>
-                {/* ----- LOGIN UI ----- */}
-                <Text style={styles.header}>Login to your account</Text>
-
-                <View style={styles.login_buttons_container}>
-                    {loginOption === "none" ? (
-                        <>
-                            <MenuItem
-                                iconName="logo-apple"
-                                onPress={() => switchLoginOption("apple")}
-                                btnSize={28}
-                                btnColor="white"
-                                text="Continue with Apple"
-                                textStyle={styles.login_label}
-                                menuItemStyle={styles.login_button}
-                            />
-                            <MenuItem
-                                iconName="logo-google"
-                                onPress={handleGoogleSignIn}
-                                btnSize={28}
-                                btnColor='white'
-                                text="Continue with Google"
-                                textStyle={styles.login_label}
-                                menuItemStyle={styles.login_button}
-                            />
-                            <MenuItem
-                                iconName="mail"
-                                onPress={() => switchLoginOption("email")}
-                                btnSize={28}
-                                btnColor="white"
-                                text="Continue with Email"
-                                textStyle={styles.login_label}
-                                menuItemStyle={styles.login_button}
-                            />
-                            <Text style={styles.already_label}>
-                                Don't have an account? Sign Up
-                            </Text>
-                        </>
-                    ) : (
-                        <>
-                            <View style={styles.inputContainer}>
-                                <InputField
-                                    label="Email"
-                                    value={email}
-                                    onChangeText={setEmail}
-                                    placeholder="Enter your email"
-                                    keyboardType="email-address"
-                                />
-                                <InputField
-                                    label="Password"
-                                    value={password}
-                                    onChangeText={setPassword}
-                                    placeholder="Enter your password"
-                                    secureTextEntry={true}
-                                />
-                            </View>
-
-                            <TouchableOpacity
-                                onPress={handleLogin}
-                                style={styles.login_button}
-                            >
-                                <Text style={styles.login_label}>Login</Text>
-                                <ButtonIcon
-                                    iconName="arrow-forward"
-                                    btnColor="white"
-                                    btnSize={28}
-                                    onPress={handleLogin}
-                                />
-                            </TouchableOpacity>
-
-                            {/* Forgot password button */}
-                            <TouchableOpacity
-                                onPress={() => setShowForgotPassword(true)}
-                                style={styles.forgotButton}
-                            >
-                                <Text style={styles.forgotText}>Forgot Password?</Text>
-                            </TouchableOpacity>
-                        </>
-                    )}
-                </View>
-            </>
-        ) : (
-            <>
-                {/* ----- FORGOT PASSWORD UI ----- */}
-                <Text style={styles.header}>Reset your password</Text>
-                <Text style={styles.description}>
-                    Enter your Email address and we will send you instructions on how to reset your password.
-                </Text>
-
-                <View style={styles.inputContainer}>
-                    {/* Show error message if present */}
-                    {errorMessage ? (
-                        <Text style={styles.errorText}>{errorMessage}</Text>
-                    ) : null}
-
-                    <InputField
-                        label="Email address*"
-                        value={email}
-                        onChangeText={setEmail}
-                        placeholder="Email address"
-                        keyboardType="email-address"
-                    />
-                </View>
-
-                <TouchableOpacity
-                    style={styles.login_button}
-                    onPress={handleSendInstructions}
-                >
-                    <Text style={styles.login_label}>Continue</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={() => setShowForgotPassword(false)}
-                    style={styles.backToLoginButton}
-                >
-                    <Text style={styles.backText}>Back to Login</Text>
-                </TouchableOpacity>
-            </>
-        )}
-    </View >
-);
 
 
 const styles = StyleSheet.create({
