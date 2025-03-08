@@ -87,6 +87,18 @@ const styles = StyleSheet.create({
   settingsButton: {
     padding: 5,
   },
+  menuItem: {
+    flexDirection: 'row', // Ensure the items are aligned horizontally
+    alignItems: 'center', // Align items vertically centered
+    paddingVertical: 10,
+  },
+  logoutButton: {
+    marginLeft: 15,
+    padding: 8,
+    backgroundColor: "red",
+    borderRadius: 8,
+    width: wp(2),
+  },
 });
 
 export default styles;
