@@ -2,10 +2,10 @@
 //Icons + label for tab menu or hidden hamburger menu
 
 //import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import ButtonIcon from './ButtonIcon';
-import styles from './MenuItemStyles';
+import { View, Text, TouchableOpacity } from 'react-native'
+import React from 'react'
+import ButtonIcon from './ButtonIcon'
+import styles from './MenuItemStyles'
 
 export default function MenuItem({
   iconName,
@@ -14,9 +14,12 @@ export default function MenuItem({
   btnStyle,
   btnColor,
   text,
-  textStyle = styles.text_label,
-  menuItemStyle = styles.menu_item,
+  textStyle,
+  menuItemStyle,
 }) {
+  textStyle = textStyle === 'undefined' ? styles.text_label : textStyle;
+  menuItemStyle = menuItemStyle === 'undefined' ? styles.menu_item : menuItemStyle;
+
   return (
     <TouchableOpacity style={menuItemStyle} onPress={onPress}>
       <ButtonIcon
@@ -32,3 +35,21 @@ export default function MenuItem({
     </TouchableOpacity>
   );
 }
+
+// Default styles for Menu Item
+// const styles = StyleSheet.create({
+//   menu_item: {
+//     flexDirection: 'row', // Ensure the items are aligned horizontally
+//     alignItems: 'center', // Align items vertically centered
+//     paddingVertical: 10,
+//   },
+//   textContainer: {
+//     marginLeft: 10, // Space between the icon and text
+//     flex: 1, // Allow text to take remaining space
+//   },
+//   text_label: {
+//     fontSize: 14,
+//     color: '#000',
+//     lineHeight: 20, // Adjust line height to align with the icon
+//   },
+// });
