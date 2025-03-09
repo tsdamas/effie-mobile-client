@@ -5,7 +5,7 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import ButtonIcon from './ButtonIcon'
-import styles from './MenuItemStyles'
+import styles from '../assets/styles/MenuItemStyles'
 
 export default function MenuItem({
   iconName,

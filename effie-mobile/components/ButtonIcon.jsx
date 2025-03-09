@@ -3,7 +3,7 @@
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import styles from './ButtonIconStyles';           // Importing Styles
+import styles from '../assets/styles/ButtonIconStyles';           // Importing Styles
 
 export default function ButtonIcon({ iconName, onPress, btnSize, btnStyle, btnColor }) {
   

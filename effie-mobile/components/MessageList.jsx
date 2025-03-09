@@ -8,7 +8,7 @@
 import { View } from 'react-native';
 import React from 'react';
 import ChatBubble from './ChatBubble';
-import styles from './MessageListStyles';
+import styles from '../assets/styles/MessageListStyles';
 
 export default function MessageList({ messages }) {
   return (

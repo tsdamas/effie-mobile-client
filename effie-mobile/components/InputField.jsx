@@ -1,7 +1,7 @@
 //import { View, Text, TextInput, StyleSheet } from 'react-native'
 import { View, Text, TextInput } from 'react-native'
 import React from 'react'
-import styles from './InputFieldStyles'
+import styles from '../assets/styles/InputFieldStyles'
 
 export default function InputField({ 
   label, 
