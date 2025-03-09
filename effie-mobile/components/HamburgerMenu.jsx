@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import styles from './HamburgerMenuStyles';
+import styles from '../assets/styles/HamburgerMenuStyles';
 
 const HamburgerMenu = ({ navigation }) => {
   return (

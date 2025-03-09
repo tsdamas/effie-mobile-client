@@ -3,7 +3,7 @@ import { textToSpeech } from '../services/TTSPayload.js';
 import React, { useState } from 'react'
 //import { View, Text, StyleSheet } from 'react-native'
 import { View, Text, TouchableOpacity, ActivityIndicator  } from 'react-native';
-import styles from './ChatBubbleStyles';        // Importing styles
+import styles from '../assets/styles/ChatBubbleStyles.js';        // Importing styles
 
 export default function ChatBubble({ message, role }) {
   const isUser = role === 'user';

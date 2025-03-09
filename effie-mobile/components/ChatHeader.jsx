@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nati
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import ButtonIcon from './ButtonIcon';
-import styles from './ChatHeaderStyles';        // Import Styles
+import styles from '../assets/styles/ChatHeaderStyles';        // Import Styles
 
 const ios = Platform.OS == 'ios';
 const blurhash =

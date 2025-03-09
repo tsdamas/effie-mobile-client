@@ -5,7 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 import ButtonIcon from './ButtonIcon';
 import VoiceMode from '../services/VoiceMode.js';
-import styles from './SendBoxStyles';
+import styles from '../assets/styles/SendBoxStyles';
 
 export default function SendBox( {onSendMessage}) {
   //set default voice mode to false

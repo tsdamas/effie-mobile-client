@@ -210,7 +210,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { conversationList } from "@/services/GetConversations";
 import { useAuth } from '@/context/authContext';
 import { widthPercentageToDP as wp} from "react-native-responsive-screen";
-import styles from "./CustomDrawerStyles";
+import styles from "../assets/styles/CustomDrawerStyles";
 
 const CustomDrawer = (props) => {
   const { logout } = useAuth();
