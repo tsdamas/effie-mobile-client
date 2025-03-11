@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Platform, Alert } from 'react-native'
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Platform, Alert, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
@@ -9,6 +9,7 @@ import ButtonIcon from '@/components/ButtonIcon';
 import { useAuth } from '@/context/authContext';
 import signInWithGoogle from '@/services/GoogleSignin';
 import * as SecureStore from 'expo-secure-store';
+import { useRouter } from 'expo-router';
 
 export default function SignIn() {
     const [loginOption, setLoginOption] = useState("none");
@@ -18,6 +19,7 @@ export default function SignIn() {
     const { login } = useAuth();
     const [showForgotPassword, setShowForgotPassword] = useState(false);
 
+    const router = useRouter();
 
     const switchLoginOption = (opt) => {
         setLoginOption(opt);
@@ -90,7 +92,7 @@ export default function SignIn() {
     
     //console.log(Platform.OS);
     return (
-        <View style={styles.sign_in_container}>
+        <View style={styles.container}>
             <StatusBar style="dark" />
             {!showForgotPassword ? (
                 <>
@@ -127,9 +129,18 @@ export default function SignIn() {
                                     textStyle={styles.login_label}
                                     menuItemStyle={styles.login_button}
                                 />
-                                <Text style={styles.already_label}>
-                                    Don't have an account? Sign Up
-                                </Text>
+                                <View style={styles.signin_upContainer}>
+                                    <Text style={styles.already_label}>
+                                        Don't have an account?
+                                    </Text>
+                                    <Pressable
+                                        onPress={() => router.push('/Register')}
+                                    >
+                                        <Text style={styles.importantText}>
+                                            Sign Up
+                                        </Text>
+                                    </Pressable>
+                                </View>
                             </>
                         ) : (
                             <>
@@ -163,12 +174,20 @@ export default function SignIn() {
                                     />
                                 </TouchableOpacity>
     
+                                {/* Back to login */}
+                                <TouchableOpacity
+                                    onPress={() => switchLoginOption("none")}
+                                    style={styles.forgotButton}
+                                >
+                                    <Text style={styles.importantText}>Other login options</Text>
+                                </TouchableOpacity>
+
                                 {/* Forgot password button */}
                                 <TouchableOpacity
                                     onPress={() => setShowForgotPassword(true)}
                                     style={styles.forgotButton}
                                 >
-                                    <Text style={styles.forgotText}>Forgot Password?</Text>
+                                    <Text style={styles.importantText}>Forgot Password?</Text>
                                 </TouchableOpacity>
                             </>
                         )}
@@ -208,7 +227,7 @@ export default function SignIn() {
                         onPress={() => setShowForgotPassword(false)}
                         style={styles.backToLoginButton}
                     >
-                        <Text style={styles.backText}>Back to Login</Text>
+                        <Text style={styles.importantText}>Back to Login</Text>
                     </TouchableOpacity>
                 </>
             )}
@@ -221,7 +240,7 @@ export default function SignIn() {
 
 
 const styles = StyleSheet.create({
-    sign_in_container: {
+    container: {
         flex: 1,
         paddingHorizontal: wp(5),
         justifyContent: 'center',
@@ -258,9 +277,7 @@ const styles = StyleSheet.create({
     },
     already_label: {
         color: 'gray',
-        fontSize: 16,
-        marginTop: hp(3),
-        textAlign: 'center',
+        fontSize: hp(1.8)
     },
     inputContainer: {
         width: '100%',
@@ -268,12 +285,6 @@ const styles = StyleSheet.create({
     },
     forgotButton: {
         marginTop: hp(2),
-    },
-    forgotText: {
-        fontSize: 16,
-        color: Colors.effie_green,
-        textDecorationLine: 'underline',
-        textAlign: 'center',
     },
     description: {
         textAlign: 'center',
@@ -286,15 +297,26 @@ const styles = StyleSheet.create({
         marginTop: hp(2),
         alignSelf: 'center',
     },
-    backText: {
-        color: Colors.effie_green,
-        textDecorationLine: 'underline',
-        fontSize: 16,
-    },
     errorText: {
         color: 'red',
         fontSize: 14,
         marginBottom: hp(1),
         textAlign: 'center',
     },
+    importantText: {
+        color: Colors.effie_green,
+        textDecorationLine: 'underline',
+        fontSize: hp(1.8),
+        textAlign: 'center',
+        fontWeight: 'bold'
+    },
+    signin_upContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: "center",
+        gap: wp(1),
+        marginTop: hp(3),
+        textAlign: 'center',
+    }
 });
