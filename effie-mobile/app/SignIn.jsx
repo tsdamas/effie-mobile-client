@@ -11,7 +11,7 @@ import signInWithGoogle from '@/services/GoogleSignin';
 import * as SecureStore from 'expo-secure-store';
 import { useRouter } from 'expo-router';
 
-export default function SignIn() {
+function SignIn() {
     const [loginOption, setLoginOption] = useState("none");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -143,6 +143,7 @@ export default function SignIn() {
                                 </View>
                             </>
                         ) : (
+                            // log in UI
                             <>
                                 <View style={styles.inputContainer}>
                                     <InputField
@@ -237,8 +238,6 @@ export default function SignIn() {
 }
 
 
-
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -320,3 +319,4 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     }
 });
+export default SignIn;
