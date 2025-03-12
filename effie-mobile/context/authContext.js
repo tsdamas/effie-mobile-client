@@ -1,3 +1,4 @@
+import { checkHealth, regularLogin } from "@/services/Authentication";
 import { createContext, useContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 
@@ -21,15 +22,22 @@ export const AuthContextProvider = ({children}) => {
 
      const login = async (email, password) => {
         try {
-            if(email == 'customer@effie.com' && password == 'letmein') {
+            // if(email == 'customer@effie.com' && password == 'letmein') {
+            //     setIsAuthenticated(undefined);
+            //     setTimeout(() => {
+            //         setIsAuthenticated(true);
+            //     }, 4000);
+            
+            // } else {
+            //     let msg = "Wrong credentials";
+            //     Alert.alert(msg);
+            //     return
+            // }
+            if (await regularLogin(email, password)) {
                 setIsAuthenticated(undefined);
                 setTimeout(() => {
                     setIsAuthenticated(true);
                 }, 4000);
-            } else {
-                let msg = "Wrong credentials";
-                Alert.alert(msg);
-                return
             }
         } catch(error) {
 
