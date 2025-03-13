@@ -1,4 +1,4 @@
-
+const API_URL = 'http://127.0.0.1:8000'; 
 /*
  // if you need Blob constructor
 // or just rely on the built-in fetch blob() in modern React Native
@@ -45,7 +45,7 @@ export async function getChunkedResponse(question, history, onComplete) {
     };
     // console.log("Payload being sent:", JSON.stringify(payload, null, 2));
 
-        const response = await fetch('url/chat', { //INSERT URL
+        const response = await fetch(`${API_URL}/chat`, { //INSERT URL
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),

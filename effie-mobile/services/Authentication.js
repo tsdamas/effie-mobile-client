@@ -1,4 +1,4 @@
-const API_URL = 'url'; // This is just a localhost address. It's fine to leave
+const API_URL = 'http://127.0.0.1:8000'; // This is just a localhost address. It's fine to leave
 
 
 export const regularLogin = async (email, password) => {
