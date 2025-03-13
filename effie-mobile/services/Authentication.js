@@ -1,4 +1,4 @@
-const API_URL = ''; // This is just a localhost address. It's fine to leave
+const API_URL = 'url'; // This is just a localhost address. It's fine to leave
 
 
 export const regularLogin = async (email, password) => {
@@ -19,7 +19,7 @@ export const regularLogin = async (email, password) => {
       }
   
       const data = await response.json();
-      console.log('Login Successful! Token:', data.access_token);
+      // console.log('Login Successful! Token:', data.access_token);
   
       // Store token in AsyncStorage (optional)
       // await AsyncStorage.setItem('authToken', data.access_token);

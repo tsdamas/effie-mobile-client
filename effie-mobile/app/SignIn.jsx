@@ -23,7 +23,7 @@ function SignIn() {
 
     const switchLoginOption = (opt) => {
         setLoginOption(opt);
-        console.log(opt);
+        // console.log(opt);
     };
 
     const handleLogin = async () => {
