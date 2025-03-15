@@ -2,7 +2,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import Constants from 'expo-constants';
 
 GoogleSignin.configure({
-  webClientId: "GOOGLE_CLIENT_ID", // Google OAuth Client ID
+  webClientId: "265919234230-t71eab701rklcispol078m47nbebsp0f.apps.googleusercontent.com", // Google OAuth Client ID
   offlineAccess: true,
   scopes: ['profile', 'email']
 });
