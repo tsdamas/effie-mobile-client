@@ -14,24 +14,38 @@ const styles = StyleSheet.create({
     header: {
         fontWeight: 'bold',
         textAlign: 'center',
-        fontSize: 36,
-        marginBottom: hp(2),
+        fontSize: 30,
+        //marginBottom: hp(2),
+        marginBottom: hp(3),
         color: Colors.darkGray,
     },
     login_buttons_container: {
-        marginTop: hp(2),
+        //marginTop: hp(2),
+        marginTop: hp(1),
         alignItems: 'center',
+        gap: hp(0.1),      // Add space between the buttons
     },
     login_button: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: hp(1.5),
-        paddingHorizontal: wp(5),
-        borderRadius: 50,
+        //paddingVertical: hp(1.5),
+        paddingVertical: hp(1.2),
+        //paddingHorizontal: wp(5),
+        paddingHorizontal: wp(4),
+        //borderRadius: 50,
+        borderRadius: 30,
         backgroundColor: Colors.primaryPurple,
-        alignSelf: 'stretch',
-        marginTop: hp(2),
+        width: '90%',
+        //alignSelf: 'stretch',
+        alignSelf: 'center',
+        //marginTop: hp(2),
+        marginTop: hp(1.5),
+        shadowColor: "#000", 
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1, 
+        shadowRadius: 3.5,
+        elevation: 5,         // For Android
     },
     login_label: {
         fontWeight: 'bold',
@@ -41,8 +55,9 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     already_label: {
-        color: 'gray',
-        fontSize: hp(1.8)
+        color: '#666',
+        fontSize: hp(2),
+        textAlign: 'center',
     },
     inputContainer: {
         width: '100%',
@@ -71,9 +86,10 @@ const styles = StyleSheet.create({
     importantText: {
         color: Colors.primaryPurple,
         textDecorationLine: 'underline',
-        fontSize: hp(1.8),
+        fontSize: hp(2),
         textAlign: 'center',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginLeft: 5,
     },
     signin_upContainer: {
         display: 'flex',

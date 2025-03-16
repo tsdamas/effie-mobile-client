@@ -14,24 +14,36 @@ const styles = StyleSheet.create({
     header: {
         fontWeight: 'bold',
         textAlign: 'center',
-        fontSize: 36,
-        marginBottom: hp(2),
+        fontSize: 30,
+        //marginBottom: hp(2),
+        marginBottom: hp(4),
         color: Colors.darkGray,
     },
     login_buttons_container: {
-        marginTop: hp(2),
+        //marginTop: hp(2),
+        marginTop: hp(1),
         alignItems: 'center',
+        gap: hp(2),
     },
     login_button: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: hp(1.5),
-        paddingHorizontal: wp(5),
-        borderRadius: 50,
+        //paddingVertical: hp(1.5),
+        paddingVertical: hp(1),
+        //paddingHorizontal: wp(5),
+        paddingHorizontal: wp(4),
+        borderRadius: 30,
         backgroundColor: Colors.primaryPurple, // Button background color
-        alignSelf: 'stretch',
+        width: '90%',      // Button width
+        //alignSelf: 'stretch',
+        alignSelf: 'center',
         marginTop: hp(2),
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3.5,
+        elevation: 5,     // For android
     },
     login_label: {
         fontWeight: 'bold',
@@ -41,12 +53,14 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     already_label: {
-        color: 'gray',
-        fontSize: hp(1.8),
+        color: '#666',
+        fontSize: hp(2),
+        textAlign: 'center',
     },
     inputContainer: {
         width: '100%',
         marginTop: hp(2),
+        gap: hp(1.5),
     },
     forgotButton: {
         marginTop: hp(2),
@@ -71,17 +85,18 @@ const styles = StyleSheet.create({
     importantText: {
         color: Colors.primaryPurple,
         textDecorationLine: 'underline',
-        fontSize: hp(1.8),
+        fontSize: hp(2),
         textAlign: 'center',
         fontWeight: 'bold',
+        marginLeft: 5,
     },
     signin_upContainer: {
-        display: 'flex',
+        //display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: "center",
         gap: wp(1),
-        marginTop: hp(3),
+        marginTop: hp(3.5),
         textAlign: 'center',
     },
 });
