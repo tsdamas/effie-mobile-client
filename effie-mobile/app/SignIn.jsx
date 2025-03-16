@@ -11,6 +11,8 @@ import signInWithGoogle from '@/services/GoogleSignin';
 import * as SecureStore from 'expo-secure-store';
 import { useRouter } from 'expo-router';
 
+import styles from '@/assets/styles/SignInStyles'
+
 function SignIn() {
     const [loginOption, setLoginOption] = useState("none");
     const [email, setEmail] = useState("");
@@ -238,7 +240,7 @@ function SignIn() {
 }
 
 
-const styles = StyleSheet.create({
+{/*const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: wp(5),
@@ -318,5 +320,6 @@ const styles = StyleSheet.create({
         marginTop: hp(3),
         textAlign: 'center',
     }
-});
+}
+*/};
 export default SignIn;
