@@ -40,12 +40,12 @@ export async function getChunkedResponse(question, history, onComplete) {
     const payload = {
       history: history.length > 0 ? history : [{ role: "user", content: question }],
       question,
-      client_code: "",
-      domain_name: "",
+      client_code: "clientCode",    // add info
+      domain_name: "domainName",    // add info
     };
     console.log("Payload being sent:", JSON.stringify(payload, null, 2));
 
-        const response = await fetch('', { //INSERT URL
+        const response = await fetch('URL', { //INSERT URL
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
