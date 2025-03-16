@@ -6,6 +6,9 @@ import ButtonIcon from '@/components/ButtonIcon';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '@/assets/styles/colors';
 import { useAuth } from '@/context/authContext';
+
+import styles from '@/assets/styles/RegisterStyle';
+
 export default function Register() {
 
   const [fName, setFName] = useState("");
@@ -90,7 +93,7 @@ export default function Register() {
   
 }
   
-const styles = StyleSheet.create({
+{/*const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: wp(5),
@@ -170,4 +173,4 @@ const styles = StyleSheet.create({
         marginTop: hp(3),
         textAlign: 'center',
     }
-});
+})*/};
