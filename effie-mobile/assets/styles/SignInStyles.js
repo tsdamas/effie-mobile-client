@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     importantText: {
-        color: Colors.darkGray,
+        color: Colors.primaryPurple,
         textDecorationLine: 'underline',
         fontSize: hp(1.8),
         textAlign: 'center',

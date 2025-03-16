@@ -9,12 +9,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginHorizontal: 'auto',
         width: Platform.OS !== 'web' ? '100%' : 'auto',
+        backgroundColor: Colors.lightGray,
     },
     header: {
         fontWeight: 'bold',
         textAlign: 'center',
         fontSize: 36,
         marginBottom: hp(2),
+        color: Colors.darkGray,
     },
     login_buttons_container: {
         marginTop: hp(2),
@@ -27,7 +29,7 @@ const styles = StyleSheet.create({
         paddingVertical: hp(1.5),
         paddingHorizontal: wp(5),
         borderRadius: 50,
-        backgroundColor: Colors.effie_green, // Button background color
+        backgroundColor: Colors.primaryPurple, // Button background color
         alignSelf: 'stretch',
         marginTop: hp(2),
     },
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     importantText: {
-        color: Colors.effie_green,
+        color: Colors.primaryPurple,
         textDecorationLine: 'underline',
         fontSize: hp(1.8),
         textAlign: 'center',
