@@ -13,6 +13,7 @@ export async function startRecording() {
     try {
         // Request microphone permissions
         const { status } = await Audio.requestPermissionsAsync();
+        console.log("Mic access granted.");
         if (status !== 'granted') {
             console.log('Microphone permission not granted');
             return false;
@@ -23,7 +24,7 @@ export async function startRecording() {
         recordingInstance = new Audio.Recording();
         await recordingInstance.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
         await recordingInstance.startAsync();
-        console.log('Recording started');
+        console.log('Recording started. AR.');
         return true;
     } catch (error) {
         console.error('Failed to start recording:', error);
@@ -43,7 +44,7 @@ export async function stopRecording() {
         }
         await recordingInstance.stopAndUnloadAsync();
         const uri = recordingInstance.getURI();
-        //console.log('Recording stopped, file stored at:', uri);
+        console.log('Recording stopped, file stored at:', uri);
         return uri;
     } catch (error) {
         console.error('Failed to stop recording:', error);
@@ -68,18 +69,31 @@ export async function fileToBase64(fileUri) {
 
 export async function convertM4AToWav(inputUri, outputUri) {
     try {
-        const command = `-i "${inputUri}" -acodec pcm_f32le -ar 44100 "${outputUri}"`;
+        const inputPath = inputUri.replace(/^file:\/\//, '');
+        const outputPath = outputUri.replace(/^file:\/\//, '');
+
+        console.log("Clean inputPath:", inputPath);
+        console.log("Clean outputPath:", outputPath);
+
+        const command = `-i "${inputPath}" -acodec pcm_f32le -ar 44100 "${outputPath}"`;
         const session = await FFmpegKit.execute(command);
+
+        if (!session) {
+            throw new Error("FFmpeg session returned null");
+        }
+
         const returnCode = await session.getReturnCode();
         if (ReturnCode.isSuccess(returnCode)) {
-            console.log("Conversion successful:", outputUri);
+            console.log("Conversion successful:", outputPath);
             return outputUri;
         } else {
-            console.error("Conversion failed with return code: ", returnCode);
+            console.error("Conversion failed with return code:", returnCode);
+            const failStackTrace = await session.getFailStackTrace();
+            console.error("FFmpeg fail trace:", failStackTrace);
             return null;
         }
     } catch (error) {
-        console.error("Error converting to WAV: ", error);
+        console.error("Error converting to WAV:", error);
         return null;
     }
 }

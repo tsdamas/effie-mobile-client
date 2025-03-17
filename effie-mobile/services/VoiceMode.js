@@ -1,7 +1,9 @@
 // VoiceMode.js
 import React, { useState, useEffect } from 'react';
+import { Audio } from 'expo-av';
 import { StyleSheet } from 'react-native';
 import { startRecording, stopRecording, fileToBase64, convertM4AToWav } from './AudioRecorder';
+import * as FileSystem from 'expo-file-system';
 import { sendToSTTApi } from './STT.js';
 import ButtonIcon from '../components/ButtonIcon';
 import {
@@ -19,21 +21,16 @@ export default function VoiceMode({ onCancel, onSpeechResult }) {
   // Start recording on mount
   useEffect(() => {
     (async () => {
-      const granted = await requestMicrophonePermission();
-      if (!granted) {
-        console.log('Microphone permission denied');
-        onCancel();
-        return;
-      }
-
       // Attempt to start recording
       const started = await startRecording();
       if (started) {
         setIsRecording(true);
       } else {
+        alert('Unable to start recording. Please check permissions.');
         onCancel();
       }
     })();
+
   }, []);
 
   // Stop recording, convert to base64, send to STT API
@@ -47,14 +44,16 @@ export default function VoiceMode({ onCancel, onSpeechResult }) {
 
     const m4aUri = await stopRecording();
     if (!m4aUri) {
+      console.log('Recording failed or was cancelled.');
       onCancel();
       return;
     }
-
-    setSpeechText('Processing...');
+    console.log("Setting processing text..");
+    //setSpeechText('Processing...');
 
     const outputWavUri = FileSystem.documentDirectory + 'converted.wav';
     // Convert M4A to WAV (Float32)
+    console.log("Attempting wav conversion..");
     const wavUri = await convertM4AToWav(m4aUri, outputWavUri);
     if (!wavUri) {
       console.log('Conversion to WAV failed');
@@ -72,6 +71,7 @@ export default function VoiceMode({ onCancel, onSpeechResult }) {
 
     // Send to STT server
     const transcript = await sendToSTTApi(base64Data, 44100);
+
     if (transcript) {
       setSpeechText(transcript);
       // Pass the recognized text back to parent
@@ -94,20 +94,20 @@ export default function VoiceMode({ onCancel, onSpeechResult }) {
 
   return (
     <>
-        <ButtonIcon 
-        iconName="trash" 
-        style={styles.cancelButton} 
-        onPress={onCancel} 
+      <ButtonIcon
+        iconName="trash"
+        style={styles.cancelButton}
+        onPress={handleCancel}
       />
-      <TextInput 
-        style={[styles.input, styles.centeredText]} 
-        value={dots} 
-        editable={false} 
+      <TextInput
+        style={[styles.input, styles.centeredText]}
+        value={dots}
+        editable={false}
       />
-      <ButtonIcon 
-        iconName="send" 
-        style={styles.cancelButton} 
-        onPress={onCancel}
+      <ButtonIcon
+        iconName="send"
+        style={styles.sendButton}
+        onPress={handleSend}
       />
     </>
   );
