@@ -31,6 +31,27 @@ export const regularLogin = async (email, password) => {
     }
   };
 
+export const registerUser = async (fname, lName, email, password) => {
+  try {
+      const response = await fetch(`${API_URL}/auth/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ first_name: fname, last_name: lName, email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+          throw new Error(data.detail || "Registration failed");
+      }
+
+      console.log("User registered:", data);
+  } catch (error) {
+      console.error("Error:", error.message);
+  }
+};
+
+
 
 export const checkHealth = async () => {
   try {

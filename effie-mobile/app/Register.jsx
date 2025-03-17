@@ -17,6 +17,7 @@ export default function Register() {
   const router = useRouter();
 
   const handleRegister = () => {
+      console.log(fName,lName,email,password);
       register(fName, lName, email, password)
   }
 

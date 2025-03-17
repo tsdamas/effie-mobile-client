@@ -1,4 +1,4 @@
-import { checkHealth, regularLogin } from "@/services/Authentication";
+import { checkHealth, regularLogin, registerUser } from "@/services/Authentication";
 import { createContext, useContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 
@@ -58,7 +58,14 @@ export const AuthContextProvider = ({children}) => {
     }
     const register = async (fname, lName, email, password) => {
         try {
-
+            if (await registerUser(fname, lName, email, password)) {
+                setIsAuthenticated(undefined);
+                setTimeout(() => {
+                    setIsAuthenticated(true);
+                }, 4000);
+            } else {
+                console.log('registration failed baby');
+            }
         } catch(error) {
 
         }
