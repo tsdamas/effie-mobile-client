@@ -40,8 +40,8 @@ export async function getChunkedResponse(question, history, onComplete) {
     const payload = {
       history: history.length > 0 ? history : [{ role: "user", content: question }],
       question,
-      client_code: "clientCode",    // add info
-      domain_name: "domainName",    // add info
+      client_code: "client_code",    // add info
+      domain_name: "domain_name",    // add info
     };
     console.log("Payload being sent:", JSON.stringify(payload, null, 2));
 
