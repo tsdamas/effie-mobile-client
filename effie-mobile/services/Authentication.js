@@ -1,4 +1,4 @@
-const API_URL = 'http://127.0.0.1:8000'; // This is just a localhost address. It's fine to leave
+const API_URL = 'http://127.0.0.1:8002'; // This is just a localhost address. It's fine to leave
 
 
 export const regularLogin = async (email, password) => {
@@ -45,9 +45,10 @@ export const registerUser = async (fname, lName, email, password) => {
           throw new Error(data.detail || "Registration failed");
       }
 
-      console.log("User registered:", data);
+      return data;
   } catch (error) {
       console.error("Error:", error.message);
+      return false;
   }
 };
 

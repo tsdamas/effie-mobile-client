@@ -1,4 +1,3 @@
-const API_URL = 'http://127.0.0.1:8000'; 
 /*
  // if you need Blob constructor
 // or just rely on the built-in fetch blob() in modern React Native
@@ -35,6 +34,8 @@ Sends a POST request and reads the response as a Blob, then as text.
 If you only need the full text, you won't get chunk streaming, but
 this stays compatible with Expo's managed workflow.
 */
+
+const API_URL = 'http://127.0.0.1:8000'; 
 export async function getChunkedResponse(question, history, onComplete) {
   try {
     const payload = {
