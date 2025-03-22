@@ -1,7 +1,6 @@
 //UI for incoming and outgoing messages
 import { textToSpeech } from '../services/TTSPayload.js';
 import React, { useState } from 'react'
-//import { View, Text, StyleSheet } from 'react-native'
 import { View, Text, TouchableOpacity, ActivityIndicator  } from 'react-native';
 import styles from '../assets/styles/ChatBubbleStyles.js';        // Importing styles
 
@@ -22,13 +21,14 @@ export default function ChatBubble({ message, role }) {
   };
 
   return (
-    <View style={styles.bubble}>
-      <Text style={styles.text}>{message}</Text>
+    <View style={isUser ? styles.userBubble : styles.assistantBubble}>
+      <Text style={isUser ? styles.userText : styles.assistantText}>{message}</Text>
       {/* Only show TTS button for assistant messages */}
       {!isUser && (
         <TouchableOpacity onPress={handleTTS} style={styles.ttsButton}>
           {isPlaying ? (
-            <ActivityIndicator size="small" color="#000" />
+            //<ActivityIndicator size="small" color="#000" />
+            <ActivityIndicator size="small" color="#333" />
           ) : (
             <Text style={styles.ttsButtonText}>🔊</Text>
           )}
