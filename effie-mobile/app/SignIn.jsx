@@ -81,6 +81,7 @@ function SignIn() {
             if (data.access_token) {
                 // Store JWT and user information securely
                 await SecureStore.setItemAsync("jwt_token", data.access_token);
+                await SecureStore.setItemAsync("jwt_refresh_token", data.refresh_token);
                 await SecureStore.setItemAsync("user_email", email);
                 await SecureStore.setItemAsync("user_first_name", givenName);
                 await SecureStore.setItemAsync("user_last_name", familyName);

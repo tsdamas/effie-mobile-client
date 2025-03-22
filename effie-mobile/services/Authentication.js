@@ -23,6 +23,7 @@ export const regularLogin = async (email, password) => {
   
       // Store token in AsyncStorage (optional)
       // await AsyncStorage.setItem('authToken', data.access_token);
+      // await AsyncStorage.setItem('refreshToken', data.refresh_token);
   
       return data.session_id;
     } catch (error) {
