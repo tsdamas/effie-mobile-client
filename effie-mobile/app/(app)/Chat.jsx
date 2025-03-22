@@ -14,6 +14,8 @@ import MessageList from "@/components/MessageList";
 import SendBox from "@/components/SendBox";
 import { getChunkedResponse } from "@/services/StreamService";
 
+import styles from '@/assets/styles/ChatStyles';
+
 export default function ChatScreen() {
   const [messages, setMessages] = useState([]);
   const flatListRef = useRef(null);
@@ -85,20 +87,4 @@ export default function ChatScreen() {
       </View>
     </CustomKeyboardView>
   );
-}
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  innerContainer: {
-    flex: 1,  // Ensures the content takes up full height but does not overflow
-    justifyContent: "flex-end",  // Ensures SendBox stays at the bottom
-  },
-  chatContainer: {
-    flexGrow: 1, // Allows FlatList to shrink and not push SendBox off the screen
-    paddingBottom: hp(2),
-  },
-});
+};

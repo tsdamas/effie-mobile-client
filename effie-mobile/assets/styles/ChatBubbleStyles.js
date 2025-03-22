@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
+import { Colors } from './colors';
 
 const styles = StyleSheet.create({
   bubble: {
     maxWidth: '80%',        
     padding: 10,            
-    borderRadius: 10,       // Rounded corners for the bubble
-    backgroundColor: '#e4e4e4',  
+    borderRadius: 20,       // Rounded corners for the bubble
+    backgroundColor: Colors.secondaryPurple,  
   },
   text: {
     fontSize: 16,           // Font size for the message text
