@@ -39,13 +39,13 @@ const styles = StyleSheet.create({
     paddingTop: top,
     paddingBottom: hp(1.5),
     paddingHorizontal: wp(4),
-    backgroundColor: Colors.secondaryPurple , 
+    backgroundColor: Colors.lightGray , 
     borderBottomLeftRadius: 16,
     borderBottomRightRadius: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
+    //shadowColor: '#000',
+    //shadowOffset: { width: 0, height: 2 },
+    //shadowOpacity: 0.15,
+    //shadowRadius: 4,
     elevation: 4,
     flexDirection: 'row',
     alignItems: 'center',
@@ -53,10 +53,11 @@ const styles = StyleSheet.create({
   }),
   menuButton: {
     padding: wp(2),
+    //color: Colors.primaryPurple,    nao funciona
   },
   headerText: {
     fontSize: hp(3.2),
-    color: 'white', 
+    color: Colors.primaryPurple, 
     fontWeight: '700',
     flex: 1,
     textAlign: 'center',
@@ -68,8 +69,8 @@ const styles = StyleSheet.create({
     height: hp(4.3),
     aspectRatio: 1,
     borderRadius: 100,
-    borderWidth: 2,
-    borderColor: 'white',
+    //borderWidth: 2,
+    //borderColor: 'white',
   },
 });
 
