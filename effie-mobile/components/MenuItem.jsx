@@ -17,8 +17,12 @@ export default function MenuItem({
   textStyle,
   menuItemStyle,
 }) {
-  textStyle = textStyle === 'undefined' ? styles.text_label : textStyle;
-  menuItemStyle = menuItemStyle === 'undefined' ? styles.menu_item : menuItemStyle;
+  //textStyle = textStyle === 'undefined' ? styles.text_label : textStyle;
+  //menuItemStyle = menuItemStyle === 'undefined' ? styles.menu_item : menuItemStyle;
+
+  textStyle = textStyle ?? styles.text_label;
+  menuItemStyle = menuItemStyle ?? styles.menu_item;
+  
 
   return (
     <TouchableOpacity style={menuItemStyle} onPress={onPress}>
@@ -35,21 +39,3 @@ export default function MenuItem({
     </TouchableOpacity>
   );
 }
-
-// Default styles for Menu Item
-// const styles = StyleSheet.create({
-//   menu_item: {
-//     flexDirection: 'row', // Ensure the items are aligned horizontally
-//     alignItems: 'center', // Align items vertically centered
-//     paddingVertical: 10,
-//   },
-//   textContainer: {
-//     marginLeft: 10, // Space between the icon and text
-//     flex: 1, // Allow text to take remaining space
-//   },
-//   text_label: {
-//     fontSize: 14,
-//     color: '#000',
-//     lineHeight: 20, // Adjust line height to align with the icon
-//   },
-// });
