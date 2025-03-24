@@ -3,9 +3,10 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Image } from 'expo-image';
+import { Image } from 'react-native';
 import ButtonIcon from './ButtonIcon';
 import styles from '../assets/styles/ChatHeaderStyles';        // Import Styles
+
 
 const ios = Platform.OS == 'ios';
 const blurhash =
@@ -27,15 +28,11 @@ export default function ChatHeader() {
             />
 
             <Text style={styles.headerText}>Effie Mobile</Text>
-
-
-            <View style={styles.userPictureWrapper}>
+            <View style={styles.logoWrapper}>
                 <Image
-                style={styles.userPicture}
-                source="https://picsum.photos/seed/696/3000/2000"
-                placeholder={{ blurhash }}
-                contentFit="cover"
-                transition={500}
+                    source={require('../assets/images/effieLogo.png')}
+                    style={styles.logoImage}
+                    resizeMode="contain"
                 />
             </View>
 

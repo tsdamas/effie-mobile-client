@@ -1,25 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { Colors } from './colors';
 
-/* const styles = StyleSheet.create({
-  bubble: {
-    maxWidth: '80%',        
-    padding: 10,            
-    borderRadius: 20,       // Rounded corners for the bubble
-    backgroundColor: 'e1e0e0',  
-  },
-  text: {
-    fontSize: 16,           // Font size for the message text
-    color: 'black',         
-    textAlign: 'left',      // Align the text to the left
-    flexWrap: 'wrap',       // Allow text to wrap
-  },
-}) */
-
   const styles = StyleSheet.create({
     userBubble: {
       alignSelf: 'flex-end',
-      backgroundColor: Colors.primaryPurple,
+      backgroundColor: Colors.secondaryPurple,
       padding: 10,
       borderRadius: 16,
       borderTopRightRadius: 0,
@@ -39,10 +24,13 @@ import { Colors } from './colors';
     },
     userText: {
       color: 'white',
+      //color: Colors.darkGray,
+      //color: 'black',
       fontSize: 16,
     },
     assistantText: {
-      color: Colors.darkGray,
+      //color: Colors.darkGray,
+      color: 'black',
       fontSize: 16,
     },
     ttsButton: {
