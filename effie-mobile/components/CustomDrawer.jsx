@@ -14,7 +14,9 @@ import { widthPercentageToDP as wp} from "react-native-responsive-screen";
 import styles from "../assets/styles/CustomDrawerStyles";
 
 const CustomDrawer = (props) => {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+
+  // console.log(`Custom drawer user! ${JSON.stringify(user)}`);
 
   const createConversationList = () => {
     return conversationList.map((conversation, index) => (
@@ -73,7 +75,7 @@ const CustomDrawer = (props) => {
             source={{ uri: "https://cdn-icons-png.flaticon.com/512/17/17004.png" }}
             style={styles.avatar}
           />
-          <Text style={styles.userName}>User Name</Text>
+          <Text style={styles.userName}>{user.first_name + " " + user.last_name}</Text>
         </TouchableOpacity>
         <ButtonIcon
           onPress={() => props.navigation.navigate("Settings")}
