@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Platform, Alert } from 'react-native'
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Platform, Alert, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
@@ -9,8 +9,9 @@ import ButtonIcon from '@/components/ButtonIcon';
 import { useAuth } from '@/context/authContext';
 import signInWithGoogle from '@/services/GoogleSignin';
 import * as SecureStore from 'expo-secure-store';
+import { useRouter } from 'expo-router';
 
-export default function SignIn() {
+function SignIn() {
     const [loginOption, setLoginOption] = useState("none");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -18,6 +19,7 @@ export default function SignIn() {
     const { login } = useAuth();
     const [showForgotPassword, setShowForgotPassword] = useState(false);
 
+    const router = useRouter();
 
     const switchLoginOption = (opt) => {
         setLoginOption(opt);
@@ -28,55 +30,54 @@ export default function SignIn() {
         login(email, password);
     };
 
-    //revise regex later (use regex library?)
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const handleSendInstructions = async () => {
+        try {
+            //connect to backend
+            const response = await fetch("http://127.0.0.1:8000/auth/forgot-password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email }),
+            });
 
-    const handleSendInstructions = () => {
-        //Check if email matches the regex
-        if (!emailRegex.test(email)) {
-            setErrorMessage("Incorrect email");
-            return;
+            const data = await response.json();
+
+            if (response.ok) {
+                // Clear any errors
+                setErrorMessage("");
+                // Popup msg
+                Alert.alert(
+                    "Please check your Email for instructions on how to reset your password, it may take a few minutes to arrive.",
+                    [{ text: "OK" }]
+                );
+            } else {
+                setErrorMessage(data.message || "Invalid email, please try again."); // Change this so you don't actually expose emails
+            }
+
+        } catch (error) {
+            Alert.alert("Something went wrong")
         }
-        //add another check to search database for email
-        //
-        //
-        //
-        //
-        //
-
-        //If prior two checks pass; clear error -> show popup
-        setErrorMessage("");
-        Alert.alert(
-            "Please check your Email for instructions on how to reset your password, it may take a few minutes to arrive.",
-            [{ text: "OK" }]
-        );
-        //Insert actual PW reset logic here
-        //
-        //
-        //
-        //
-
     };
 
     const handleGoogleSignIn = async () => {
         try {
-    
+
             const userInfo = await signInWithGoogle();
             const { idToken, user } = userInfo;
             const { givenName, familyName, email } = user;
-    
+
             // Send the idToken to your backend for verification and further processing
             const response = await fetch("https://localhost.com/auth/google", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token: idToken }),
             });
-    
+
             const data = await response.json();
-    
+
             if (data.access_token) {
                 // Store JWT and user information securely
                 await SecureStore.setItemAsync("jwt_token", data.access_token);
+                await SecureStore.setItemAsync("jwt_refresh_token", data.refresh_token);
                 await SecureStore.setItemAsync("user_email", email);
                 await SecureStore.setItemAsync("user_first_name", givenName);
                 await SecureStore.setItemAsync("user_last_name", familyName);
@@ -86,17 +87,17 @@ export default function SignIn() {
             console.error("Google Sign-In Failed:", error);
         }
     };
-    
-    
+
+
     //console.log(Platform.OS);
     return (
-        <View style={styles.sign_in_container}>
+        <View style={styles.container}>
             <StatusBar style="dark" />
             {!showForgotPassword ? (
                 <>
                     {/* ----- LOGIN UI ----- */}
                     <Text style={styles.header}>Login to your account</Text>
-    
+
                     <View style={styles.login_buttons_container}>
                         {loginOption === "none" ? (
                             <>
@@ -127,11 +128,21 @@ export default function SignIn() {
                                     textStyle={styles.login_label}
                                     menuItemStyle={styles.login_button}
                                 />
-                                <Text style={styles.already_label}>
-                                    Don't have an account? Sign Up
-                                </Text>
+                                <View style={styles.signin_upContainer}>
+                                    <Text style={styles.already_label}>
+                                        Don't have an account?
+                                    </Text>
+                                    <Pressable
+                                        onPress={() => router.push('/Register')}
+                                    >
+                                        <Text style={styles.importantText}>
+                                            Sign Up
+                                        </Text>
+                                    </Pressable>
+                                </View>
                             </>
                         ) : (
+                            // log in UI
                             <>
                                 <View style={styles.inputContainer}>
                                     <InputField
@@ -149,7 +160,7 @@ export default function SignIn() {
                                         secureTextEntry={true}
                                     />
                                 </View>
-    
+
                                 <TouchableOpacity
                                     onPress={handleLogin}
                                     style={styles.login_button}
@@ -162,13 +173,21 @@ export default function SignIn() {
                                         onPress={handleLogin}
                                     />
                                 </TouchableOpacity>
-    
+
+                                {/* Back to login */}
+                                <TouchableOpacity
+                                    onPress={() => switchLoginOption("none")}
+                                    style={styles.forgotButton}
+                                >
+                                    <Text style={styles.importantText}>Other login options</Text>
+                                </TouchableOpacity>
+
                                 {/* Forgot password button */}
                                 <TouchableOpacity
                                     onPress={() => setShowForgotPassword(true)}
                                     style={styles.forgotButton}
                                 >
-                                    <Text style={styles.forgotText}>Forgot Password?</Text>
+                                    <Text style={styles.importantText}>Forgot Password?</Text>
                                 </TouchableOpacity>
                             </>
                         )}
@@ -181,13 +200,13 @@ export default function SignIn() {
                     <Text style={styles.description}>
                         Enter your Email address and we will send you instructions on how to reset your password.
                     </Text>
-    
+
                     <View style={styles.inputContainer}>
                         {/* Show error message if present */}
                         {errorMessage ? (
                             <Text style={styles.errorText}>{errorMessage}</Text>
                         ) : null}
-    
+
                         <InputField
                             label="Email address*"
                             value={email}
@@ -196,19 +215,19 @@ export default function SignIn() {
                             keyboardType="email-address"
                         />
                     </View>
-    
+
                     <TouchableOpacity
                         style={styles.login_button}
                         onPress={handleSendInstructions}
                     >
                         <Text style={styles.login_label}>Continue</Text>
                     </TouchableOpacity>
-    
+
                     <TouchableOpacity
                         onPress={() => setShowForgotPassword(false)}
                         style={styles.backToLoginButton}
                     >
-                        <Text style={styles.backText}>Back to Login</Text>
+                        <Text style={styles.importantText}>Back to Login</Text>
                     </TouchableOpacity>
                 </>
             )}
@@ -218,10 +237,8 @@ export default function SignIn() {
 }
 
 
-
-
 const styles = StyleSheet.create({
-    sign_in_container: {
+    container: {
         flex: 1,
         paddingHorizontal: wp(5),
         justifyContent: 'center',
@@ -258,9 +275,7 @@ const styles = StyleSheet.create({
     },
     already_label: {
         color: 'gray',
-        fontSize: 16,
-        marginTop: hp(3),
-        textAlign: 'center',
+        fontSize: hp(1.8)
     },
     inputContainer: {
         width: '100%',
@@ -268,12 +283,6 @@ const styles = StyleSheet.create({
     },
     forgotButton: {
         marginTop: hp(2),
-    },
-    forgotText: {
-        fontSize: 16,
-        color: Colors.effie_green,
-        textDecorationLine: 'underline',
-        textAlign: 'center',
     },
     description: {
         textAlign: 'center',
@@ -286,15 +295,27 @@ const styles = StyleSheet.create({
         marginTop: hp(2),
         alignSelf: 'center',
     },
-    backText: {
-        color: Colors.effie_green,
-        textDecorationLine: 'underline',
-        fontSize: 16,
-    },
     errorText: {
         color: 'red',
         fontSize: 14,
         marginBottom: hp(1),
         textAlign: 'center',
     },
+    importantText: {
+        color: Colors.effie_green,
+        textDecorationLine: 'underline',
+        fontSize: hp(1.8),
+        textAlign: 'center',
+        fontWeight: 'bold'
+    },
+    signin_upContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: "center",
+        gap: wp(1),
+        marginTop: hp(3),
+        textAlign: 'center',
+    }
 });
+export default SignIn;

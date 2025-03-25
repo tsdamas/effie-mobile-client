@@ -48,7 +48,7 @@ export const AuthContextProvider = ({children}) => {
 
         }
     }
-    const register = async (email, password) => {
+    const register = async (fname, lname, email, password) => {
         try {
 
         } catch(error) {
