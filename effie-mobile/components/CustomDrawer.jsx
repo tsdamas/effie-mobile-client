@@ -12,11 +12,23 @@ import { conversationList } from "@/services/GetConversations";
 import { useAuth } from '@/context/authContext';
 import { widthPercentageToDP as wp} from "react-native-responsive-screen";
 import styles from "../assets/styles/CustomDrawerStyles";
+import { createConversation } from "@/services/GetConversations";
 
 const CustomDrawer = (props) => {
   const { user, logout } = useAuth();
 
   // console.log(`Custom drawer user! ${JSON.stringify(user)}`);
+
+  const handleCreateConversation = async () => {
+    const payload = {
+      user_id: user.user_id,
+      session_id: user.session_id,
+      title: "test",
+    }
+
+    console.log(await createConversation(payload));
+
+  }
 
   const createConversationList = () => {
     return conversationList.map((conversation, index) => (
@@ -51,7 +63,7 @@ const CustomDrawer = (props) => {
         </View>
 
         <ButtonIcon
-          onPress={() => {}}
+          onPress={handleCreateConversation}
           btnStyle={styles.newChatButton}
           btnSize={24}
           btnColor="black"
