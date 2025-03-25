@@ -5,7 +5,7 @@
  * 
  */
 
-const API_URL = 'http://127.0.0.1:8002/chat'; // Replace with your actual backend URL
+const API_URL = 'http://127.0.0.1:8002/chat';
 
 // Hardcoded array for now
 export const conversationList = [
@@ -19,15 +19,13 @@ export const fetchConversations = async () => {
     try {
         const response = await fetch(`${API_URL}/conversations/`);
         
-        // Check if the response is OK (status 200-299)
         if (!response.ok) {
             throw new Error(`Error fetching conversations: ${response.statusText}`);
         }
         
-        // Parse the response JSON
         const data = await response.json();
         
-        // Return the list of conversations from the API
+ 
         return data;
     } catch (error) {
         console.error("Error fetching conversations:", error);
@@ -46,15 +44,15 @@ export const createConversation = async (conversationData) => {
             body: JSON.stringify(conversationData),
         });
         
-        // Check if the response is OK (status 200-299)
+
         if (!response.ok) {
             throw new Error(`Error creating conversation: ${response.statusText}`);
         }
         
-        // Parse the response JSON
+
         const data = await response.json();
         
-        // Return the conversation ID
+
         return data.id;
     } catch (error) {
         console.error("Error creating conversation:", error);
@@ -67,15 +65,12 @@ export const fetchConversation = async (conversationId) => {
     try {
         const response = await fetch(`${API_URL}/conversations/${conversationId}`);
         
-        // Check if the response is OK (status 200-299)
         if (!response.ok) {
             throw new Error(`Error fetching conversation: ${response.statusText}`);
         }
         
-        // Parse the response JSON
         const data = await response.json();
-        
-        // Return the specific conversation
+    
         return data;
     } catch (error) {
         console.error("Error fetching conversation:", error);
@@ -83,7 +78,6 @@ export const fetchConversation = async (conversationId) => {
     }
 };
 
-// Function to create a new message for a conversation (POST request)
 export const createMessage = async (messageData) => {
     try {
         const response = await fetch(`${API_URL}/messages/`, {
@@ -94,15 +88,12 @@ export const createMessage = async (messageData) => {
             body: JSON.stringify(messageData),
         });
         
-        // Check if the response is OK (status 200-299)
         if (!response.ok) {
             throw new Error(`Error creating message: ${response.statusText}`);
         }
-        
-        // Parse the response JSON
+    
         const data = await response.json();
         
-        // Return the newly created message
         return data;
     } catch (error) {
         console.error("Error creating message:", error);
@@ -110,20 +101,16 @@ export const createMessage = async (messageData) => {
     }
 };
 
-// Function to fetch messages for a specific conversation (GET request)
 export const fetchMessages = async (conversationId) => {
     try {
         const response = await fetch(`${API_URL}/conversations/${conversationId}/messages`);
         
-        // Check if the response is OK (status 200-299)
         if (!response.ok) {
             throw new Error(`Error fetching messages: ${response.statusText}`);
         }
         
-        // Parse the response JSON
         const data = await response.json();
-        
-        // Return the list of messages for the conversation
+    
         return data;
     } catch (error) {
         console.error("Error fetching messages:", error);
