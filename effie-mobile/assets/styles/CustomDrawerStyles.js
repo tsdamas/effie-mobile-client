@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   logoutButton: {
     marginTop: hp(2),
     marginHorizontal: wp(5),
-    backgroundColor: Colors.mintGreen,
+    backgroundColor: Colors.primaryPurple,
     borderRadius: 16,
     paddingVertical: hp(1.5),
     paddingHorizontal: wp(4),
