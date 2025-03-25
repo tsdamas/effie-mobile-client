@@ -1,4 +1,4 @@
-const API_URL = 'http://127.0.0.1:8002'; // This is just a localhost address. It's fine to leave
+const API_URL = 'http://127.0.0.1:8000'; // This is just a localhost address. It's fine to leave
 
 
 export const regularLogin = async (email, password) => {
@@ -18,14 +18,9 @@ export const regularLogin = async (email, password) => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
   
-      const data = await response.json();
-      // console.log('Login Successful! Token:', data.access_token);
-  
-      // Store token in AsyncStorage (optional)
-      // await AsyncStorage.setItem('authToken', data.access_token);
-      // await AsyncStorage.setItem('refreshToken', data.refresh_token);
-  
-      return data.session_id;
+      const userData = await response.json();
+      
+      return userData;
     } catch (error) {
       console.error('Login Failed:', error.message);
       return null;

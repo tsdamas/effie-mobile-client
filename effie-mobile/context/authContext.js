@@ -9,38 +9,23 @@ export const AuthContextProvider = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(undefined);
 
     useEffect(() => {
-        //onAuthStateChanged
-
-        // setTimeout(() => {
-        //     setIsAuthenticated(true);
-        // }, 5000);
-
         setTimeout(() => {
             setIsAuthenticated(false);
         }, 1000);
-    }, []);
+    }, [user]);
 
      const login = async (email, password) => {
         try {
-            // if(email == 'customer@effie.com' && password == 'letmein') {
-            //     setIsAuthenticated(undefined);
-            //     setTimeout(() => {
-            //         setIsAuthenticated(true);
-            //     }, 4000);
-            
-            // } else {
-            //     let msg = "Wrong credentials";
-            //     Alert.alert(msg);
-            //     return
-            // }
-            if (await regularLogin(email, password)) {
+            const userData = await regularLogin(email, password);
+            if (userData) {
                 setIsAuthenticated(undefined);
                 setTimeout(() => {
                     setIsAuthenticated(true);
-                }, 4000);
+                }, 3000);
             }
         } catch(error) {
-
+            let msg = "There was an problem signing you in";
+            Alert.alert(msg);
         }
     }
     const logout = async () => {
@@ -59,10 +44,7 @@ export const AuthContextProvider = ({children}) => {
     const register = async (fname, lName, email, password) => {
         try {
             if (await registerUser(fname, lName, email, password)) {
-                setIsAuthenticated(undefined);
-                setTimeout(() => {
-                    setIsAuthenticated(true);
-                }, 4000);
+                await login(email, password);
             } else {
                 console.log('registration failed baby');
             }
