@@ -5,23 +5,35 @@ import { Alert } from "react-native";
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({children}) => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState({});
     const [isAuthenticated, setIsAuthenticated] = useState(undefined);
 
     useEffect(() => {
-        setTimeout(() => {
-            setIsAuthenticated(false);
-        }, 1000);
+        if (user.session_id) {
+            setIsAuthenticated(undefined);
+                setTimeout(() => {
+                    setIsAuthenticated(true);
+                }, 3000);
+        } else {
+            setTimeout(() => {
+                setIsAuthenticated(false);
+            }, 1000);
+        }
+        
     }, [user]);
 
      const login = async (email, password) => {
         try {
             const userData = await regularLogin(email, password);
-            if (userData) {
-                setIsAuthenticated(undefined);
-                setTimeout(() => {
-                    setIsAuthenticated(true);
-                }, 3000);
+            if (userData && userData.session_id) {
+
+                setUser({
+                    user_id: userData.user_id,
+                    first_name: userData.first_name,
+                    last_name: userData.last_name,
+                    session_id: userData.session_id,
+                });
+                
             }
         } catch(error) {
             let msg = "There was an problem signing you in";
@@ -32,7 +44,7 @@ export const AuthContextProvider = ({children}) => {
         try {
             setIsAuthenticated(undefined);
             setTimeout(() => {
-                setIsAuthenticated(false);
+                setUser({});
             }, 2000);
             let msg = "Logout succesfully";
             Alert.alert(msg);
