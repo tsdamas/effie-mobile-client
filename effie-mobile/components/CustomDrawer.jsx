@@ -24,7 +24,6 @@ const CustomDrawer = (props) => {
 
   useEffect(async () => {
     const convList = await fetchConversations();
-    console.log(convList);
     if (convList) {
       setConversationList(convList);
     }
@@ -45,7 +44,10 @@ const CustomDrawer = (props) => {
 
     const success = await createConversation(payload);
     if (success) {
-      
+      setConversationList((prevList) => [
+        ...prevList,
+        { title: newConversationTitle },
+      ]);
       setIsNewConversation(false);  
       setNewConversationTitle("");    
     } else {
