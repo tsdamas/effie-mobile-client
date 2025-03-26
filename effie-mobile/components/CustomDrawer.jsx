@@ -8,24 +8,27 @@ import { DrawerContentScrollView } from "@react-navigation/drawer";
 import ButtonIcon from "./ButtonIcon";
 import MenuItem from "./MenuItem";
 import { Ionicons } from "@expo/vector-icons";
-import { conversationList } from "@/services/GetConversations";
 import { useAuth } from '@/context/authContext';
 import { widthPercentageToDP as wp} from "react-native-responsive-screen";
 import styles from "../assets/styles/CustomDrawerStyles";
-import { createConversation } from "@/services/GetConversations";
+import { createConversation, fetchConversations } from "@/services/GetConversations";
 import InputField from "./InputField";
 
 const CustomDrawer = (props) => {
 
   const [isNewConversation, setIsNewConversation] = useState(false);
   const [newConversationTitle, setNewConversationTitle] = useState("");
-  // const [conversationList, setConversationList] = useState([]);
+  const [conversationList, setConversationList] = useState([]);
   
   const { user, logout } = useAuth();
 
-  useEffect(() => {
-    // Fetch existing conversations (this could be done by calling a service)
-    // setConversationList(dataFromAPI);
+  useEffect(async () => {
+    const convList = await fetchConversations();
+    console.log(convList);
+    if (convList) {
+      setConversationList(convList);
+    }
+    
   }, []);
 
   const handleCreateConversation = async () => {
@@ -42,6 +45,7 @@ const CustomDrawer = (props) => {
 
     const success = await createConversation(payload);
     if (success) {
+      
       setIsNewConversation(false);  
       setNewConversationTitle("");    
     } else {

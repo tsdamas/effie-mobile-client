@@ -14,7 +14,7 @@ export const conversationList = [
     { title: "Chat 3" },
 ];
 
-// Function to fetch the list of conversations from the backend API
+// This function gets all conversations, no matter the user, we need to configure to pass teh user_id
 export const fetchConversations = async () => {
     try {
         const response = await fetch(`${API_URL}/conversations/`);
