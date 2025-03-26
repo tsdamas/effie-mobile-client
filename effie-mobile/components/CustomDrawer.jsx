@@ -2,7 +2,7 @@
 //         new conversation creation, recent chats, and user information access. It helps users navigate 
 //         through the app in a clean and organized manner. */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import ButtonIcon from "./ButtonIcon";
@@ -13,22 +13,42 @@ import { useAuth } from '@/context/authContext';
 import { widthPercentageToDP as wp} from "react-native-responsive-screen";
 import styles from "../assets/styles/CustomDrawerStyles";
 import { createConversation } from "@/services/GetConversations";
+import InputField from "./InputField";
 
 const CustomDrawer = (props) => {
+
+  const [isNewConversation, setIsNewConversation] = useState(false);
+  const [newConversationTitle, setNewConversationTitle] = useState("");
+  // const [conversationList, setConversationList] = useState([]);
+  
   const { user, logout } = useAuth();
 
-  // console.log(`Custom drawer user! ${JSON.stringify(user)}`);
+  useEffect(() => {
+    // Fetch existing conversations (this could be done by calling a service)
+    // setConversationList(dataFromAPI);
+  }, []);
 
   const handleCreateConversation = async () => {
+    if (newConversationTitle.trim() === "") {
+      alert("Conversation title cannot be empty.");
+      return;
+    }
+
     const payload = {
       user_id: user.user_id,
       session_id: user.session_id,
-      title: "test",
+      title: newConversationTitle,
+    };
+
+    const success = await createConversation(payload);
+    if (success) {
+      setIsNewConversation(false);  
+      setNewConversationTitle("");    
+    } else {
+      alert("Failed to create conversation. Please try again.");
     }
+  };
 
-    console.log(await createConversation(payload));
-
-  }
 
   const createConversationList = () => {
     return conversationList.map((conversation, index) => (
@@ -48,6 +68,10 @@ const CustomDrawer = (props) => {
     logout();
   };
 
+  const openNewConversation = () => {
+    setIsNewConversation(true);
+  }
+
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
       {/* Drawer Title */}
@@ -63,7 +87,7 @@ const CustomDrawer = (props) => {
         </View>
 
         <ButtonIcon
-          onPress={handleCreateConversation}
+          onPress={openNewConversation}
           btnStyle={styles.newChatButton}
           btnSize={24}
           btnColor="black"
@@ -71,9 +95,28 @@ const CustomDrawer = (props) => {
         />
       </View>
 
+      {isNewConversation && (
+          <View style={styles.searchWrapper}>
+            <InputField
+              style={styles.newConversationForm}
+              label=""
+              value={newConversationTitle}
+              onChangeText={setNewConversationTitle} 
+              placeholder="Enter a title"
+            />
+            <ButtonIcon
+              onPress={handleCreateConversation}
+              btnStyle={styles.newConversationTitleButton}
+              iconName="paper-plane-outline"
+              btnSize={20}
+              btnColor="black"
+            />
+          </View>
+        )}
+
       {/* Recent Chats Section */}
       <View style={styles.chatList}>
-        <Text style={styles.sectionTitle}>Recent Chats</Text>
+        <Text style={styles.sectionTitle}>Your Conversations</Text>
         {createConversationList()}
       </View>
 
