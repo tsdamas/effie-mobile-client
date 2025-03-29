@@ -45,7 +45,7 @@ export async function getChunkedResponse(question, history, onComplete) {
     };
     console.log("Payload being sent:", JSON.stringify(payload, null, 2));
 
-        const response = await fetch('url', { //INSERT URL
+        const response = await fetch('URL', { //INSERT URL
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),

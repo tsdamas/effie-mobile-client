@@ -23,9 +23,9 @@ import { Colors } from './colors';
       maxWidth: '80%',
     },
     userText: {
-      color: 'white',
+      //color: 'white',
       //color: Colors.darkGray,
-      //color: 'black',
+      color: 'black',
       fontSize: 16,
     },
     assistantText: {

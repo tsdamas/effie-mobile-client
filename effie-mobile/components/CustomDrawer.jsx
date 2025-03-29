@@ -38,7 +38,7 @@ const CustomDrawer = (props) => {
     <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
       {/* Drawer Title */}
       <View style={styles.titleContainer}>
-        <Text style={styles.drawerTitle}>Menu</Text>
+        <Text style={styles.drawerTitle}></Text>
       </View>
 
       {/* Search Bar and New Chat Button */}

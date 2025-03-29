@@ -27,7 +27,7 @@ export default function ChatHeader() {
                 btnStyle={styles.menuButton}
             />
 
-            <Text style={styles.headerText}>Effie Mobile</Text>
+            <Text style={styles.headerText}>Effie</Text>
             <View style={styles.logoWrapper}>
                 <Image
                     source={require('../assets/images/effieLogo.png')}
