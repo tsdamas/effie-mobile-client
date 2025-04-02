@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
+    // justifyContent: "center",
     backgroundColor: "#f0f0f0",
     borderRadius: 8,
     padding: 10,
@@ -99,6 +100,22 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     width: wp(2),
   },
+  newConversationForm: {
+    flex: 1,
+    // flexDirection: "row",
+    // alignItems: "center",
+    // backgroundColor: "#f0f0f0",
+    borderRadius: 8,
+    // paddingRight: 10,
+    // marginRight: wp(2),
+  },
+  newConversationTitleButton : {
+    marginLeft: 10,
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 8,
+  }
+  
 });
 
 export default styles;

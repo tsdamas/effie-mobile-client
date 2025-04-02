@@ -1,4 +1,3 @@
-
 /*
  // if you need Blob constructor
 // or just rely on the built-in fetch blob() in modern React Native
@@ -35,6 +34,8 @@ Sends a POST request and reads the response as a Blob, then as text.
 If you only need the full text, you won't get chunk streaming, but
 this stays compatible with Expo's managed workflow.
 */
+
+const API_URL = 'https://diosol.com/ml/effie-mistral/chat_gguf'; 
 export async function getChunkedResponse(question, history, onComplete) {
   try {
     const payload = {
@@ -43,9 +44,9 @@ export async function getChunkedResponse(question, history, onComplete) {
       client_code: "gAAAAABnvXpVnm4xDWR18JTBQSPr3qjUKcmUK3ntm4AMzWG9QGgLwLJboPSm-m_BiXKYdZhfyOZ0oeDNDmB0Bz7cF70zA6OsL89XA076aMhocTeeewyLmnLvGuV3WDMTH2Wq3CYSj1Qs",
       domain_name: "effie.cx",
     };
-    console.log("Payload being sent:", JSON.stringify(payload, null, 2));
+    // console.log("Payload being sent:", JSON.stringify(payload, null, 2));
 
-        const response = await fetch('https://diosol.com/ml/effie-mistral/chat_gguf', { //INSERT URL
+        const response = await fetch('', { //INSERT URL
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
