@@ -23,7 +23,7 @@ function SignIn() {
 
     const switchLoginOption = (opt) => {
         setLoginOption(opt);
-        console.log(opt);
+        // console.log(opt);
     };
 
     const handleLogin = async () => {
@@ -62,26 +62,40 @@ function SignIn() {
         try {
 
             const userInfo = await signInWithGoogle();
-            const { idToken, user } = userInfo;
+            //used a optional chaining operator in case the data comes null or undefinied
+            const { idToken, user } = userInfo?.data || {};
+            if (!user) {
+              console.warn("No user object returned from Google Sign-In.");
+              return;
+            }
+        
             const { givenName, familyName, email } = user;
 
+            //console.log("User details:", givenName, familyName, email);
+
             // Send the idToken to your backend for verification and further processing
-            const response = await fetch("https://localhost.com/auth/google", {
+            const response = await fetch("http://10.0.2.2:8000/auth/google", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token: idToken }),
             });
 
-            const data = await response.json();
+    
+            const text = await response.json();
 
-            if (data.access_token) {
+    
+            if (text.session_id) {
                 // Store JWT and user information securely
-                await SecureStore.setItemAsync("jwt_token", data.access_token);
-                await SecureStore.setItemAsync("jwt_refresh_token", data.refresh_token);
+                await SecureStore.setItemAsync("session_id", text.session_id);
                 await SecureStore.setItemAsync("user_email", email);
                 await SecureStore.setItemAsync("user_first_name", givenName);
                 await SecureStore.setItemAsync("user_last_name", familyName);
-                console.log("JWT and user information stored securely");
+                console.log("Sesion id and user information stored securely");
+
+                console.log("User signed in with Google and session stored.");
+
+                // go to  chat screen
+                router.push("/Chat");
             }
         } catch (error) {
             console.error("Google Sign-In Failed:", error);

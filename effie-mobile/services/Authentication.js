@@ -1,6 +1,5 @@
-//Authentication.js
 
-const API_URL = 'http://localhost:8000'; // This is just a localhost address. It's fine to leave
+const API_URL = 'http://127.0.0.1:8000'; // This is just a localhost address. It's fine to leave
 
 
 export const regularLogin = async (email, password) => {
@@ -20,19 +19,38 @@ export const regularLogin = async (email, password) => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
   
-      const data = await response.json();
-      console.log('Login Successful! Token:', data.session_id);
-  
-      // Store token in AsyncStorage (optional)
-      // await AsyncStorage.setItem('authToken', data.access_token);
-      // await AsyncStorage.setItem('refreshToken', data.refresh_token);
-  
-      return data.session_id;
+      const userData = await response.json();
+      
+      return userData;
     } catch (error) {
       console.error('Login Failed:', error.message);
       return null;
     }
   };
+
+export const registerUser = async (fname, lName, email, password) => {
+  try {
+      const response = await fetch(`${API_URL}/auth/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ first_name: fname, last_name: lName, email, password, "auth_method":"email_password" }),
+      });
+
+      console.log(response);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+          throw new Error(data.detail || "Registration failed");
+      }
+
+      return data;
+  } catch (error) {
+      console.error("Error:", error.message);
+      return false;
+  }
+};
+
 
 
 export const checkHealth = async () => {
