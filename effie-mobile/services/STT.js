@@ -11,7 +11,7 @@ export async function sendToSTTApi(base64Audio, samplingRate = 44100) {
         sampling_rate: samplingRate,
     };
 
-    //console.log('Sending payload to STT API:', payload);
+    console.log('Sending payload to STT API:', payload);
 
     try {
         const response = await fetch('https://diosol.com/ml/speech_recognition', {// Replace with actual endpoint
@@ -29,8 +29,6 @@ export async function sendToSTTApi(base64Audio, samplingRate = 44100) {
         console.log('Raw STT API response:', rawResponse);
         const result = JSON.parse(rawResponse);
         console.log('Parsed STT API result:', result);
-        //const result2 = await response.json();
-        //console.log('result 2', result2);
 
         // Adjust if API returns a different field for the transcript
         return result.transcript || null;
