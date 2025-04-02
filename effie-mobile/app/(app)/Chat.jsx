@@ -14,16 +14,20 @@ import MessageList from "@/components/MessageList";
 import SendBox from "@/components/SendBox";
 import { getChunkedResponse } from "@/services/StreamService";
 import { useAuth } from '@/context/authContext';
-import { fetchMessages } from "@/services/GetConversations";
-
+import { createMessage, fetchMessages } from "@/services/GetConversations";
+import { useRoute } from "@react-navigation/native";
 
 export default function ChatScreen() {
+
+  const route = useRoute();
   const [messages, setMessages] = useState([]);
+  const [convId, setConvId] = useState('');
   const flatListRef = useRef(null);
 
   const { user } = useAuth();
 
   const handleSendMessage = (userText) => {
+    console.log(`Conversation ID: ${convId}`);
     if (!userText.trim()) return;
   
     let updatedHistory = [];
@@ -51,6 +55,9 @@ export default function ChatScreen() {
       // and do NOT include the new user message since it will be passed separately in "question".
       payloadHistory = messages;
     }
+
+    //Log the user message
+    logLastMsg("user", userText );
   
     // Update state for UI (showing the new user message and placeholder)
     setMessages(updatedHistory);
@@ -64,18 +71,47 @@ export default function ChatScreen() {
         setMessages((prev) => {
           const newHistory = [...prev];
           newHistory[newHistory.length - 1] = { role: "assistant", content: fullResponse };
+          //We log the assistant message
+          logLastMsg("assistant", fullResponse);
+          // console.log(`Messages list: \n${JSON.stringify(newHistory)}`);
           return newHistory;
         });
       }
     );
+
   };
+
+  const logLastMsg = (msgRole, msgContent) => {
+    if (convId) {
+      
+      const messageData = {
+        conversation_id: convId,
+        msg_role: msgRole,
+        msg_content: msgContent
+      }
+      createMessage(messageData);
+    }
+  }
   
   useEffect(() => {
     //on chat screen load we populate the messages of the conversation they click on
   }, []);
 
   useEffect(() => {
+    if (route.params?.messages) {
+      setMessages(route.params.messages);
+    }
+  }, [route.params?.messages]);
+
+  useEffect(() => {
+    if (route.params?.conversationId) {
+      setConvId(route.params.conversationId);
+    }
+  }, [route.params?.conversationId]);
+
+  useEffect(() => {
     flatListRef.current?.scrollToEnd({ animated: true });
+    console.log(`Messages have changed! \n${JSON.stringify(messages)}`);
   }, [messages]);
 
   return (

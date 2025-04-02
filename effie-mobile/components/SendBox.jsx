@@ -53,6 +53,7 @@ export default function SendBox( {onSendMessage}) {
             onPress={handleSend}
             btnSize={24}
             btnColor="#006748"
+            testID="send-button"
           />
           <ButtonIcon 
             iconName="mic" 
@@ -60,6 +61,7 @@ export default function SendBox( {onSendMessage}) {
             onPress={() => setIsVoiceMode(true)}
             btnSize={24}
             btnColor="#006748"
+            testID="mic-button"
           />
         </>
     )}

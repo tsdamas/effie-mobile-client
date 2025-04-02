@@ -8,12 +8,29 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "test": "jest --watchAll",
+    "test": "jest --watchAll --coverage",
     "lint": "expo lint"
   },
   "jest": {
     "preset": "jest-expo",
-    "setupFiles": ["<rootDir>/jest.setup.js"]
+    "setupFiles": ["<rootDir>/jest.setup.js"],
+    "collectCoverageFrom": [
+      "!<rootDir>/services/**",
+      "<rootDir>/app/**",
+      "!<rootDir>/app/+not*",
+      "!<rootDir>/app/index*",
+      "!<rootDir>/app/user*",
+      "!<rootDir>/app/Settings*",
+      "<rootDir>/assets/**",
+      "<rootDir>/components/**",
+      "!<rootDir>/components/Chat*",
+      "!<rootDir>/components/Custom*",
+      "!<rootDir>/**/Hamburger*",
+      "!<rootDir>/app/**_layout.jsx",
+      "!<rootDir>/app/**_layout.jsx",
+      "!<rootDir>/assets/styles/Custom*",
+      "!<rootDir>/assets/styles/ChatHeader*"
+    ]
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",

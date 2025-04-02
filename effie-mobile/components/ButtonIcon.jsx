@@ -5,7 +5,7 @@ import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../assets/styles/ButtonIconStyles';           // Importing Styles
 
-export default function ButtonIcon({ iconName, onPress, btnSize, btnStyle, btnColor }) {
+export default function ButtonIcon({ iconName, onPress, btnSize, btnStyle, btnColor, testID }) {
   
   // DEFAULTS
   const defaultButtonSize = 54;
@@ -19,7 +19,7 @@ export default function ButtonIcon({ iconName, onPress, btnSize, btnStyle, btnCo
   btnSize = btnSize == 'undefined' ? defaultButtonSize : btnSize;
 
   return (
-    <TouchableOpacity onPress={onPress} style={btnStyle}>
+    <TouchableOpacity onPress={onPress} style={btnStyle} testID={testID}>
       <Ionicons name={iconName} size={btnSize} color={btnColor} />
     </TouchableOpacity>
   );

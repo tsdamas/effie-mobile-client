@@ -101,10 +101,15 @@ export const createMessage = async (messageData) => {
     }
 };
 
-export const fetchMessages = async (conversationId) => {
+export const fetchMessages = async (convId) => {
     try {
-        const response = await fetch(`${API_URL}/conversations/${conversationId}/messages`);
-        
+        const response = await fetch(`${API_URL}/conversations/${convId}/messages`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            // body: JSON.stringify(uId),
+        });
         if (!response.ok) {
             throw new Error(`Error fetching messages: ${response.statusText}`);
         }

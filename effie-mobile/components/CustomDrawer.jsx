@@ -11,8 +11,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from '@/context/authContext';
 import { widthPercentageToDP as wp} from "react-native-responsive-screen";
 import styles from "../assets/styles/CustomDrawerStyles";
-import { createConversation, fetchConversations } from "@/services/GetConversations";
+import { createConversation, fetchConversations, fetchMessages } from "@/services/GetConversations";
 import InputField from "./InputField";
+import { copyStackTrace } from "@testing-library/react-native/build/helpers/errors";
 
 const CustomDrawer = (props) => {
 
@@ -22,12 +23,15 @@ const CustomDrawer = (props) => {
   
   const { user, logout } = useAuth();
 
-  useEffect(async () => {
-    const convList = await fetchConversations();
-    if (convList) {
-      setConversationList(convList);
+  useEffect(() => {
+    const makeConvList = async () => {
+      const convList = await fetchConversations();
+      if (convList) {
+        setConversationList(convList);
+      }
     }
-    
+
+    makeConvList();
   }, []);
 
   const handleCreateConversation = async () => {
@@ -43,6 +47,7 @@ const CustomDrawer = (props) => {
     };
 
     const success = await createConversation(payload);
+    console.log(success);
     if (success) {
       setConversationList((prevList) => [
         ...prevList,
@@ -55,12 +60,20 @@ const CustomDrawer = (props) => {
     }
   };
 
+  const getMessageLists = async (convId, uId) => {
+    const messages = await fetchMessages(convId, uId);
+    if (messages) {
+      //We pass the messages list to the chat screen
+      props.navigation.navigate("Chat", { conversationId: convId, messages: messages });
+    }
+  }
+
 
   const createConversationList = () => {
     return conversationList.map((conversation, index) => (
       <MenuItem
         key={index}
-        onPress={() => console.log(`${conversation.title} pressed`)}
+        onPress={() => getMessageLists(conversation.id, conversation.user_id)}
         btnSize={20}
         btnColor="black"
         iconName="chatbubble-outline"

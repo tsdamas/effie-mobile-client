@@ -13,4 +13,13 @@ jest.mock('expo-router', () => ({
       MaterialIcons: View,  // Mock MaterialIcons if used
     };
   });
+  jest.mock('ffmpeg-kit-react-native', () => ({
+    FFmpegKit: {
+      execute: jest.fn(),
+    },
+    ReturnCode: {
+      SUCCESS: 0,
+    },
+  }));
+  
   
