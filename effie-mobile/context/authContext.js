@@ -25,7 +25,9 @@ export const AuthContextProvider = ({children}) => {
      const login = async (email, password) => {
         try {
             const userData = await regularLogin(email, password);
-            if (userData && userData.session_id) {
+            console.log("before " + userData);
+            if (userData) {
+                console.log(userData);
 
                 setUser({
                     user_id: userData.user_id,
@@ -55,7 +57,9 @@ export const AuthContextProvider = ({children}) => {
     }
     const register = async (fname, lName, email, password) => {
         try {
+            // console.log(await registerUser(fname, lName, email, password));
             if (await registerUser(fname, lName, email, password)) {
+                
                 await login(email, password);
             } else {
                 console.log('registration failed baby');

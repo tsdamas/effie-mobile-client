@@ -1,6 +1,7 @@
 const API_URL = 'http://127.0.0.1:8000'; // This is just a localhost address. It's fine to leave
 
 
+
 export const regularLogin = async (email, password) => {
     try {
       const response = await fetch(`${API_URL}/auth/login`, {
@@ -32,8 +33,10 @@ export const registerUser = async (fname, lName, email, password) => {
       const response = await fetch(`${API_URL}/auth/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ first_name: fname, last_name: lName, email, password }),
+          body: JSON.stringify({ first_name: fname, last_name: lName, email, password, "auth_method":"email_password" }),
       });
+
+      console.log(response);
 
       const data = await response.json();
 
