@@ -99,7 +99,16 @@ export default function ChatScreen() {
 
   useEffect(() => {
     if (route.params?.messages) {
-      setMessages(route.params.messages);
+      // console.log("Got messages from db: \n" + JSON.stringify(route.params.messages));
+      // let formattedMessages = JSON.parse(route.params.messages);
+      setMessages(() => {
+        const returnedMessages = route.params.messages.map((msg) => {
+          // console.log(msg);
+          return ({role: msg.msg_role, content: msg.msg_content}); 
+        });
+        // console.log("Attempted to map: " + returnedMessages);
+        return returnedMessages;
+      });
     }
   }, [route.params?.messages]);
 
