@@ -13,13 +13,18 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import MessageList from "@/components/MessageList";
 import SendBox from "@/components/SendBox";
 import { getChunkedResponse } from "@/services/StreamService";
+import { useAuth } from '@/context/authContext';
+import { fetchMessages } from "@/services/GetConversations";
+
 
 import styles from '@/assets/styles/ChatStyles';
 
 export default function ChatScreen() {
   const [messages, setMessages] = useState([]);
   const flatListRef = useRef(null);
-  
+
+  const { user } = useAuth();
+
   const handleSendMessage = (userText) => {
     if (!userText.trim()) return;
   
@@ -67,6 +72,9 @@ export default function ChatScreen() {
     );
   };
   
+  useEffect(() => {
+    //on chat screen load we populate the messages of the conversation they click on
+  }, []);
 
   useEffect(() => {
     flatListRef.current?.scrollToEnd({ animated: true });

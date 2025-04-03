@@ -20,6 +20,7 @@ export default function Register() {
   const router = useRouter();
 
   const handleRegister = () => {
+      
       register(fName, lName, email, password)
   }
 

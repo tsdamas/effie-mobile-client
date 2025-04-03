@@ -39,7 +39,7 @@ export async function fetchTTS(query, voice) {
         }
 
         //replace with server URL
-        const remoteUrl = ' ' + filePath;
+        const remoteUrl = 'https://audio.effie.cx/' + filePath;
 
         //downloading URI
         const localUri = FileSystem.documentDirectory + 'ttsOutput.wav';

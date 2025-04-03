@@ -25,74 +25,86 @@ function SignIn() {
 
     const switchLoginOption = (opt) => {
         setLoginOption(opt);
-        console.log(opt);
+        // console.log(opt);
     };
 
     const handleLogin = async () => {
         login(email, password);
     };
 
-    //revise regex later (use regex library?)
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const handleSendInstructions = async () => {
+        try {
+            //connect to backend
+            const response = await fetch("http://127.0.0.1:8000/auth/forgot-password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email }),
+            });
 
-    const handleSendInstructions = () => {
-        //Check if email matches the regex
-        if (!emailRegex.test(email)) {
-            setErrorMessage("Incorrect email");
-            return;
+            const data = await response.json();
+
+            if (response.ok) {
+                // Clear any errors
+                setErrorMessage("");
+                // Popup msg
+                Alert.alert(
+                    "Please check your Email for instructions on how to reset your password, it may take a few minutes to arrive.",
+                    [{ text: "OK" }]
+                );
+            } else {
+                setErrorMessage(data.message || "Invalid email, please try again."); // Change this so you don't actually expose emails
+            }
+
+        } catch (error) {
+            Alert.alert("Something went wrong")
         }
-        //add another check to search database for email
-        //
-        //
-        //
-        //
-        //
-
-        //If prior two checks pass; clear error -> show popup
-        setErrorMessage("");
-        Alert.alert(
-            "Please check your Email for instructions on how to reset your password, it may take a few minutes to arrive.",
-            [{ text: "OK" }]
-        );
-        //Insert actual PW reset logic here
-        //
-        //
-        //
-        //
-
     };
 
     const handleGoogleSignIn = async () => {
         try {
-    
+
             const userInfo = await signInWithGoogle();
-            const { idToken, user } = userInfo;
+            //used a optional chaining operator in case the data comes null or undefinied
+            const { idToken, user } = userInfo?.data || {};
+            if (!user) {
+              console.warn("No user object returned from Google Sign-In.");
+              return;
+            }
+        
             const { givenName, familyName, email } = user;
-    
+
+            //console.log("User details:", givenName, familyName, email);
+
             // Send the idToken to your backend for verification and further processing
-            const response = await fetch("https://localhost.com/auth/google", {
+            const response = await fetch("http://10.0.2.2:8000/auth/google", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token: idToken }),
             });
+
     
-            const data = await response.json();
+            const text = await response.json();
+
     
-            if (data.access_token) {
+            if (text.session_id) {
                 // Store JWT and user information securely
-                await SecureStore.setItemAsync("jwt_token", data.access_token);
-                await SecureStore.setItemAsync("jwt_refresh_token", data.refresh_token);
+                await SecureStore.setItemAsync("session_id", text.session_id);
                 await SecureStore.setItemAsync("user_email", email);
                 await SecureStore.setItemAsync("user_first_name", givenName);
                 await SecureStore.setItemAsync("user_last_name", familyName);
-                console.log("JWT and user information stored securely");
+                console.log("Sesion id and user information stored securely");
+
+                console.log("User signed in with Google and session stored.");
+
+                // go to  chat screen
+                router.push("/Chat");
             }
         } catch (error) {
             console.error("Google Sign-In Failed:", error);
         }
     };
-    
-    
+
+
     //console.log(Platform.OS);
     return (
         <View style={styles.container}>
@@ -101,7 +113,7 @@ function SignIn() {
                 <>
                     {/* ----- LOGIN UI ----- */}
                     <Text style={styles.header}>Login to your account</Text>
-    
+
                     <View style={styles.login_buttons_container}>
                         {loginOption === "none" ? (
                             <>
@@ -164,7 +176,7 @@ function SignIn() {
                                         secureTextEntry={true}
                                     />
                                 </View>
-    
+
                                 <TouchableOpacity
                                     onPress={handleLogin}
                                     style={styles.login_button}
@@ -177,7 +189,7 @@ function SignIn() {
                                         onPress={handleLogin}
                                     />
                                 </TouchableOpacity>
-    
+
                                 {/* Back to login */}
                                 <TouchableOpacity
                                     onPress={() => switchLoginOption("none")}
@@ -204,13 +216,13 @@ function SignIn() {
                     <Text style={styles.description}>
                         Enter your Email address and we will send you instructions on how to reset your password.
                     </Text>
-    
+
                     <View style={styles.inputContainer}>
                         {/* Show error message if present */}
                         {errorMessage ? (
                             <Text style={styles.errorText}>{errorMessage}</Text>
                         ) : null}
-    
+
                         <InputField
                             label="Email address*"
                             value={email}
@@ -219,14 +231,14 @@ function SignIn() {
                             keyboardType="email-address"
                         />
                     </View>
-    
+
                     <TouchableOpacity
                         style={styles.login_button}
                         onPress={handleSendInstructions}
                     >
                         <Text style={styles.login_label}>Continue</Text>
                     </TouchableOpacity>
-    
+
                     <TouchableOpacity
                         onPress={() => setShowForgotPassword(false)}
                         style={styles.backToLoginButton}

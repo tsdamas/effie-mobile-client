@@ -121,6 +121,22 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
+  newConversationForm: {
+    flex: 1,
+    // flexDirection: "row",
+    // alignItems: "center",
+    // backgroundColor: "#f0f0f0",
+    borderRadius: 8,
+    // paddingRight: 10,
+    // marginRight: wp(2),
+  },
+  newConversationTitleButton : {
+    marginLeft: 10,
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 8,
+  }
+  
 });
 
 export default styles;
