@@ -5,7 +5,7 @@ import * as FileSystem from 'expo-file-system';
 // 1) Send TTS request, get WAV bytes, save locally, return local URI
 export async function fetchTTS(query, voice) {
     try {
-        const TTS_URL = ''; //replace with actual endpoint
+        const TTS_URL = 'https://diosol.com/ml/tts'; //replace with actual endpoint
 
         const response = await fetch(TTS_URL, {
             method: 'POST',
@@ -39,7 +39,7 @@ export async function fetchTTS(query, voice) {
         }
 
         //replace with server URL
-        const remoteUrl = ' ' + filePath;
+        const remoteUrl = 'https://audio.effie.cx/' + filePath;
 
         //downloading URI
         const localUri = FileSystem.documentDirectory + 'ttsOutput.wav';

@@ -1,3 +1,4 @@
+//SendBox.jsx
 //import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { View, TextInput } from 'react-native';
 import React, { useState, useRef } from 'react';
@@ -68,3 +69,4 @@ export default function SendBox( {onSendMessage}) {
   </View>
   );
 };
+

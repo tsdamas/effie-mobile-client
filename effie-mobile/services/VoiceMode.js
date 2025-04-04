@@ -1,91 +1,73 @@
 // VoiceMode.js
 import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
-import { startRecording, stopRecording, fileToBase64, convertM4AToWav } from './AudioRecorder';
+import { StyleSheet, TextInput } from 'react-native';
+import { startRecording, stopRecording, getRawPCMFromWav } from './AudioRecorder';
 import { sendToSTTApi } from './STT.js';
 import ButtonIcon from '../components/ButtonIcon';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from 'react-native-responsive-screen';
-import { TextInput } from 'react-native-gesture-handler';
-
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default function VoiceMode({ onCancel, onSpeechResult }) {
-  const [dots, setDots] = useState('');
   const [isRecording, setIsRecording] = useState(false);
-  const [speechText, setSpeechText] = useState('Listening...');
+  const [statusMessage, setStatusMessage] = useState('Listening...');
 
-  // Start recording on mount
   useEffect(() => {
     (async () => {
-      const granted = await requestMicrophonePermission();
-      if (!granted) {
-        console.log('Microphone permission denied');
-        onCancel();
-        return;
-      }
-
-      // Attempt to start recording
+      console.log("VoiceMode mounted. Attempting to start recording...");
       const started = await startRecording();
       if (started) {
         setIsRecording(true);
+        setStatusMessage('Recording...');
+        console.log("Recording is active.");
       } else {
+        console.log("Recording could not be started.");
+        alert('Unable to start recording. Please check permissions.');
         onCancel();
       }
     })();
   }, []);
 
-  // Stop recording, convert to base64, send to STT API
   const handleSend = async () => {
     console.log("handleSend triggered");
     if (!isRecording) {
+      console.log("Not recording. Cancelling.");
       onCancel();
       return;
     }
     setIsRecording(false);
 
-    const m4aUri = await stopRecording();
-    if (!m4aUri) {
-      onCancel();
-      return;
-    }
-
-    setSpeechText('Processing...');
-
-    const outputWavUri = FileSystem.documentDirectory + 'converted.wav';
-    // Convert M4A to WAV (Float32)
-    const wavUri = await convertM4AToWav(m4aUri, outputWavUri);
+    console.log("Stopping recording...");
+    const wavUri = await stopRecording();
     if (!wavUri) {
-      console.log('Conversion to WAV failed');
+      console.log('Recording failed or was cancelled.');
       onCancel();
       return;
     }
+    console.log("WAV file saved at:", wavUri);
 
-    // Convert file to base64
-    const base64Data = await fileToBase64(wavUri);
-    if (!base64Data) {
-      console.log('Failed to read WAV as base64');
+    console.log("Extracting raw PCM from WAV...");
+    const rawPCMBase64 = await getRawPCMFromWav(wavUri);
+    if (!rawPCMBase64) {
+      console.log("Failed to extract raw PCM data.");
       onCancel();
       return;
     }
+    console.log("Raw PCM data extracted. Sending to STT API...");
 
-    // Send to STT server
-    const transcript = await sendToSTTApi(base64Data, 44100);
+    const transcript = await sendToSTTApi(rawPCMBase64, 44100);
     if (transcript) {
-      setSpeechText(transcript);
-      // Pass the recognized text back to parent
+      console.log("Received transcript from STT API:", transcript);
       onSpeechResult(transcript);
     } else {
-      console.log('No transcript received');
+      console.log('No transcript received from STT API');
     }
-
-    // Finally, close voice mode
+    console.log("Closing VoiceMode.");
     onCancel();
   };
 
   const handleCancel = async () => {
+    console.log("Cancel triggered");
     if (isRecording) {
+      console.log("Recording is active. Stopping recording before cancel.");
       await stopRecording();
       setIsRecording(false);
     }
@@ -94,21 +76,9 @@ export default function VoiceMode({ onCancel, onSpeechResult }) {
 
   return (
     <>
-        <ButtonIcon 
-        iconName="trash" 
-        style={styles.cancelButton} 
-        onPress={onCancel} 
-      />
-      <TextInput 
-        style={[styles.input, styles.centeredText]} 
-        value={dots} 
-        editable={false} 
-      />
-      <ButtonIcon 
-        iconName="send" 
-        style={styles.cancelButton} 
-        onPress={onCancel}
-      />
+      <ButtonIcon iconName="trash" style={styles.cancelButton} onPress={handleCancel} />
+      <TextInput style={[styles.input, styles.centeredText]} value={statusMessage} editable={false} />
+      <ButtonIcon iconName="send" style={styles.sendButton} onPress={handleSend} />
     </>
   );
 }
