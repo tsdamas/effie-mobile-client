@@ -7,17 +7,23 @@
 
 const API_URL = 'http://127.0.0.1:8002/chat';
 
-// Hardcoded array for now
-export const conversationList = [
-    { title: "Chat 1" },
-    { title: "Chat 2" },
-    { title: "Chat 3" },
-];
+// // Hardcoded array for now
+// export const conversationList = [
+//     { title: "Chat 1" },
+//     { title: "Chat 2" },
+//     { title: "Chat 3" },
+// ];
 
 // This function gets all conversations, no matter the user, we need to configure to pass teh user_id
-export const fetchConversations = async () => {
+export const fetchConversations = async (payload) => {
     try {
-        const response = await fetch(`${API_URL}/conversations/`);
+        const response = await fetch(`${API_URL}/conversations/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
         
         if (!response.ok) {
             throw new Error(`Error fetching conversations: ${response.statusText}`);
@@ -36,7 +42,7 @@ export const fetchConversations = async () => {
 // Function to create a new conversation (POST request)
 export const createConversation = async (conversationData) => {
     try {
-        const response = await fetch(`${API_URL}/conversations/`, {
+        const response = await fetch(`${API_URL}/createConversations/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -51,7 +57,6 @@ export const createConversation = async (conversationData) => {
         
 
         const data = await response.json();
-        
 
         return data.id;
     } catch (error) {
@@ -101,14 +106,14 @@ export const createMessage = async (messageData) => {
     }
 };
 
-export const fetchMessages = async (convId) => {
+export const fetchMessages = async (convId, payload) => {
     try {
         const response = await fetch(`${API_URL}/conversations/${convId}/messages`, {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            // body: JSON.stringify(uId),
+            body: JSON.stringify(payload),
         });
         if (!response.ok) {
             throw new Error(`Error fetching messages: ${response.statusText}`);

@@ -24,14 +24,21 @@ const CustomDrawer = (props) => {
   const { user, logout } = useAuth();
 
   useEffect(() => {
-    const makeConvList = async () => {
-      const convList = await fetchConversations();
-      if (convList) {
-        setConversationList(convList);
+    // console.log(conversationList);
+    if (user.user_id) {
+      const makeConvList = async () => {
+        let payload = {
+          user_id: user.user_id
+        };
+        const convList = await fetchConversations(payload);
+        if (convList) {
+          setConversationList(convList);
+        }
       }
+  
+      makeConvList();
     }
-
-    makeConvList();
+   
   }, []);
 
   const handleCreateConversation = async () => {
@@ -46,12 +53,17 @@ const CustomDrawer = (props) => {
       title: newConversationTitle,
     };
 
-    const success = await createConversation(payload);
-    console.log(success);
-    if (success) {
+
+    const newConvId = await createConversation(payload);
+    if (newConvId) {
       setConversationList((prevList) => [
         ...prevList,
-        { title: newConversationTitle },
+        { 
+          title: newConversationTitle,
+          id: newConvId,
+          user_id: user.user_id,
+          session_id: user.session_id
+        },
       ]);
       setIsNewConversation(false);  
       setNewConversationTitle("");    
@@ -70,10 +82,13 @@ const CustomDrawer = (props) => {
 
 
   const createConversationList = () => {
+    let payload = {
+      user_id: user.user_id
+    };
     return conversationList.map((conversation, index) => (
       <MenuItem
         key={index}
-        onPress={() => getMessageLists(conversation.id, conversation.user_id)}
+        onPress={() => getMessageLists(conversation.id, payload)}
         btnSize={20}
         btnColor="black"
         iconName="chatbubble-outline"
