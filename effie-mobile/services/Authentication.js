@@ -33,12 +33,11 @@ export const registerUser = async (fname, lName, email, password) => {
       const response = await fetch(`${API_URL}/auth/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ first_name: fname, last_name: lName, email, password, "auth_method":"email_password" }),
+          body: JSON.stringify({ first_name: fname, last_name: lName, email: email, password: password, auth_method:"email_password" }),
       });
 
-      console.log(response);
-
       const data = await response.json();
+      console.log(data);
 
       if (!response.ok) {
           throw new Error(data.detail || "Registration failed");
