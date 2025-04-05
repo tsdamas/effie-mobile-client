@@ -29,7 +29,7 @@ export default function ChatScreen() {
   const { user } = useAuth();
 
   const handleSendMessage = (userText) => {
-    console.log(`Conversation ID: ${convId}`);
+    // console.log(`Conversation ID: ${convId}`);
     if (!userText.trim()) return;
   
     let updatedHistory = [];
@@ -122,7 +122,7 @@ export default function ChatScreen() {
 
   useEffect(() => {
     flatListRef.current?.scrollToEnd({ animated: true });
-    console.log(`Messages have changed! \n${JSON.stringify(messages)}`);
+    // console.log(`Messages have changed! \n${JSON.stringify(messages)}`);
   }, [messages]);
 
   return (
