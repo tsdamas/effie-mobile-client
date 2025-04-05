@@ -2,6 +2,8 @@
 //         new conversation creation, recent chats, and user information access. It helps users navigate 
 //         through the app in a clean and organized manner. */
 
+
+
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
@@ -110,7 +112,7 @@ const CustomDrawer = (props) => {
     <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
       {/* Drawer Title */}
       <View style={styles.titleContainer}>
-        <Text style={styles.drawerTitle}>Menu</Text>
+        <Text style={styles.drawerTitle}></Text>
       </View>
 
       {/* Search Bar and New Chat Button */}
@@ -124,7 +126,8 @@ const CustomDrawer = (props) => {
           onPress={openNewConversation}
           btnStyle={styles.newChatButton}
           btnSize={24}
-          btnColor="black"
+          //btnColor="black"
+          btnColor="white"
           iconName="create-outline"
         />
       </View>
@@ -184,14 +187,26 @@ const CustomDrawer = (props) => {
 
       {/* Logout Button */}
       <MenuItem
+        //onPress={handleLogout}
+        //btnStyle={styles.logoutButton}
+        //iconName="log-out"
+        //btnSize={22}
+        //btnColor="white"
+        //text="Logout"
+        //menuItemStyle={styles.menuItem}
+        //textStyle={styles.userName}
+
         onPress={handleLogout}
-        btnStyle={styles.logoutButton}
         iconName="log-out"
-        btnSize={20}
+        btnSize={22}
         btnColor="white"
         text="Logout"
-        menuItemStyle={styles.menuItem}
-        textStyle={styles.userName}
+        textStyle={{
+          fontSize: 20,
+          fontWeight: 'bold',
+          color: 'white',
+        }}
+        menuItemStyle={styles.logoutButton}
       />
     </DrawerContentScrollView>
   );

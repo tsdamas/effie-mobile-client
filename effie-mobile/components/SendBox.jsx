@@ -7,6 +7,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import ButtonIcon from './ButtonIcon';
 import VoiceMode from '../services/VoiceMode.js';
 import styles from '../assets/styles/SendBoxStyles';
+import { Colors } from '@/assets/styles/colors';
 
 export default function SendBox( {onSendMessage}) {
   //set default voice mode to false
@@ -53,7 +54,7 @@ export default function SendBox( {onSendMessage}) {
             btnStyle={styles.sendButton}
             onPress={handleSend}
             btnSize={24}
-            btnColor="#006748"
+            btnColor={Colors.primaryPurple}
             testID="send-button"
           />
           <ButtonIcon 
@@ -61,7 +62,7 @@ export default function SendBox( {onSendMessage}) {
             btnStyle={styles.micButton}
             onPress={() => setIsVoiceMode(true)}
             btnSize={24}
-            btnColor="#006748"
+            btnColor={Colors.primaryPurple}
             testID="mic-button"
           />
         </>

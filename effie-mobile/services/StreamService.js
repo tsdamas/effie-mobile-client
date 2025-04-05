@@ -41,9 +41,12 @@ export async function getChunkedResponse(question, history, onComplete) {
     const payload = {
       history: history.length > 0 ? history : [{ role: "user", content: question }],
       question,
+
       client_code: "gAAAAABnvXpVnm4xDWR18JTBQSPr3qjUKcmUK3ntm4AMzWG9QGgLwLJboPSm-m_BiXKYdZhfyOZ0oeDNDmB0Bz7cF70zA6OsL89XA076aMhocTeeewyLmnLvGuV3WDMTH2Wq3CYSj1Qs",
       domain_name: "effie.cx",
+
     };
+
 
     // console.log("Payload being sent:", JSON.stringify(payload, null, 2));
 
