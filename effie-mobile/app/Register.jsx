@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, TouchableOpacity, Pressable, StyleSheet, Platform } from 'react-native'
+import { View, Text, StatusBar, TouchableOpacity, Pressable, StyleSheet, Platform, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { useRouter } from 'expo-router';
 import InputField from '@/components/InputField';
@@ -6,7 +6,6 @@ import ButtonIcon from '@/components/ButtonIcon';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '@/assets/styles/colors';
 import { useAuth } from '@/context/authContext';
-
 import styles from '@/assets/styles/RegisterStyle';
 
 export default function Register() {
@@ -19,9 +18,21 @@ export default function Register() {
   const { register } = useAuth();
   const router = useRouter();
 
+  const checkSecurePwd = (pwd) => {
+    const securePwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return securePwdRegex.test(pwd);
+  }
+
   const handleRegister = () => {
+    const isPwdSecure = checkSecurePwd(password);
+    console.log(`Password is secure? ${isPwdSecure}`);
+    if(isPwdSecure){
+      register(fName, lName, email, password);
+    } else {
+        Alert.alert("Please use a secure password with: Minimum 8 characters, 1 uppercase letter, 1 digit and one special character!")
+    }
       
-      register(fName, lName, email, password)
+      
   }
 
   return (
