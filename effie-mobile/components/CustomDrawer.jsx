@@ -22,11 +22,16 @@ const CustomDrawer = (props) => {
   
   const { user, logout } = useAuth();
 
-  useEffect(async () => {
-    const convList = await fetchConversations();
-    if (convList) {
-      setConversationList(convList);
+  useEffect(() => {
+    const listConversations = async () => {
+
+      const convList = await fetchConversations();
+      if (convList) {
+        setConversationList(convList);
+      }
     }
+    listConversations();
+
     
   }, []);
 

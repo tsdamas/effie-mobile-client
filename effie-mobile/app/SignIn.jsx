@@ -10,6 +10,7 @@ import { useAuth } from '@/context/authContext';
 import signInWithGoogle from '@/services/GoogleSignin';
 import * as SecureStore from 'expo-secure-store';
 import { useRouter } from 'expo-router';
+import { signInWithApple } from '@/services/AppleSignin';
 
 function SignIn() {
     const [loginOption, setLoginOption] = useState("none");
@@ -101,6 +102,44 @@ function SignIn() {
             console.error("Google Sign-In Failed:", error);
         }
     };
+
+    const handleAppleSignin = async () => {
+        try {
+            const userAppleInfo = await signInWithApple();
+            const {idToken, user} = userAppleInfo?.data || {}; 
+            if(!user)
+                console.warn("No warm found in Apple Sign-in");
+                return; 
+            
+            const {firstName, fullName, email} = user;
+
+            const response = await fetch("http://10.0.2.2:8000/auth/apple", {
+                method: "POST",
+                headers: {"Content-type": "application/json"},
+                body: JSON.stringify({
+                    token: token,
+                    firstName,
+                    lastName
+                })
+            });
+
+            const data = await response.json();
+
+            if(data.session_id){
+                await SecureStore.setItemAsync("session_id", data.session_id);
+                await SecureStore.setItemAsync("first_name", firstName);
+                await SecureStore.setItemAsync("last_name", lastName);
+                await SecureStore.setItemAsync("email", email);
+
+                console.log("Session ID and user info stored from Apple Sign-in");
+
+                router.push("/Chat");
+            }
+
+        } catch (error){
+            console.log("Apple Sign-In failed: ", error);
+        }
+    }
 
 
     //console.log(Platform.OS);
