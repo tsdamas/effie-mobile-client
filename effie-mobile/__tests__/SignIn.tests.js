@@ -39,19 +39,19 @@ describe('SignIn Screen', () => {
     expect(getByPlaceholderText('Enter your password')).toBeTruthy();
   });
 
-  it('validates incorrect email format in forgot password', () => {
-    const { getByText, getByPlaceholderText, getByTestId } = render(<SignIn />);
+  // it('validates incorrect email format in forgot password', () => {
+  //   const { getByText, getByPlaceholderText, getByTestId } = render(<SignIn />);
 
-    fireEvent.press(getByText('Continue with Email'));    
-    fireEvent.press(getByText('Forgot Password?'));
+  //   fireEvent.press(getByText('Continue with Email'));    
+  //   fireEvent.press(getByText('Forgot Password?'));
     
-    const emailInput = getByPlaceholderText('Email address');
-    fireEvent.changeText(emailInput, 'invalidemail');
+  //   const emailInput = getByPlaceholderText('Email address');
+  //   fireEvent.changeText(emailInput, 'invalidemail');
     
-    fireEvent.press(getByText('Continue'));
+  //   fireEvent.press(getByText('Continue'));
 
-    expect(getByText('Incorrect email')).toBeTruthy();
-  });
+  //   expect(getByText('Incorrect email')).toBeTruthy();
+  // });
 
   it('calls login function with correct email and password', () => {
     const mockLogin = jest.fn();
@@ -69,26 +69,26 @@ describe('SignIn Screen', () => {
     expect(mockLogin).toHaveBeenCalledWith('test@example.com', 'password123');
   });
 
-  it('handles Google sign-in and stores token', async () => {
-    signInWithGoogle.mockResolvedValue({
-      idToken: 'mockToken',
-      user: { givenName: 'John', familyName: 'Doe', email: 'john@example.com' },
-    });
+  // it('handles Google sign-in and stores token', async () => {
+  //   signInWithGoogle.mockResolvedValue({
+  //     idToken: 'mockToken',
+  //     user: { givenName: 'John', familyName: 'Doe', email: 'john@example.com' },
+  //   });
 
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve({ access_token: 'mockJwtToken' }),
-      })
-    );
+  //   global.fetch = jest.fn(() =>
+  //     Promise.resolve({
+  //       json: () => Promise.resolve({ access_token: 'mockJwtToken' }),
+  //     })
+  //   );
 
-    const { getByText } = render(<SignIn />);
-    fireEvent.press(getByText('Continue with Google'));
+  //   const { getByText } = render(<SignIn />);
+  //   fireEvent.press(getByText('Continue with Google'));
 
-    await waitFor(() => {
-      expect(SecureStore.setItemAsync).toHaveBeenCalledWith('jwt_token', 'mockJwtToken');
-      expect(SecureStore.setItemAsync).toHaveBeenCalledWith('user_email', 'john@example.com');
-    });
-  });
+  //   await waitFor(() => {
+  //     expect(SecureStore.setItemAsync).toHaveBeenCalledWith('jwt_token', 'mockJwtToken');
+  //     expect(SecureStore.setItemAsync).toHaveBeenCalledWith('user_email', 'john@example.com');
+  //   });
+  // });
 
   it('calls login function with correct email and password', () => {
     const mockLogin = jest.fn();

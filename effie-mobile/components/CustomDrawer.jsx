@@ -2,6 +2,8 @@
 //         new conversation creation, recent chats, and user information access. It helps users navigate 
 //         through the app in a clean and organized manner. */
 
+
+
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
@@ -11,8 +13,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from '@/context/authContext';
 import { widthPercentageToDP as wp} from "react-native-responsive-screen";
 import styles from "../assets/styles/CustomDrawerStyles";
-import { createConversation, fetchConversations } from "@/services/GetConversations";
+import { createConversation, fetchConversations, fetchMessages } from "@/services/GetConversations";
 import InputField from "./InputField";
+import { copyStackTrace } from "@testing-library/react-native/build/helpers/errors";
 
 const CustomDrawer = (props) => {
 
@@ -23,16 +26,21 @@ const CustomDrawer = (props) => {
   const { user, logout } = useAuth();
 
   useEffect(() => {
-    const listConversations = async () => {
-
-      const convList = await fetchConversations();
-      if (convList) {
-        setConversationList(convList);
+    // console.log(conversationList);
+    if (user.user_id) {
+      const makeConvList = async () => {
+        let payload = {
+          user_id: user.user_id
+        };
+        const convList = await fetchConversations(payload);
+        if (convList) {
+          setConversationList(convList);
+        }
       }
+  
+      makeConvList();
     }
-    listConversations();
-
-    
+   
   }, []);
 
   const handleCreateConversation = async () => {
@@ -47,11 +55,17 @@ const CustomDrawer = (props) => {
       title: newConversationTitle,
     };
 
-    const success = await createConversation(payload);
-    if (success) {
+
+    const newConvId = await createConversation(payload);
+    if (newConvId) {
       setConversationList((prevList) => [
         ...prevList,
-        { title: newConversationTitle },
+        { 
+          title: newConversationTitle,
+          id: newConvId,
+          user_id: user.user_id,
+          session_id: user.session_id
+        },
       ]);
       setIsNewConversation(false);  
       setNewConversationTitle("");    
@@ -60,12 +74,23 @@ const CustomDrawer = (props) => {
     }
   };
 
+  const getMessageLists = async (convId, uId) => {
+    const messages = await fetchMessages(convId, uId);
+    if (messages) {
+      //We pass the messages list to the chat screen
+      props.navigation.navigate("Chat", { conversationId: convId, messages: messages });
+    }
+  }
+
 
   const createConversationList = () => {
+    let payload = {
+      user_id: user.user_id
+    };
     return conversationList.map((conversation, index) => (
       <MenuItem
         key={index}
-        onPress={() => console.log(`${conversation.title} pressed`)}
+        onPress={() => getMessageLists(conversation.id, payload)}
         btnSize={20}
         btnColor="black"
         iconName="chatbubble-outline"
@@ -87,7 +112,7 @@ const CustomDrawer = (props) => {
     <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
       {/* Drawer Title */}
       <View style={styles.titleContainer}>
-        <Text style={styles.drawerTitle}>Menu</Text>
+        <Text style={styles.drawerTitle}></Text>
       </View>
 
       {/* Search Bar and New Chat Button */}
@@ -101,7 +126,8 @@ const CustomDrawer = (props) => {
           onPress={openNewConversation}
           btnStyle={styles.newChatButton}
           btnSize={24}
-          btnColor="black"
+          //btnColor="black"
+          btnColor="white"
           iconName="create-outline"
         />
       </View>
@@ -161,14 +187,26 @@ const CustomDrawer = (props) => {
 
       {/* Logout Button */}
       <MenuItem
+        //onPress={handleLogout}
+        //btnStyle={styles.logoutButton}
+        //iconName="log-out"
+        //btnSize={22}
+        //btnColor="white"
+        //text="Logout"
+        //menuItemStyle={styles.menuItem}
+        //textStyle={styles.userName}
+
         onPress={handleLogout}
-        btnStyle={styles.logoutButton}
         iconName="log-out"
-        btnSize={20}
+        btnSize={22}
         btnColor="white"
         text="Logout"
-        menuItemStyle={styles.menuItem}
-        textStyle={styles.userName}
+        textStyle={{
+          fontSize: 20,
+          fontWeight: 'bold',
+          color: 'white',
+        }}
+        menuItemStyle={styles.logoutButton}
       />
     </DrawerContentScrollView>
   );

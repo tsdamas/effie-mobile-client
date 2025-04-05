@@ -5,6 +5,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",        // Aligns the icon and text horizontally
     alignItems: "center",       // Vertically centers the items
     paddingVertical: 10,       // Adds vertical padding for spacing
+    justifyContent: "center",
+    gap: 8,
   },
 
   textContainer: {
@@ -14,7 +16,8 @@ const styles = StyleSheet.create({
   },
   
   text_label: {
-    fontSize: 14,     
+    fontSize: 16,
+    fontWeight: 'bold',    
     color: "#000",         // Text color set to black
   },
 });
