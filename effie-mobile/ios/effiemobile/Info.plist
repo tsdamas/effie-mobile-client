@@ -29,7 +29,7 @@
         <array>
           <string>myapp</string>
           <string>com.anonymous.effiemobile</string>
-          <string>com.googleusercontent.apps.com.googleusercontent.apps.265919234230-u5anbbairpj64jr69a0skv3q4af5nmvg</string>
+          <string>$(GOOGLE_REVERSED_CLIENT_ID)</string>
         </array>
       </dict>
       <dict>
