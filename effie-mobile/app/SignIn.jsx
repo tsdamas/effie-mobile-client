@@ -159,7 +159,7 @@ function SignIn() {
                             {Platform.OS === 'ios' && (
                                 <MenuItem
                                     iconName="logo-apple"
-                                    onPress={() => switchLoginOption("apple")}
+                                    onPress={handleAppleSignin}
                                     btnSize={28}
                                     btnColor="white"
                                     text="Continue with Apple"
