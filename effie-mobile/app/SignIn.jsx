@@ -156,6 +156,7 @@ function SignIn() {
                     <View style={styles.login_buttons_container}>
                         {loginOption === "none" ? (
                             <>
+                            {Platform.OS === 'ios' && (
                                 <MenuItem
                                     iconName="logo-apple"
                                     onPress={() => switchLoginOption("apple")}
@@ -164,7 +165,7 @@ function SignIn() {
                                     text="Continue with Apple"
                                     textStyle={styles.login_label}
                                     menuItemStyle={styles.login_button}
-                                />
+                                />)}
                                 <MenuItem
                                     iconName="logo-google"
                                     onPress={handleGoogleSignIn}
