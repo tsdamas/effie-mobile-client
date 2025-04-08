@@ -167,7 +167,7 @@ const CustomDrawer = (props) => {
             source={{ uri: "https://cdn-icons-png.flaticon.com/512/17/17004.png" }}
             style={styles.avatar}
           />
-          <Text style={styles.userName}>{user.first_name + " " + user.last_name}</Text>
+          <Text style={styles.userName}>{user.first_name}</Text>
         </TouchableOpacity>
         <ButtonIcon
           onPress={() => props.navigation.navigate("Settings")}

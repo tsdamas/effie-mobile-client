@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(5),
     paddingVertical: hp(2),
     color: Colors.darkGray,
+    flexWrap: "wrap",
   },
 
   avatar: {
@@ -86,6 +87,7 @@ const styles = StyleSheet.create({
   userNameContainer: {
     flexDirection: "row",
     alignItems: "center",
+    flexWrap: "wrap",
   },
 
   userName: {
@@ -93,6 +95,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: Colors.darkGray,
     marginRight: wp(2),
+    
   },
   
   settingsButton: {
