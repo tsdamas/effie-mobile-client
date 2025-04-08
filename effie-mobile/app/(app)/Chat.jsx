@@ -7,14 +7,14 @@
  */
 
 import React, { useState, useRef, useEffect } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, View, KeyboardAvoidingView, Platform, StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
 import CustomKeyboardView from "@/components/CustomKeyboardView";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import MessageList from "@/components/MessageList";
 import SendBox from "@/components/SendBox";
 import { getChunkedResponse } from "@/services/StreamService";
 import { useAuth } from '@/context/authContext';
-import { createMessage, fetchMessages } from "@/services/GetConversations";
+import { createMessage } from "@/services/GetConversations";
 import { useRoute } from "@react-navigation/native";
 
 import styles from '@/assets/styles/ChatStyles';
@@ -126,18 +126,21 @@ export default function ChatScreen() {
   }, [messages]);
 
   return (
-    <CustomKeyboardView style={styles.container}>
-      <View style={styles.innerContainer}>
-        <FlatList
-          ref={flatListRef}
-          data={messages}
-          renderItem={({ item }) => <MessageList messages={[item]} />}
-          keyExtractor={(item, index) => index.toString()}
-          contentContainerStyle={styles.chatContainer}
-          showsVerticalScrollIndicator={false}
-        />
-        <SendBox onSendMessage={handleSendMessage} />
-      </View>
-    </CustomKeyboardView>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+    >
+        <View style={styles.innerContainer}>
+          <FlatList
+            ref={flatListRef}
+            data={messages}
+            renderItem={({ item }) => <MessageList messages={[item]} />}
+            keyExtractor={(item, index) => index.toString()}
+            contentContainerStyle={styles.chatContainer}
+            showsVerticalScrollIndicator={false}
+          />
+          <SendBox onSendMessage={handleSendMessage} />
+        </View>
+    </KeyboardAvoidingView>
   );
 };
