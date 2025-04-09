@@ -8,9 +8,9 @@ import InputField from '@/components/InputField';
 import ButtonIcon from '@/components/ButtonIcon';
 import { useAuth } from '@/context/authContext';
 import signInWithGoogle from '@/services/GoogleSignin';
+import signInWithApple from '@/services/AppleSignin';
 import * as SecureStore from 'expo-secure-store';
 import { useRouter } from 'expo-router';
-import { signInWithApple } from '@/services/AppleSignin';
 
 import styles from '@/assets/styles/SignInStyles'
 
