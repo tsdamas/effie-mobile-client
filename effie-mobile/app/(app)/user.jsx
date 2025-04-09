@@ -11,7 +11,8 @@ export default function UserScreen() {
         alignItems: "center",
       }}
     >
-      <Text>User profile would go here</Text>
+      <Text>Edit your profile</Text>
+      
     </View>
   );
 }
