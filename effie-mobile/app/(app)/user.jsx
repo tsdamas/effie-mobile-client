@@ -6,6 +6,7 @@ import InputField from '@/components/InputField';
 import ButtonIcon from '@/components/ButtonIcon';
 import { useAuth } from '@/context/authContext';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { getAuthInfo } from '@/services/UserProfile';
 
 export default function UserScreen() {
   const [editing, setEditing] = useState(false);
@@ -34,7 +35,21 @@ export default function UserScreen() {
 
   useEffect(() => {
     console.log(JSON.stringify(user));
+    const fetchUserData = async () => {
+      const authInfo = await getAuthInfo(user.user_id);
+      if (authInfo) {
+        setEmail(authInfo.email);
+        // Don't set password directly if you're not returning it
+        if (user) {
+          setFName(user.first_name);
+          setLName(user.last_name);
+        }
+      }
+    };
+  
+    fetchUserData();
   }, []);
+  
 
   return (
     <>
