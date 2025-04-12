@@ -27,6 +27,32 @@ export const getAuthInfo = async (userId) => {
     }
 };
 
+//check if user password is correct
+export const checkPassword = async (email, password) => {
+    try {
+        const response = await fetch(`${API_URL}/auth/check_password`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    
+        const isCorrect = await response.json();
+        return isCorrect;
+    } catch (error) {
+        console.error('Login Failed:', error.message);
+        return null;
+    }
+};
+
 //update user info
 export const updateUserInfo = async (userInfo) => {
     try {

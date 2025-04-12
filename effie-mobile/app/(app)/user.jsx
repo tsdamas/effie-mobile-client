@@ -6,7 +6,8 @@ import InputField from '@/components/InputField';
 import ButtonIcon from '@/components/ButtonIcon';
 import { useAuth } from '@/context/authContext';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { getAuthInfo } from '@/services/UserProfile';
+import { getAuthInfo, checkPassword } from '@/services/UserProfile';
+import { parseArgs } from 'util';
 
 export default function UserScreen() {
   const [editing, setEditing] = useState(false);
@@ -15,6 +16,7 @@ export default function UserScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
+  const [wantToEditPwd, setWantToEditPwd] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   
 
@@ -32,6 +34,23 @@ export default function UserScreen() {
   const handleUpdate = () => {
     setEditing(false);
   }
+
+  const verifyPassword = async () => {
+    console.log(`user email: ${email}, user password: ${password}`);
+    const isCorrect = await checkPassword(email, password);
+    if (isCorrect) {
+      setWantToEditPwd(true);
+      setErrorMessage("");
+    } else {
+      setErrorMessage("Incorrect password");
+    }
+  }
+
+  useEffect(() => {
+    //Everytime the user comes back to this page, we need to reset the state
+    setEditing(false);
+    setWantToEditPwd(false);
+  }, [])
 
   useEffect(() => {
     console.log(JSON.stringify(user));
@@ -81,20 +100,52 @@ export default function UserScreen() {
               placeholder="Enter your email"
               keyboardType="email-address"
             />
-            <InputField
-              label="Password"
-              value={password}
-              onChangeText={setPassword}
-              placeholder="Enter your password"
-              secureTextEntry={true}
-            />
-            <InputField
-              label="Re-enter password"
-              value={rePassword}
-              onChangeText={setRePassword}
-              placeholder="Enter your password again"
-              secureTextEntry={true}
-            />
+            {wantToEditPwd ? (
+              <>
+                <InputField
+                  label="Password"
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder="Enter your password"
+                  secureTextEntry={true}
+                />
+                <InputField
+                  label="Re-enter password"
+                  value={rePassword}
+                  onChangeText={setRePassword}
+                  placeholder="Enter your password again"
+                  secureTextEntry={true}
+                />
+              </>
+            ) : (
+              <View>
+                <Text >
+                  If you want to change your password, please enter your current password
+                </Text>
+                <View>
+                  <InputField
+                    label="Current password"
+                    value={password}
+                    onChangeText={setPassword}
+                    placeholder="Enter your password"
+                    secureTextEntry={true}
+                  />
+                  <ButtonIcon 
+                    onPress={verifyPassword}
+                    // btnStyle={styles.newConversationTitleButton}
+                    iconName="paper-plane-outline"
+                    btnSize={20}
+                    btnColor="black"
+                  />
+                </View>
+                <Text>
+                  If you forgot your password, please click here
+                  {/* we will make this to go to the forgot password page */}
+                </Text>
+                
+             </View>
+            ) }
+           
           </View>
 
           {/* update user info */}
