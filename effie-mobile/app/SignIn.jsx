@@ -36,7 +36,7 @@ function SignIn() {
     const handleSendInstructions = async () => {
         try {
             //connect to backend
-            const response = await fetch("http://127.0.0.1:8000/auth/forgot-password", {
+            const response = await fetch("http://10.0.2.2:8000/auth/forgot-password", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),
