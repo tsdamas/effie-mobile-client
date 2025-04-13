@@ -74,8 +74,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(5),
     paddingVertical: hp(2),
     color: Colors.darkGray,
-    flexWrap: "wrap",
+    flexWrap: "nowrap", // 👈 prevent wrapping
   },
+  
 
   avatar: {
     width: hp(5),

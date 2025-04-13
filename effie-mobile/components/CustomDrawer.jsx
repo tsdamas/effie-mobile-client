@@ -159,31 +159,37 @@ const CustomDrawer = (props) => {
 
       {/* User Info and Navigation Buttons */}
       <View style={styles.userInfo}>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate("User Profile")}
-          style={styles.userNameContainer}
-        >
-          <Image
-            source={{ uri: "https://cdn-icons-png.flaticon.com/512/17/17004.png" }}
-            style={styles.avatar}
-          />
-          <Text style={styles.userName}>{user.first_name}</Text>
-        </TouchableOpacity>
-        <ButtonIcon
-          onPress={() => props.navigation.navigate("Settings")}
-          btnStyle={styles.settingsButton}
-          iconName="settings-outline"
-          btnSize={20}
-          btnColor="black"
-        />
-        <ButtonIcon
-          onPress={() => props.navigation.navigate("Chat")}
-          btnStyle={styles.settingsButton}
-          iconName="chatbubbles-outline"
-          btnSize={20}
-          btnColor="black"
-        />
-      </View>
+  {/* Avatar + Name */}
+  <TouchableOpacity
+    onPress={() => props.navigation.navigate("User Profile")}
+    style={styles.userNameContainer}
+  >
+    <Image
+      source={{ uri: "https://cdn-icons-png.flaticon.com/512/17/17004.png" }}
+      style={styles.avatar}
+    />
+    <Text style={styles.userName}>{user.first_name}</Text>
+  </TouchableOpacity>
+
+  {/* Action buttons in a row */}
+  <View style={styles.userActionButtons}>
+    <ButtonIcon
+      onPress={() => props.navigation.navigate("Settings")}
+      btnStyle={styles.settingsButton}
+      iconName="settings-outline"
+      btnSize={20}
+      btnColor="black"
+    />
+    <ButtonIcon
+      onPress={() => props.navigation.navigate("Chat")}
+      btnStyle={styles.settingsButton}
+      iconName="chatbubbles-outline"
+      btnSize={20}
+      btnColor="black"
+    />
+  </View>
+</View>
+
 
       {/* Logout Button */}
       <MenuItem
