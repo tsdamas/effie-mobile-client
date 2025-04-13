@@ -16,6 +16,7 @@ export default function UserScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
   const [wantToEditPwd, setWantToEditPwd] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   
@@ -83,7 +84,7 @@ export default function UserScreen() {
 
   const verifyPassword = async () => {
     console.log(`user email: ${email}, user password: ${password}`);
-    const isCorrect = await checkPassword(email, password);
+    const isCorrect = await checkPassword(email, currentPassword);
     if (isCorrect) {
       setWantToEditPwd(true);
       setErrorMessage("");
@@ -93,6 +94,7 @@ export default function UserScreen() {
   }
 
   const resetState = () => {
+    setCurrentPassword("");
     setEditing(false);
     setWantToEditPwd(false);
   }
@@ -123,13 +125,19 @@ export default function UserScreen() {
   return (
     <>
       { editing ? (
-        <View style={styles.container}>
+        <View style={localStyles.container}>
           <StatusBar style="dark" />
-          <Text style={styles.header}>
+          <ButtonIcon
+            iconName="arrow-back"
+            btnColor="black"
+            btnSize={28}
+            onPress={resetState}
+          />
+          <Text style={localStyles.header}>
             Update your account
           </Text>
           <View style={styles.inputContainer}>
-          <InputField
+            <InputField
               label="First Name"
               value={fName}
               onChangeText={setFName}
@@ -169,24 +177,36 @@ export default function UserScreen() {
               </>
             ) : (
               <View>
-                <Text >
-                  If you want to change your password, please enter your current password
-                </Text>
-                <View>
-                  <InputField
-                    label="Current password"
-                    value={password}
-                    onChangeText={setPassword}
-                    placeholder="Enter your password"
-                    secureTextEntry={true}
-                  />
-                  <ButtonIcon 
-                    onPress={verifyPassword}
-                    // btnStyle={styles.newConversationTitleButton}
-                    iconName="paper-plane-outline"
+                <View style={localStyles.infoRow}>
+                  <ButtonIcon
+                    iconName="information-circle-outline"
+                    btnColor="#3b82f6"
                     btnSize={20}
-                    btnColor="black"
+                    disabled
                   />
+                  <Text style={localStyles.infoText}>
+                    If you want to change your password, please enter your current password
+                  </Text>
+                </View>
+
+                <View style={localStyles.passwordRow}>
+                  <View style={{ flex: 1 }}>
+                    <InputField
+                      label="Current password"
+                      value={currentPassword}
+                      onChangeText={setCurrentPassword}
+                      placeholder="Enter your password"
+                      secureTextEntry={true}
+                    />
+                  </View>
+                  <View style={localStyles.sendIconWrapper}>
+                    <ButtonIcon 
+                      onPress={verifyPassword}
+                      iconName="paper-plane-outline"
+                      btnSize={24}
+                      btnColor="black"
+                    />
+                  </View>
                 </View>
                 <Text>
                   If you forgot your password, please click here
@@ -203,7 +223,7 @@ export default function UserScreen() {
             onPress={handleUpdate}
             style={styles.login_button}
           >
-            <Text style={styles.login_label}>
+            <Text style={localStyles.buttonText}>
               Save changes
             </Text>
             <ButtonIcon
@@ -218,25 +238,23 @@ export default function UserScreen() {
         <View>
 
           {/* user image container */}
-          <View>
+          <View style={localStyles.avatarContainer}>
             <Image
               source={{ uri: "https://cdn-icons-png.flaticon.com/512/17/17004.png" }}
-              style={{ width: hp(5),
-                height: hp(5),
-                borderRadius: hp(2.5),
-                marginRight: wp(2),}}
+              style={localStyles.avatar}
             />
               
           </View>
 
           {/* user name container */}
           <View>
-            <Text>{user.first_name} {user.last_name}</Text>
-          
-          </View>
-
-          {/* user email and password container */}
-          <View>
+            <Text
+              style={localStyles.userName}
+            >
+              {user.first_name} {user.last_name}</Text>
+            <Text style={localStyles.userInfoText}>
+              {email}  
+            </Text>
 
           </View>
 
@@ -264,3 +282,99 @@ export default function UserScreen() {
         
   );
 }
+
+const localStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingHorizontal: wp(5),
+    paddingTop: hp(5),
+  },
+  header: {
+    fontSize: hp(3),
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: hp(2),
+    textAlign: 'center',
+  },
+  inputContainer: {
+    marginBottom: hp(2),
+  },
+  sectionText: {
+    fontSize: hp(2),
+    color: '#555',
+    marginVertical: hp(1),
+  },
+  avatarContainer: {
+    alignItems: 'center',
+    marginTop: hp(5),
+    marginBottom: hp(3),
+  },
+  avatar: {
+    width: hp(10),
+    height: hp(10),
+    borderRadius: hp(5),
+  },
+  userName: {
+    fontSize: hp(2.5),
+    fontWeight: '600',
+    marginTop: hp(1),
+    textAlign: 'center',
+  },
+  userInfoText: {
+    fontSize: hp(2),
+    color: '#666',
+    marginTop: hp(0.5),
+    textAlign: 'center',
+  },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#3b82f6',
+    paddingVertical: hp(1.5),
+    paddingHorizontal: wp(5),
+    borderRadius: 8,
+    marginTop: hp(3),
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: hp(2),
+    fontWeight: 'bold',
+    marginRight: wp(2),
+  },
+  errorText: {
+    color: 'red',
+    fontSize: hp(1.8),
+    marginTop: hp(1),
+  },
+  passwordRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: hp(1),
+  },
+  sendIconWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft: wp(2),
+  },  
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#e0f2fe',
+    padding: wp(3),
+    borderRadius: 8,
+    marginTop: hp(2),
+    marginBottom: hp(1),
+  },
+  infoText: {
+    fontSize: hp(1.8),
+    color: '#0369a1',
+    marginLeft: wp(2),
+    flexShrink: 1,
+  },
+  
+  
+});
+

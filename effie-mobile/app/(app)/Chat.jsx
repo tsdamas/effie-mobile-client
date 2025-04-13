@@ -24,6 +24,7 @@ export default function ChatScreen() {
   const route = useRoute();
   const [messages, setMessages] = useState([]);
   const [convId, setConvId] = useState('');
+  const [isFirstMessage, setIsFirstMessage] = useState(true);
   const flatListRef = useRef(null);
 
   const { user } = useAuth();
@@ -97,6 +98,7 @@ export default function ChatScreen() {
   
   useEffect(() => {
     //on chat screen load we populate the messages of the conversation they click on
+    // console.log(`Came back from updating the profile, messages: ${messages}`);
   }, []);
 
   useEffect(() => {
