@@ -56,8 +56,8 @@ export const checkPassword = async (email, password) => {
 //update user info
 export const updateUserInfo = async (userInfo) => {
     try {
-        const response = await fetch(`${API_URL}/auth/update`, {
-            method: 'PUT',
+        const response = await fetch(`${API_URL}/auth/update_profile`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },

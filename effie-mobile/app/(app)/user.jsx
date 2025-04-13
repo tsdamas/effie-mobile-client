@@ -6,7 +6,7 @@ import InputField from '@/components/InputField';
 import ButtonIcon from '@/components/ButtonIcon';
 import { useAuth } from '@/context/authContext';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { getAuthInfo, checkPassword } from '@/services/UserProfile';
+import { getAuthInfo, checkPassword, updateUserInfo } from '@/services/UserProfile';
 import { parseArgs } from 'util';
 
 export default function UserScreen() {
@@ -32,7 +32,53 @@ export default function UserScreen() {
   }
 
   const handleUpdate = () => {
-    setEditing(false);
+    if (fName === "" || lName === "" || email === "") {
+      alert("Please fill all the fields");
+      console.log("Please fill all the fields");
+      return;
+    }
+    if (wantToEditPwd) {
+      if (password === "" || rePassword === "") {
+        alert("Please fill all the fields");
+        console.log("Please fill all the fields");
+        return;
+      }
+      if (password !== rePassword) {
+        alert("Passwords do not match");
+        console.log("Passwords do not match");
+        return;
+      }
+      if (!checkSecurePwd(password)) {
+        alert("Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character");
+        console.log("Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character");
+        return;
+      }
+
+    }
+    const payload = {
+      user_id: user.user_id,
+      session_id: user.session_id,
+      first_name: fName,
+      last_name: lName,
+      email: email,
+      password: password
+    };
+    const update = async () => {
+      let updatedUser = await updateUserInfo(payload);
+      if (updatedUser) {
+        updatedUser = {...updatedUser, session_id: user.session_id};
+        setUser(updatedUser);
+        alert("User info updated successfully");
+        console.log("User info updated successfully");
+        console.log(updatedUser);
+      } else {
+        alert("Failed to update user info");
+        console.log("Failed to update user info");
+      }
+    }
+
+    update();
+    resetState();
   }
 
   const verifyPassword = async () => {
@@ -46,10 +92,14 @@ export default function UserScreen() {
     }
   }
 
-  useEffect(() => {
-    //Everytime the user comes back to this page, we need to reset the state
+  const resetState = () => {
     setEditing(false);
     setWantToEditPwd(false);
+  }
+
+  useEffect(() => {
+    //Everytime the user comes back to this page, we need to reset the state
+    resetState();
   }, [])
 
   useEffect(() => {
