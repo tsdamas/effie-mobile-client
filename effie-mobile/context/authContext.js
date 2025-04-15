@@ -7,6 +7,11 @@ export const AuthContext = createContext();
 export const AuthContextProvider = ({children}) => {
     const [user, setUser] = useState({});
     const [isAuthenticated, setIsAuthenticated] = useState(undefined);
+    const [refreshDrawer, setRefreshDrawer] = useState(false);
+
+    const triggerDrawerRefresh = () => {
+        setRefreshDrawer(prev => !prev);
+    };
 
     useEffect(() => {
         if (user.session_id) {
@@ -70,7 +75,7 @@ export const AuthContextProvider = ({children}) => {
     }
 
     return (
-        <AuthContext.Provider value={{user, isAuthenticated, login, register, logout, setUser}}>
+        <AuthContext.Provider value={{user, isAuthenticated, refreshDrawer, login, register, logout, setUser, triggerDrawerRefresh}}>
             {children}
         </AuthContext.Provider>
     );

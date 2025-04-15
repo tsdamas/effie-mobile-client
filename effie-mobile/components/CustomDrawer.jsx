@@ -23,7 +23,7 @@ const CustomDrawer = (props) => {
   const [newConversationTitle, setNewConversationTitle] = useState("");
   const [conversationList, setConversationList] = useState([]);
   
-  const { user, logout } = useAuth();
+  const { user, logout, refreshDrawer } = useAuth();
 
   useEffect(() => {
     // console.log(conversationList);
@@ -41,7 +41,7 @@ const CustomDrawer = (props) => {
       makeConvList();
     }
    
-  }, []);
+  }, [refreshDrawer]);
 
   const handleCreateConversation = async () => {
     if (newConversationTitle.trim() === "") {

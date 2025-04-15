@@ -27,7 +27,7 @@ export default function ChatScreen() {
   const [isFirstMessage, setIsFirstMessage] = useState(true);
   const flatListRef = useRef(null);
 
-  const { user } = useAuth();
+  const { user, refreshDrawer } = useAuth();
 
   const handleSendMessage = (userText) => {
     // console.log(`Conversation ID: ${convId}`);
@@ -97,9 +97,11 @@ export default function ChatScreen() {
   }
   
   useEffect(() => {
-    //on chat screen load we populate the messages of the conversation they click on
-    // console.log(`Came back from updating the profile, messages: ${messages}`);
-  }, []);
+    if (messages.length > 0) {
+      setMessages([]);
+      setConvId('');
+    }
+  }, [refreshDrawer]);
 
   useEffect(() => {
     if (route.params?.messages) {
