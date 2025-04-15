@@ -80,8 +80,8 @@ export default function SettingsScreen() {
     console.log("Deleting all chats.."); 
     deleteAllConversations(user.user_id);      
     deleteAccount(user.user_id)
-      // console.log("Account deleted successfully");
-      // Alert.alert("Warning", "Account deleted successfully");
+    console.log("Account deleted successfully");
+    Alert.alert("Warning", "Account deleted successfully");
     logout();
   };
 
@@ -112,16 +112,16 @@ export default function SettingsScreen() {
         <List.Item
           title="Delete all chats"
           left={() => <List.Icon icon="delete-outline" />}
-          // onPress={() => confirmAction("Delete all chats", handleDeleteChats)}
-          onPress={handleDeleteChats}
+          onPress={() => confirmAction("Delete all chats", handleDeleteChats)}
+          // onPress={handleDeleteChats}
           description="This action will delete all your conversations"
           />
         <Divider/>
         <List.Item
           title="Delete account"
           left={() => <List.Icon icon="account-remove-outline" />}
-          // onPress={() => confirmAction("Delete account", handleDeleteAccount)}
-          onPress={handleDeleteAccount}
+          onPress={() => confirmAction("Delete account", handleDeleteAccount)}
+          // onPress={handleDeleteAccount}
           description="This action will delete all your data"
           />
         
