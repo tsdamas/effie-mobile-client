@@ -1,4 +1,4 @@
-package com.anonymous.effiemobile
+package com.juliananina.effiemobile
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

@@ -67,6 +67,8 @@ function SignIn() {
             const userInfo = await signInWithGoogle();
             //used a optional chaining operator in case the data comes null or undefinied
             const { idToken, user } = userInfo?.data || {};
+            console.warn(userInfo);
+            
             if (!user) {
               console.warn("No user object returned from Google Sign-In.");
               return;
@@ -77,7 +79,7 @@ function SignIn() {
             //console.log("User details:", givenName, familyName, email);
 
             // Send the idToken to your backend for verification and further processing
-            const response = await fetch("http://10.0.2.2:8000/auth/google", {
+            const response = await fetch("http://127.0.0.1:8000/auth/google", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token: idToken }),
@@ -108,18 +110,28 @@ function SignIn() {
     const handleAppleSignin = async () => {
         try {
             const userAppleInfo = await signInWithApple();
-            const {idToken, user} = userAppleInfo?.data || {}; 
-            if(!user)
+            console.warn(userAppleInfo); 
+            const {token, user} = userAppleInfo?.data || {}; 
+            //console.warn(token); 
+        
+
+            if(!token) {
                 console.warn("No warm found in Apple Sign-in");
                 return; 
+            }
+            let email = user?.email;
+            console.warn(email);
+            let firstName = user?.fullName?.givenName;
+            let lastName = user?.fullName?.familyName;
             
-            const {firstName, fullName, email} = user;
+            // const {firstName, fullName, email} = user;
 
-            const response = await fetch("http://10.0.2.2:8000/auth/apple", {
+            const response = await fetch("http://127.0.0.1:8000/auth/apple", {
                 method: "POST",
                 headers: {"Content-type": "application/json"},
                 body: JSON.stringify({
                     token: token,
+                    email,
                     firstName,
                     lastName
                 })
@@ -127,11 +139,8 @@ function SignIn() {
 
             const data = await response.json();
 
-            if(data.session_id){
-                await SecureStore.setItemAsync("session_id", data.session_id);
-                await SecureStore.setItemAsync("first_name", firstName);
-                await SecureStore.setItemAsync("last_name", lastName);
-                await SecureStore.setItemAsync("email", email);
+            if(data.token){
+                await SecureStore.setItemAsync("session_id", data.token);
 
                 console.log("Session ID and user info stored from Apple Sign-in");
 

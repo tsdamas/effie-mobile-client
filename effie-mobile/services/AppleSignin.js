@@ -1,5 +1,8 @@
 import { Platform } from 'react-native';
 import * as AppleAuthentication from 'expo-apple-authentication';
+import { jwtDecode } from 'jwt-decode'; 
+import { useSyncExternalStore } from 'react';
+import * as SecureStore from 'expo-secure-store';
 
 export async function signInWithApple() {
     if (Platform.OS !== 'ios') {
@@ -14,10 +17,27 @@ export async function signInWithApple() {
                 AppleAuthentication.AppleAuthenticationScope.EMAIL,
             ],
         });
-
         const token = credential.identityToken;
-        const firstName = credential.fullName?.givenName || '';
-        const lastName = credential.fullName?.familyName;
+        if(!token)
+            console.warn("No identity token returned"); 
+        const decode = jwtDecode(token);
+        // console.warn(credential);
+
+        let email = credential.email || decode.email || ''; 
+        let firstName = credential.fullName?.givenName || '';
+        let lastName = credential.fullName?.familyName || '';
+        //console.warn(email);
+
+        //Save on storage if available on first login 
+        if(credential.email) await SecureStore.setItemAsync("email", credential.email);
+        if(firstName) await SecureStore.setItemAsync("first_name", firstName);
+        if(lastName) await SecureStore.setItemAsync("last_anme", lastName);
+
+        //Fallbacks
+        if(!email) email = await SecureStore.getItemAsync("email");
+        if(!firstName) firstName = await SecureStore.getItemAsync("first_name");
+        if(!lastName) lastName = await SecureStore.getItemAsync("last_name");
+        
 
         if(!token)
             throw new Error('No identity token returned');
