@@ -1,4 +1,4 @@
-package com.anonymous.effiemobile
+package com.juliananina.effiemobile
 
 import android.app.Application
 import android.content.res.Configuration
