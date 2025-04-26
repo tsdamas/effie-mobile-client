@@ -78,8 +78,8 @@ export default function SettingsScreen() {
   };
 
   const handleDeleteAccount = () => {
-    console.log("Deleting all chats.."); 
-    deleteAllConversations(user.user_id);      
+    // console.log("Deleting all chats.."); 
+    // deleteAllConversations(user.user_id);      
     deleteAccount(user.user_id)
     console.log("Account deleted successfully");
     Alert.alert("Warning", "Account deleted successfully");
