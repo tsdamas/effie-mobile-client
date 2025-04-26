@@ -10,7 +10,7 @@ export default function ResetPassword() {
     const router = useRouter();
     const { email } = useLocalSearchParams(); // Receive email from params
 
-    const handleResetPassword = async () => {
+    const handleResetPassword = async (email) => {
         if (newPassword !== confirmPassword) {
             Alert.alert("Passwords do not match.");
             return;
