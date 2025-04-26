@@ -21,6 +21,9 @@ function SignIn() {
     const [errorMessage, setErrorMessage] = useState("");
     const { login } = useAuth();
     const [showForgotPassword, setShowForgotPassword] = useState(false);
+    const [resetStep, setResetStep] = useState("email");
+    const [securityCode, setSecurityCode] = useState("");
+
 
     const router = useRouter();
 
@@ -35,31 +38,53 @@ function SignIn() {
 
     const handleSendInstructions = async () => {
         try {
-            //connect to backend
-            const response = await fetch("http://127.0.0.1:8000/auth/forgot-password", {
+            const response = await fetch("http://10.0.2.2:8000/forgot-password", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),
             });
 
             const data = await response.json();
-
-            if (response.ok) {
-                // Clear any errors
-                setErrorMessage("");
-                // Popup msg
-                Alert.alert(
-                    "Please check your Email for instructions on how to reset your password, it may take a few minutes to arrive.",
-                    [{ text: "OK" }]
-                );
-            } else {
-                setErrorMessage(data.message || "Invalid email, please try again."); // Change this so you don't actually expose emails
-            }
+            // // Clear any errors
+            // setErrorMessage("");
+            // Popup msg
+            Alert.alert(
+                "Please check your email for instructions.", 
+                "It may take a few minutes to arrive.",
+            );
+            setResetStep("code");
 
         } catch (error) {
             Alert.alert("Something went wrong")
         }
     };
+
+    //verifying code for pw reset
+    const handleVerifyCode = async () => {
+        console.log("code verification");
+        try {
+            console.log({ email, code: securityCode });
+            const response = await fetch("http://10.0.2.2:8000/verify-otp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, code: securityCode }),
+            });
+            const data = await response.json();
+            console.log(">>> verify-otp body:", data);
+
+            if (response.ok) {
+                Alert.alert("Code verified! You can now reset your password.");
+                router.push({ pathname: "/ResetPassword", params: { email } });
+
+                //navigate to password reset screen
+            } else {
+                setErrorMessage(data.message || "Invalid code, please try again.");
+            }
+        } catch (error) {
+            Alert.alert("Something went wrong");
+        }
+    };
+
 
     const handleGoogleSignIn = async () => {
         try {
@@ -68,12 +93,12 @@ function SignIn() {
             //used a optional chaining operator in case the data comes null or undefinied
             const { idToken, user } = userInfo?.data || {};
             console.warn(userInfo);
-            
+
             if (!user) {
-              console.warn("No user object returned from Google Sign-In.");
-              return;
+                console.warn("No user object returned from Google Sign-In.");
+                return;
             }
-        
+
             const { givenName, familyName, email } = user;
 
             //console.log("User details:", givenName, familyName, email);
@@ -85,10 +110,10 @@ function SignIn() {
                 body: JSON.stringify({ token: idToken }),
             });
 
-    
+
             const text = await response.json();
 
-    
+
             if (text.session_id) {
                 // Store JWT and user information securely
                 await SecureStore.setItemAsync("session_id", text.session_id);
@@ -110,25 +135,25 @@ function SignIn() {
     const handleAppleSignin = async () => {
         try {
             const userAppleInfo = await signInWithApple();
-            console.warn(userAppleInfo); 
-            const {token, user} = userAppleInfo?.data || {}; 
+            console.warn(userAppleInfo);
+            const { token, user } = userAppleInfo?.data || {};
             //console.warn(token); 
-        
 
-            if(!token) {
+
+            if (!token) {
                 console.warn("No warm found in Apple Sign-in");
-                return; 
+                return;
             }
             let email = user?.email;
             console.warn(email);
             let firstName = user?.fullName?.givenName;
             let lastName = user?.fullName?.familyName;
-            
+
             // const {firstName, fullName, email} = user;
 
             const response = await fetch("http://127.0.0.1:8000/auth/apple", {
                 method: "POST",
-                headers: {"Content-type": "application/json"},
+                headers: { "Content-type": "application/json" },
                 body: JSON.stringify({
                     token: token,
                     email,
@@ -139,7 +164,7 @@ function SignIn() {
 
             const data = await response.json();
 
-            if(data.token){
+            if (data.token) {
                 await SecureStore.setItemAsync("session_id", data.token);
 
                 console.log("Session ID and user info stored from Apple Sign-in");
@@ -147,7 +172,7 @@ function SignIn() {
                 router.push("/Chat");
             }
 
-        } catch (error){
+        } catch (error) {
             console.log("Apple Sign-In failed: ", error);
         }
     }
@@ -165,16 +190,16 @@ function SignIn() {
                     <View style={styles.login_buttons_container}>
                         {loginOption === "none" ? (
                             <>
-                            {Platform.OS === 'ios' && (
-                                <MenuItem
-                                    iconName="logo-apple"
-                                    onPress={handleAppleSignin}
-                                    btnSize={28}
-                                    btnColor="white"
-                                    text="Continue with Apple"
-                                    textStyle={styles.login_label}
-                                    menuItemStyle={styles.login_button}
-                                />)}
+                                {Platform.OS === 'ios' && (
+                                    <MenuItem
+                                        iconName="logo-apple"
+                                        onPress={handleAppleSignin}
+                                        btnSize={28}
+                                        btnColor="white"
+                                        text="Continue with Apple"
+                                        textStyle={styles.login_label}
+                                        menuItemStyle={styles.login_button}
+                                    />)}
                                 <MenuItem
                                     iconName="logo-google"
                                     onPress={handleGoogleSignIn}
@@ -260,40 +285,82 @@ function SignIn() {
                 </>
             ) : (
                 <>
-                    {/* ----- FORGOT PASSWORD UI ----- */}
-                    <Text style={styles.header}>Reset your password</Text>
-                    <Text style={styles.description}>
-                        Enter your Email address and we will send you instructions on how to reset your password.
-                    </Text>
+                    {resetStep === "email" ? (
+                        <>
+                            {/* ----- FORGOT PASSWORD EMAIL UI ----- */}
+                            <Text style={styles.header}>Reset your password</Text>
+                            <Text style={styles.description}>
+                                Enter your Email address and we will send you instructions on how to reset your password.
+                            </Text>
 
-                    <View style={styles.inputContainer}>
-                        {/* Show error message if present */}
-                        {errorMessage ? (
-                            <Text style={styles.errorText}>{errorMessage}</Text>
-                        ) : null}
+                            <View style={styles.inputContainer}>
+                                {errorMessage ? (
+                                    <Text style={styles.errorText}>{errorMessage}</Text>
+                                ) : null}
 
-                        <InputField
-                            label="Email address*"
-                            value={email}
-                            onChangeText={setEmail}
-                            placeholder="Email address"
-                            keyboardType="email-address"
-                        />
-                    </View>
+                                <InputField
+                                    label="Email address*"
+                                    value={email}
+                                    onChangeText={setEmail}
+                                    placeholder="Email address"
+                                    keyboardType="email-address"
+                                />
+                            </View>
 
-                    <TouchableOpacity
-                        style={styles.login_button}
-                        onPress={handleSendInstructions}
-                    >
-                        <Text style={styles.login_label}>Continue</Text>
-                    </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.login_button}
+                                onPress={handleSendInstructions}
+                            >
+                                <Text style={styles.login_label}>Continue</Text>
+                            </TouchableOpacity>
 
-                    <TouchableOpacity
-                        onPress={() => setShowForgotPassword(false)}
-                        style={styles.backToLoginButton}
-                    >
-                        <Text style={styles.importantText}>Back to Login</Text>
-                    </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setShowForgotPassword(false)}
+                                style={styles.backToLoginButton}
+                            >
+                                <Text style={styles.importantText}>Back to Login</Text>
+                            </TouchableOpacity>
+                        </>
+                    ) : (
+                        <>
+                            {/* ----- SECURITY CODE INPUT UI ----- */}
+                            <Text style={styles.header}>Enter Your Security Code</Text>
+                            <Text style={styles.description}>
+                                Please enter the security code sent to your email.
+                            </Text>
+
+                            <View style={styles.inputContainer}>
+                                {errorMessage ? (
+                                    <Text style={styles.errorText}>{errorMessage}</Text>
+                                ) : null}
+
+                                <InputField
+                                    label="Security Code"
+                                    value={securityCode}
+                                    onChangeText={setSecurityCode}
+                                    placeholder="Enter the code"
+                                    keyboardType="numeric"
+                                />
+                            </View>
+
+                            <TouchableOpacity
+                                style={styles.login_button}
+                                onPress={handleVerifyCode}
+                            >
+                                <Text style={styles.login_label}>Verify Code</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setResetStep("email");
+                                    setErrorMessage("");
+                                }}
+                                style={styles.backToLoginButton}
+                            >
+                                <Text style={styles.importantText}>Back</Text>
+                            </TouchableOpacity>
+                        </>
+                    )}
                 </>
             )}
         </View >
