@@ -45,8 +45,8 @@ function SignIn() {
             });
 
             const data = await response.json();
-            // Clear any errors
-            setErrorMessage("");
+            // // Clear any errors
+            // setErrorMessage("");
             // Popup msg
             Alert.alert(
                 "Please check your email for instructions.", 
@@ -63,13 +63,14 @@ function SignIn() {
     const handleVerifyCode = async () => {
         console.log("code verification");
         try {
+            console.log({ email, code: securityCode });
             const response = await fetch("http://10.0.2.2:8000/verify-otp", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, code: securityCode }),
             });
-
             const data = await response.json();
+            console.log(">>> verify-otp body:", data);
 
             if (response.ok) {
                 Alert.alert("Code verified! You can now reset your password.");
