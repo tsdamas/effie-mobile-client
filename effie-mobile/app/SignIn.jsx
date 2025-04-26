@@ -38,28 +38,21 @@ function SignIn() {
 
     const handleSendInstructions = async () => {
         try {
-            const response = await fetch("http://10.0.2.2:8000/auth/forgot-password", {
+            const response = await fetch("http://10.0.2.2:8000/forgot-password", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),
             });
 
             const data = await response.json();
-
-            if (response.ok) {
-                // Clear any errors
-                setErrorMessage("");
-                // Popup msg
-                Alert.alert(
-                    "Please check your Email for instructions on how to reset your password, it may take a few minutes to arrive.",
-                    [{ text: "OK" }]
-                );
-                console.log("Redirecting to code screen");
-                setResetStep("code");
-
-            } else {
-                setErrorMessage(data.message || "Invalid email, please try again."); // Change this so you don't actually expose emails
-            }
+            // Clear any errors
+            setErrorMessage("");
+            // Popup msg
+            Alert.alert(
+                "Please check your email for instructions.", 
+                "It may take a few minutes to arrive.",
+            );
+            setResetStep("code");
 
         } catch (error) {
             Alert.alert("Something went wrong")
@@ -70,7 +63,7 @@ function SignIn() {
     const handleVerifyCode = async () => {
         console.log("code verification");
         try {
-            const response = await fetch("http://10.0.2.2:8000/auth/verify-otp", {
+            const response = await fetch("http://10.0.2.2:8000/verify-otp", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, code: securityCode }),
