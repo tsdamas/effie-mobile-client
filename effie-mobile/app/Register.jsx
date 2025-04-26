@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, TouchableOpacity, Pressable, StyleSheet, Platform, Alert } from 'react-native'
+import { View, Text, StatusBar, TouchableOpacity, Pressable, StyleSheet, Platform, Alert, Image } from 'react-native'
 import React, { useState } from 'react'
 import { useRouter } from 'expo-router';
 import InputField from '@/components/InputField';
@@ -41,6 +41,15 @@ export default function Register() {
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
+      {/* <Image
+        source={require('../assets/images/effieLogo.png')}
+        style={{
+            width: wp(40),
+            height: hp(10),
+            marginBottom: hp(2),
+            alignSelf: 'center',  }}
+        resizeMode="contain"
+      /> */}
       <Text style={styles.header}>
         Create your account
       </Text>
