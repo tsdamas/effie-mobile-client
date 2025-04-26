@@ -127,3 +127,42 @@ export const fetchMessages = async (convId, payload) => {
         throw error;
     }
 };
+
+export const deleteConversation = async (conversationId) => {
+    try {
+        const response = await fetch(`${API_URL}/conversations/${conversationId}/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error deleting conversation: ${response.statusText}`);
+        }
+        
+        return true;
+    } catch (error) {
+        console.error("Error deleting conversation:", error);
+        throw error;
+    }
+}
+export const deleteAllConversations = async (userId) => {
+    try {
+        const response = await fetch(`${API_URL}/deleteAllConversations/${userId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error deleting conversations: ${response.statusText}`);
+        }
+        
+        return true;
+    } catch (error) {
+        console.error("Error deleting conversations:", error);
+        throw error;
+    }
+}
