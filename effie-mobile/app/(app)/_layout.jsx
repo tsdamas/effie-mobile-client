@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import ChatScreen from "./Chat";
 import SettingsScreen from "../Settings";
-import UserScreen from "../user";
+import UserScreen from "./user";
 import CustomDrawer from "@/components/CustomDrawer";
 import ChatHeader from "@/components/ChatHeader";
 

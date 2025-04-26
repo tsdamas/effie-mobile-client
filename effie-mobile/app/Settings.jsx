@@ -3,6 +3,9 @@ import { View, Alert, StyleSheet, Platform } from "react-native";
 import { Text, List, Divider, Switch, Button, Appbar, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native"; 
 import { useAuth } from "@/context/authContext";
+import { deleteAccount } from "@/services/Authentication";
+import { deleteAllConversations } from "@/services/GetConversations";
+
 // import axios from "axios"; 
 
 
@@ -11,7 +14,7 @@ export default function SettingsScreen() {
   const [loading, setLoading] = useState(true); 
   const theme = useTheme();
   const navigation = useNavigation();
-  const { user } = useAuth(); 
+  const { user, logout, triggerDrawerRefresh } = useAuth(); 
 
   useEffect(() => {
     const fetchPreferences = async () => {
@@ -57,10 +60,31 @@ export default function SettingsScreen() {
 
   const handleDeleteChats = () => { 
     console.log("Deleting all chats..."); 
+    deleteAllConversations(user.user_id);
+    triggerDrawerRefresh();
+    alert("All conversations deleted successfully");
+      // .then((response) => {
+      //   if (response) {
+      //     console.log("All conversations deleted successfully");
+      //     Alert.alert("Warning", "All conversations deleted successfully");
+      //     
+      //   } else {
+      //     console.log("Failed to delete all conversations");
+      //   }
+      // })
+      // .catch((error) => {
+      //   console.error("Error deleting conversations:", error);
+      // });
   };
 
   const handleDeleteAccount = () => {
-    console.log("Deleting all chats.."); 
+    // console.log("Deleting all chats.."); 
+    // deleteAllConversations(user.user_id);      
+    deleteAccount(user.user_id)
+    console.log("Account deleted successfully");
+    Alert.alert("Warning", "Account deleted successfully");
+    alert("Account deleted successfully");
+    logout();
   };
 
 
@@ -84,18 +108,23 @@ export default function SettingsScreen() {
               disabled={loading}
               />
           }
+          description="Link with your health kit to share data"
         />
         <Divider/>
         <List.Item
           title="Delete all chats"
           left={() => <List.Icon icon="delete-outline" />}
-          onPress={() => confirmAction("Delete all chats", handleDeleteAccount)}
+          // onPress={() => confirmAction("Delete all chats", handleDeleteChats)}
+          onPress={handleDeleteChats}
+          description="This action will delete all your conversations"
           />
         <Divider/>
         <List.Item
           title="Delete account"
           left={() => <List.Icon icon="account-remove-outline" />}
-          onPress={() => confirmAction("Delete account", handleDeleteAccount)}
+          // onPress={() => confirmAction("Delete account", handleDeleteAccount)}
+          onPress={handleDeleteAccount}
+          description="This action will delete all your data"
           />
         
       </List.Section> 

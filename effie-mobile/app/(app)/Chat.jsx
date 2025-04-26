@@ -7,14 +7,14 @@
  */
 
 import React, { useState, useRef, useEffect } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, View, KeyboardAvoidingView, Platform, StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
 import CustomKeyboardView from "@/components/CustomKeyboardView";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import MessageList from "@/components/MessageList";
 import SendBox from "@/components/SendBox";
 import { getChunkedResponse } from "@/services/StreamService";
 import { useAuth } from '@/context/authContext';
-import { createMessage, fetchMessages } from "@/services/GetConversations";
+import { createMessage, createConversation } from "@/services/GetConversations";
 import { useRoute } from "@react-navigation/native";
 
 import styles from '@/assets/styles/ChatStyles';
@@ -24,12 +24,32 @@ export default function ChatScreen() {
   const route = useRoute();
   const [messages, setMessages] = useState([]);
   const [convId, setConvId] = useState('');
+  const [isFirstMessage, setIsFirstMessage] = useState(true);
   const flatListRef = useRef(null);
+  const [isConvCreatedLocally, setIsConvCreatedLocally] = useState(false);
 
-  const { user } = useAuth();
+  const { user, refreshDrawer, triggerDrawerRefresh } = useAuth();
 
-  const handleSendMessage = (userText) => {
-    // console.log(`Conversation ID: ${convId}`);
+  const handleSendMessage = async (userText) => {
+    let activeConvId = convId;
+    if (isFirstMessage) {
+      if (!convId) {
+        const payload = {
+          user_id: user.user_id,
+          session_id: user.session_id,
+          title: getFirstWord(userText),
+        };
+
+        const newConvId = await createConversation(payload);
+        setIsConvCreatedLocally(true);
+        setConvId(newConvId);
+        activeConvId = newConvId;
+        triggerDrawerRefresh();
+    
+      }
+      setIsFirstMessage(false);
+    }
+    console.log(`Conversation ID: ${activeConvId}`);
     if (!userText.trim()) return;
   
     let updatedHistory = [];
@@ -59,7 +79,7 @@ export default function ChatScreen() {
     }
 
     //Log the user message
-    logLastMsg("user", userText );
+    logLastMsg("user", userText, activeConvId);
   
     // Update state for UI (showing the new user message and placeholder)
     setMessages(updatedHistory);
@@ -83,21 +103,31 @@ export default function ChatScreen() {
 
   };
 
-  const logLastMsg = (msgRole, msgContent) => {
-    if (convId) {
+  const logLastMsg = (msgRole, msgContent, passedConvId = convId) => {
+    if (passedConvId) {
       
       const messageData = {
-        conversation_id: convId,
+        conversation_id: passedConvId,
         msg_role: msgRole,
         msg_content: msgContent
       }
       createMessage(messageData);
     }
   }
+
+  
+  const getFirstWord = (str) => {
+    const words = str.split(" ");
+    return words[0];
+  }
+
   
   useEffect(() => {
-    //on chat screen load we populate the messages of the conversation they click on
-  }, []);
+    if (messages.length > 0 && !isConvCreatedLocally) {
+      setMessages([]);
+      setConvId('');
+    }
+  }, [refreshDrawer]);
 
   useEffect(() => {
     if (route.params?.messages) {
@@ -126,18 +156,21 @@ export default function ChatScreen() {
   }, [messages]);
 
   return (
-    <CustomKeyboardView style={styles.container}>
-      <View style={styles.innerContainer}>
-        <FlatList
-          ref={flatListRef}
-          data={messages}
-          renderItem={({ item }) => <MessageList messages={[item]} />}
-          keyExtractor={(item, index) => index.toString()}
-          contentContainerStyle={styles.chatContainer}
-          showsVerticalScrollIndicator={false}
-        />
-        <SendBox onSendMessage={handleSendMessage} />
-      </View>
-    </CustomKeyboardView>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+    >
+        <View style={styles.innerContainer}>
+          <FlatList
+            ref={flatListRef}
+            data={messages}
+            renderItem={({ item }) => <MessageList messages={[item]} />}
+            keyExtractor={(item, index) => index.toString()}
+            contentContainerStyle={styles.chatContainer}
+            showsVerticalScrollIndicator={false}
+          />
+          <SendBox onSendMessage={handleSendMessage} />
+        </View>
+    </KeyboardAvoidingView>
   );
 };

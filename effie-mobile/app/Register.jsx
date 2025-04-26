@@ -14,6 +14,7 @@ export default function Register() {
   const [lName, setLName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const { register } = useAuth();
   const router = useRouter();
@@ -26,12 +27,14 @@ export default function Register() {
   const handleRegister = () => {
     const isPwdSecure = checkSecurePwd(password);
     console.log(`Password is secure? ${isPwdSecure}`);
-    if(isPwdSecure){
+    const matches = (rePassword == password);
+    if(isPwdSecure && matches){
       register(fName, lName, email, password);
+    } else if (!matches){
+      Alert.alert("Passwords don't match")
     } else {
-        Alert.alert("Please use a secure password with: Minimum 8 characters, 1 uppercase letter, 1 digit and one special character!")
+      Alert.alert("Please use a secure password with: Minimum 8 characters, 1 uppercase letter, 1 digit and one special character!")
     }
-      
       
   }
 
@@ -68,6 +71,13 @@ export default function Register() {
           value={password}
           onChangeText={setPassword}
           placeholder="Enter your password"
+          secureTextEntry={true}
+        />
+        <InputField
+          label="Re-enter password"
+          value={rePassword}
+          onChangeText={setRePassword}
+          placeholder="Enter your password again"
           secureTextEntry={true}
         />
       </View>

@@ -71,3 +71,23 @@ export const checkHealth = async () => {
     console.error('Health Check Failed:', error.message);
   }
 };
+
+export const deleteAccount = async (userId) => {
+  try {
+    const response = await fetch(`${API_URL}/delete_account/${userId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log(`response: ${JSON.stringify(response)}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Account Deleted:', data);
+  } catch (error) {
+    console.error('Account Deletion Failed:', error.message);
+  }
+}
