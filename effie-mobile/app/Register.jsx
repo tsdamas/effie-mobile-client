@@ -33,7 +33,7 @@ export default function Register() {
     } else if (!matches){
       Alert.alert("Passwords don't match")
     } else {
-      Alert.alert("Please use a secure password with: Minimum 8 characters, 1 uppercase letter, 1 digit and one special character!")
+      Alert.alert("Please use a secure password with:", "Minimum 8 characters,1 uppercase letter, 1 digit and one special character!")
     }
       
   }
