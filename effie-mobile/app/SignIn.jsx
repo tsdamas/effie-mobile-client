@@ -162,8 +162,8 @@ function SignIn() {
                     <Image
                         source={require('../assets/images/effieLogo.png')}
                         style={{
-                            width: wp(40),
-                            height: hp(10),
+                            width: wp(30),
+                            height: hp(7),
                             marginBottom: hp(2),
                             alignSelf: 'center',  
                             flex: 0.5,
