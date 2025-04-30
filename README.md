@@ -18,7 +18,7 @@ This frontend was developed using **React Native + Expo bare workflow** to enabl
 
 ---
 
-## 🎯 Project Goals
+## Project Goals
 
 - Deliver a fully functional frontend app with cross-platform support (iOS and Android)
 - Build a scalable authentication flow using native SDKs and OAuth2
@@ -27,7 +27,7 @@ This frontend was developed using **React Native + Expo bare workflow** to enabl
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer        | Technology                                      |
 |--------------|--------------------------------------------------|
@@ -45,7 +45,7 @@ This frontend was developed using **React Native + Expo bare workflow** to enabl
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### Prerequisites
 
