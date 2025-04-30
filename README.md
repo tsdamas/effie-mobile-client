@@ -59,7 +59,7 @@ This frontend was developed using **React Native + Expo bare workflow** to enabl
 
 ```bash
 git clone [https://github.com/tsdamas/effie-mobile-client](https://github.com/tsdamas/effie-mobile-client)
-cd efie-frontend
+cd efie-mobile
 ```
 
 ### Resources
