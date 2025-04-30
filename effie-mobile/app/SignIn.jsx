@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Platform, Alert, Pressable } from 'react-native'
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Platform, Alert, Pressable, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
@@ -165,8 +165,21 @@ function SignIn() {
             <StatusBar style="dark" />
             {!showForgotPassword ? (
                 <>
+                    <Image
+                        source={require('../assets/images/effieLogo.png')}
+                        style={{
+                            width: wp(30),
+                            height: hp(7),
+                            marginBottom: hp(2),
+                            alignSelf: 'center',  
+                            flex: 0.5,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                        resizeMode="contain"
+                    />
                     {/* ----- LOGIN UI ----- */}
-                    <Text style={styles.header}>Login to your account</Text>
+                    <Text style={styles.header}>Effie Mobile</Text>
 
                     <View style={styles.login_buttons_container}>
                         {loginOption === "none" ? (
