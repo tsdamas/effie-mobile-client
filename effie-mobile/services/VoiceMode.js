@@ -34,7 +34,7 @@ export default function VoiceMode({ onCancel, onSpeechResult }) {
       return;
     }
     setIsRecording(false);
-
+  
     console.log("Stopping recording...");
     const wavUri = await stopRecording();
     if (!wavUri) {
@@ -43,17 +43,10 @@ export default function VoiceMode({ onCancel, onSpeechResult }) {
       return;
     }
     console.log("WAV file saved at:", wavUri);
-
-    console.log("Extracting raw PCM from WAV...");
-    const rawPCMBase64 = await getRawPCMFromWav(wavUri);
-    if (!rawPCMBase64) {
-      console.log("Failed to extract raw PCM data.");
-      onCancel();
-      return;
-    }
-    console.log("Raw PCM data extracted. Sending to STT API...");
-
-    const transcript = await sendToSTTApi(rawPCMBase64, 44100);
+  
+    console.log("Sending audio file to STT API...");
+    const transcript = await sendToSTTApi(wavUri, 44100);
+  
     if (transcript) {
       console.log("Received transcript from STT API:", transcript);
       onSpeechResult(transcript);
@@ -63,6 +56,7 @@ export default function VoiceMode({ onCancel, onSpeechResult }) {
     console.log("Closing VoiceMode.");
     onCancel();
   };
+  
 
   const handleCancel = async () => {
     console.log("Cancel triggered");

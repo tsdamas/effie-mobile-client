@@ -13,7 +13,7 @@ export default async function signInWithGoogle() {
   try {
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
     const userInfo = await GoogleSignin.signIn();
-    //console.log("Google user raw result:", userInfo);
+    console.log("Google user raw result:", userInfo);
     return userInfo;
   } catch (error) {
     console.error("Google Sign-In Error:", error);

@@ -7,7 +7,7 @@ import ButtonIcon from '@/components/ButtonIcon';
 import { useAuth } from '@/context/authContext';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { getAuthInfo, checkPassword, updateUserInfo } from '@/services/UserProfile';
-// import { parseArgs } from 'util';
+//import { parseArgs } from 'util';
 
 export default function UserScreen() {
   const [editing, setEditing] = useState(false);
