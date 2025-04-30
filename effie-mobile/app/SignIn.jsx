@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Platform, Alert, Pressable } from 'react-native'
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Platform, Alert, Pressable, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
@@ -8,7 +8,7 @@ import InputField from '@/components/InputField';
 import ButtonIcon from '@/components/ButtonIcon';
 import { useAuth } from '@/context/authContext';
 import signInWithGoogle from '@/services/GoogleSignin';
-import signInWithApple from '@/services/AppleSignin';
+import { signInWithApple } from '@/services/AppleSignin';
 import * as SecureStore from 'expo-secure-store';
 import { useRouter } from 'expo-router';
 
@@ -19,7 +19,7 @@ function SignIn() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const { login } = useAuth();
+    const { login, setUser } = useAuth();
     const [showForgotPassword, setShowForgotPassword] = useState(false);
 
     const router = useRouter();
@@ -36,7 +36,7 @@ function SignIn() {
     const handleSendInstructions = async () => {
         try {
             //connect to backend
-            const response = await fetch("http://10.0.2.2:8000/auth/forgot-password", {
+            const response = await fetch("http://127.0.0.1:8000/auth/forgot-password", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),
@@ -76,10 +76,10 @@ function SignIn() {
         
             const { givenName, familyName, email } = user;
 
-            //console.log("User details:", givenName, familyName, email);
+            console.log("User details:", givenName, familyName, email);
 
             // Send the idToken to your backend for verification and further processing
-            const response = await fetch("http://127.0.0.1:8000/auth/google", {
+            const response = await fetch("http://10.0.2.2:8000/auth/google", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token: idToken }),
@@ -88,8 +88,14 @@ function SignIn() {
     
             const text = await response.json();
 
-    
+            
             if (text.session_id) {
+                setUser({
+                    user_id: text.user_id,
+                    first_name: givenName,
+                    last_name: familyName,
+                    session_id: text.session_id,
+                });
                 // Store JWT and user information securely
                 await SecureStore.setItemAsync("session_id", text.session_id);
                 await SecureStore.setItemAsync("user_email", email);
@@ -159,8 +165,21 @@ function SignIn() {
             <StatusBar style="dark" />
             {!showForgotPassword ? (
                 <>
+                    <Image
+                        source={require('../assets/images/effieLogo.png')}
+                        style={{
+                            width: wp(30),
+                            height: hp(7),
+                            marginBottom: hp(2),
+                            alignSelf: 'center',  
+                            flex: 0.5,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                        resizeMode="contain"
+                    />
                     {/* ----- LOGIN UI ----- */}
-                    <Text style={styles.header}>Login to your account</Text>
+                    <Text style={styles.header}>Effie Mobile</Text>
 
                     <View style={styles.login_buttons_container}>
                         {loginOption === "none" ? (

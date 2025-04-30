@@ -94,7 +94,15 @@ const styles = StyleSheet.create({
         gap: wp(1),
         marginTop: hp(3),
         textAlign: 'center',
-    }
+    },
+    logoImage: {
+        height: hp(7),
+        aspectRatio: 1,
+        borderRadius: 100,
+        alignSelf: 'center', // Add this
+        marginBottom: hp(2), // Optional: spacing below image
+    },
+    
 });
 
 export default styles;
