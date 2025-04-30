@@ -1,22 +1,22 @@
 # 📱 Effie - Cross-Platform Chat App Frontend (Capstone Project)
 
+**Capstone Project · Expo (Bare Workflow) · React Native**
+---
+
 Welcome to **Effie**, a mobile application built using **React Native with the Expo bare workflow**. Effie enables users to securely sign in and interact with a Large Language Model (LLM) developed by DataSpeckle. This project was developed over a 4-month capstone period using agile methodologies.
 
 ---
 
-## Project Overview
-
-Efie provides a clean, user-friendly mobile interface where users can:
-
-- Sign in using **Google** or **Apple** (OAuth2.0)
-- Send and receive messages to/from an AI-driven LLM
-- View conversation history
-- Store tokens and user information securely using Expo Secure Store
-- Integrate seamlessly with a FastAPI backend and PostgreSQL database
-
-This frontend was developed using **React Native + Expo bare workflow** to enable deep native customizations while leveraging the productivity of Expo modules.
-
----
+## Requirements
+- Expo CLI
+- Node.js 18+
+- iOS/macOS (Xcode) for Apple Sign-In testing
+- Android Studio (for Android builds)
+- OAuth credentials from:
+  - Google Cloud Console
+  - Apple Developer Portal
+    
+---    
 
 ## Project Goals
 
@@ -26,46 +26,45 @@ This frontend was developed using **React Native + Expo bare workflow** to enabl
 - Collaborate with a team of 4 contributors using Agile methodology
 
 ---
-
-## Tech Stack
-
-| Layer        | Technology                                      |
-|--------------|--------------------------------------------------|
-| Framework    | React Native (Expo bare workflow)                |
-| Language     | JavaScript                                       |
-| Auth         | Google & Apple Sign-In (OAuth2.0)                |
-| API          | FastAPI (Python)                                 |
-| Storage      | Expo SecureStore                                 |
-| Platform     | Android & iOS                                    |
-| Dev Tools    | Expo Dev Client, Xcode, Android Studio, VS Code  |
-
----
-
-## 📸 Screenshots
-
----
-
 ## Installation
 
-### Prerequisites
-
-- Node.js (>= 18.x)
-- npm and npx
-- Expo CLI
-- Xcode (for iOS) or Android Studio (for Android)
-- A valid Google and Apple Developer account for sign-in testing (optional)
-
-### Clone the Repo
-
 ```bash
-git clone [https://github.com/tsdamas/effie-mobile-client](https://github.com/tsdamas/effie-mobile-client)
-cd efie-mobile
+git clone https://github.com/your-username/efie-frontend.git
+cd efie-frontend
+npm install
 ```
 
-### Resources
+### Run on iOS
+```bash
+npx expo run:ios
+```
+
+### Run on Android
+```bash
+npx expo run:android
+```
+Note: You must install native dependencies and configure native projects because this app uses the bare workflow of Expo.
+
+## OAuth2.0 Setup
+### Google Sign-In
+- Create a project in Google Cloud Console
+- Enable Google Sign-In API
+- Configure iOS and Android OAuth client IDs
+- Add the IDs to your app.json
+
+### Apple Sign-In
+- Set up your App ID with Apple Sign-In entitlement in the Apple Developer Portal
+- Configure the iOS native project in Xcode
+
+
+### Documentation
 
 - https://www.youtube.com/watch?v=wncM96HYcxw
 - https://docs.expo.dev/tutorial/create-your-first-app/
+- [React Native Docs](https://reactnative.dev/docs/getting-started)
+- [Expo Bare Workflow Guide](https://docs.expo.dev/bare/install-dev-builds-in-bare/)
+- [Apple Authentication for React Native](https://docs.expo.dev/versions/latest/sdk/apple-authentication/)
+- [Google Sign-In for React Native](https://www.npmjs.com/package/@react-native-google-signin/google-signin)
 
 
 ### Development:
