@@ -1,3 +1,5 @@
+![Version](https://img.shields.io/badge/version-0.0.1-blue)
+
 # 📱 Effie - Cross-Platform Chat App Frontend (Capstone Project)
 
 **Capstone Project · Expo (Bare Workflow) · React Native**
