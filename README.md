@@ -10,11 +10,13 @@ Welcome to **Effie**, a mobile application built using **React Native with the E
 ---
 
 ## Requirements
-- Expo CLI
-- Node.js 18+
-- iOS/macOS (Xcode) for Apple Sign-In testing
-- Android Studio (for Android builds)
-- OAuth credentials from:
+- **Development Environment**
+  - [Expo CLI](https://docs.expo.dev/get-started/installation/)
+  - Node.js 18+
+- **Simulators / Emulators**
+  - iOS/macOS (Xcode) for Apple Sign-In testing
+  - Android Studio (for Android builds)
+- **OAuth Credentials from**
   - Google Cloud Console
   - Apple Developer Portal
     
