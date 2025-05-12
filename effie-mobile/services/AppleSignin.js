@@ -21,12 +21,12 @@ export async function signInWithApple() {
         if(!token)
             console.warn("No identity token returned"); 
         const decode = jwtDecode(token);
-        // console.warn(credential);
+        console.warn(credential);
 
         let email = credential.email || decode.email || ''; 
         let firstName = credential.fullName?.givenName || '';
         let lastName = credential.fullName?.familyName || '';
-        //console.warn(email);
+        console.warn(email);
 
         //Save on storage if available on first login 
         if(credential.email) await SecureStore.setItemAsync("email", credential.email);
@@ -50,6 +50,11 @@ export async function signInWithApple() {
         };
     }catch (error){
         console.error("Apple Sigin-in failed", error);
+        Alert.alert(
+            'Sign-In Error',
+            'There was a problem signing in with Google. Please try again later.',
+            [{ text: 'OK' }]
+        );
         throw error;
     }
 }
