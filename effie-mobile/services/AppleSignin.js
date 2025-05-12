@@ -50,6 +50,11 @@ export async function signInWithApple() {
         };
     }catch (error){
         console.error("Apple Sigin-in failed", error);
+        Alert.alert(
+            'Sign-In Error',
+            'There was a problem signing in with Google. Please try again later.',
+            [{ text: 'OK' }]
+        );
         throw error;
     }
 }
