@@ -36,7 +36,7 @@ function SignIn() {
     const handleSendInstructions = async () => {
         try {
             //connect to backend
-            const response = await fetch("http://127.0.0.1:8000/auth/forgot-password", {
+            const response = await fetch("https://mobile.effie.cx/auth/forgot-password", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),
@@ -79,7 +79,7 @@ function SignIn() {
             console.log("User details:", givenName, familyName, email);
 
             // Send the idToken to your backend for verification and further processing
-            const response = await fetch("http://10.0.2.2:8000/auth/google", {
+            const response = await fetch("https://mobile.effie.cx/auth/google", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token: idToken }),
@@ -132,7 +132,7 @@ function SignIn() {
             
             // const {firstName, fullName, email} = user;
 
-            const response = await fetch("http://127.0.0.1:8000/auth/apple", {
+            const response = await fetch("https://mobile.effie.cx/auth/apple", {
                 method: "POST",
                 headers: {"Content-type": "application/json"},
                 body: JSON.stringify({

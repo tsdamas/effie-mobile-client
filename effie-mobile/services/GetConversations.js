@@ -5,7 +5,7 @@
  * 
  */
 
-const API_URL = 'http://10.0.2.2:8002/chat';
+const API_URL = 'https://mobile.effie.cx/chat';
 
 // // Hardcoded array for now
 // export const conversationList = [
@@ -17,7 +17,7 @@ const API_URL = 'http://10.0.2.2:8002/chat';
 // This function gets all conversations, no matter the user, we need to configure to pass teh user_id
 export const fetchConversations = async (payload) => {
     try {
-        const response = await fetch(`${API_URL}/conversations/`, {
+        const response = await fetch(`${API_URL}/conversations`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ export const fetchConversations = async (payload) => {
 // Function to create a new conversation (POST request)
 export const createConversation = async (conversationData) => {
     try {
-        const response = await fetch(`${API_URL}/createConversations/`, {
+        const response = await fetch(`${API_URL}/createConversations`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ export const fetchConversation = async (conversationId) => {
 
 export const createMessage = async (messageData) => {
     try {
-        const response = await fetch(`${API_URL}/messages/`, {
+        const response = await fetch(`${API_URL}/messages`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ export const fetchMessages = async (convId, payload) => {
 
 export const deleteConversation = async (conversationId) => {
     try {
-        const response = await fetch(`${API_URL}/conversations/${conversationId}/`, {
+        const response = await fetch(`${API_URL}/conversations/${conversationId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
