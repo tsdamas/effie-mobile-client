@@ -118,7 +118,7 @@ function SignIn() {
             const userAppleInfo = await signInWithApple();
             console.warn(userAppleInfo); 
             const {token, user} = userAppleInfo?.data || {}; 
-            //console.warn(token); 
+            console.warn(token); 
         
 
             if(!token) {

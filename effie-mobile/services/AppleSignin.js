@@ -21,12 +21,12 @@ export async function signInWithApple() {
         if(!token)
             console.warn("No identity token returned"); 
         const decode = jwtDecode(token);
-        // console.warn(credential);
+        console.warn(credential);
 
         let email = credential.email || decode.email || ''; 
         let firstName = credential.fullName?.givenName || '';
         let lastName = credential.fullName?.familyName || '';
-        //console.warn(email);
+        console.warn(email);
 
         //Save on storage if available on first login 
         if(credential.email) await SecureStore.setItemAsync("email", credential.email);
