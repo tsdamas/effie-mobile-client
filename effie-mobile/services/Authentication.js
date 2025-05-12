@@ -1,5 +1,5 @@
 
-const API_URL = 'http://10.0.2.2:8000'; // This is just a localhost address. It's fine to leave
+const API_URL = 'https://mobile.effie.cx'; 
 
 
 export const regularLogin = async (email, password) => {
